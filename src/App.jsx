@@ -8,7 +8,6 @@ import { Fragment } from "react";
 function App() {
   return (
     <>
-
     <Router>
       <Routes>
         {routes.map((route,index)=>{
@@ -22,9 +21,7 @@ function App() {
               </Layout>
             }/>
           )
-        })}
-        
-        
+        })}        
       </Routes>
     </Router>
     </>
