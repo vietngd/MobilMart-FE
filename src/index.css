@@ -1,3 +1,6 @@
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,9 +17,9 @@ html {
 
 @layer components {
   .btn {
-    @apply text-white h-10 min-w-20 px-2 rounded bg-[#ff5050] text-sm flex items-center gap-x-1;
+    @apply flex h-10 min-w-20 items-center gap-x-1 rounded bg-primary px-2 text-sm text-white hover:bg-[#ff5050];
   }
   .search-input {
-    @apply w-80 text-lg rounded-l-lg px-3 py-2 h-10 outline-none;
+    @apply h-10 w-80 rounded-l-lg px-3 py-2 text-lg outline-none;
   }
 }

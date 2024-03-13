@@ -21,7 +21,7 @@ const HeaderComponent = () => {
         </div>
 
         <div className="flex gap-x-2">
-          <button className="btn">
+          <button className="btn hover: duration-500 ease-out">
             <FaRegUser />
             Đăng kí
           </button>
