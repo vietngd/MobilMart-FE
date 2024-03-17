@@ -1,9 +1,11 @@
-
+import ProductDetailsComponent from "../../components/ProductDetailsComponent/ProductDetailsComponent";
 
 const ProductPage = () => {
   return (
-    <div>productPage</div>
-  )
-}
+    <div className="m-auto max-w-screen-xl pt-[65px]">
+      <ProductDetailsComponent />
+    </div>
+  );
+};
 
-export default ProductPage
+export default ProductPage;

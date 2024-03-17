@@ -1,14 +1,17 @@
 import { FaRegUser, FaShoppingCart } from "react-icons/fa";
 import { IoMdSearch } from "react-icons/io";
+import { Link } from "react-router-dom";
 const HeaderComponent = () => {
   return (
-    <div className="max-w-full  bg-primary">
-      <header className="m-auto flex h-[65px] max-w-screen-xl items-center gap-x-5">
-        <img
-          src="./src/assets/images/logo-remove-background.png"
-          alt="logo"
-          className="h-[65px] cursor-pointer brightness-0 invert"
-        />
+    <div className="fixed  left-0 right-0 z-50 max-w-full bg-primary">
+      <header className="m-auto flex h-header_Height max-w-screen-xl items-center gap-x-5">
+        <Link to={"/"}>
+          <img
+            src="./src/assets/images/logo-remove-background.png"
+            alt="logo"
+            className="h-[65px] cursor-pointer brightness-0 invert"
+          />
+        </Link>
 
         <div className="flex grow items-center justify-center">
           <input

@@ -1,0 +1,27 @@
+:root {
+  --swiper-navigation-size: 35px;
+}
+
+.imgshow {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  -webkit-user-select: none;
+  user-select: none;
+  padding: 8px 16px;
+  border-radius: 100%;
+  color: rgb(200, 186, 186);
+}
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: rgb(249, 234, 234);
+}
+
+.swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background-color: rgb(234, 217, 217);
+}

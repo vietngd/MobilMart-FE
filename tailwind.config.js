@@ -4,6 +4,9 @@ export default {
   content: ["./index.html", "./src/**/*.{html,js,jsx}"],
   theme: {
     extend: {
+      height: {
+        header_Height: "65px",
+      },
       colors: {
         primary: "#DD0000",
         main: "bg-red-50",

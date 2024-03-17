@@ -53,7 +53,7 @@ const CategoryData = [
 
 const CategoryComponent = () => {
   return (
-    <div className="col-span-1">
+    <div className="col-span-1 mt-[65px]">
       <ul className="overflow-hidden rounded-xl shadow-md">
         {CategoryData.map((item, index) => (
           <CategoryItem
