@@ -5,12 +5,13 @@ const HeaderComponent = () => {
   return (
     <div className="fixed  left-0 right-0 z-50 max-w-full bg-primary">
       <header className="m-auto flex h-header_Height max-w-screen-xl items-center gap-x-5">
-        <Link to={"/"}>
+        <Link to={"/"} className="flex items-center font-bold text-white">
           <img
-            src="./src/assets/images/logo-remove-background.png"
+            src="./src/assets/images/logo-icon.png"
             alt="logo"
             className="h-[65px] cursor-pointer brightness-0 invert"
           />
+          MOBILEMART
         </Link>
 
         <div className="flex grow items-center justify-center">

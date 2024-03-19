@@ -8,7 +8,7 @@ import { Navigation } from "swiper/modules";
 const ImgShowComponent = () => {
   return (
     <div>
-      <div className="imgshow mb-4 px-14">
+      <div className="imgshow mb-2 rounded-md border p-2 px-14">
         <img src={imgsrc} alt="" className="w-full object-cover" />
       </div>
       <div className="w-full">

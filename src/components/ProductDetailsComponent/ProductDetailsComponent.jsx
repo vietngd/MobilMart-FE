@@ -2,6 +2,7 @@ import ImgShowComponent from "../ImgShowComponent/ImgShowComponent";
 import InfoProductComponent from "../InfoProductComponent/InfoProductComponent";
 import { IoIosStar } from "react-icons/io";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
+import WarrantyComponent from "../WarrantyComponent/WarrantyComponent";
 
 const ProductDetailsComponent = () => {
   return (
@@ -11,7 +12,7 @@ const ProductDetailsComponent = () => {
           Điện thoại iPhone 11 Pro cũ (Chính hãng) - Giá Rẻ hơn 36%
         </span>
         <div className="flex items-center">
-          <span className="mr-2 flex items-center text-[#D3CED2]">
+          <span className="mr-2 flex items-center text-primary">
             <IoIosStar />
             <IoIosStar />
             <IoIosStar />
@@ -27,7 +28,9 @@ const ProductDetailsComponent = () => {
         <div className="col-span-3">
           <InfoProductComponent />
         </div>
-        <div className="col-span-1">Bảo hành</div>
+        <div className="col-span-1">
+          <WarrantyComponent />
+        </div>
       </div>
     </>
   );
