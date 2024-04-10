@@ -7,7 +7,7 @@ const HeaderComponent = () => {
       <header className="m-auto flex h-header_Height max-w-screen-xl items-center gap-x-5">
         <Link to={"/"} className="flex items-center font-bold text-white">
           <img
-            src="./src/assets/images/logo-icon.png"
+            src="./src/assets/images/logo-2.png"
             alt="logo"
             className="h-[65px] cursor-pointer brightness-0 invert"
           />
@@ -25,14 +25,12 @@ const HeaderComponent = () => {
         </div>
 
         <div className="flex gap-x-2">
-          <button className="btn hover: duration-500 ease-out">
-            <FaRegUser />
-            Đăng kí
-          </button>
-          <button className="btn">
-            <FaRegUser />
-            Đăng nhập
-          </button>
+          <Link to={"/dangnhap"}>
+            <button className="btn">
+              <FaRegUser size={"1.125rem"} />
+              Đăng nhập / Đăng ký
+            </button>
+          </Link>
         </div>
         <div className=" flex cursor-pointer items-center gap-x-2 text-white">
           <FaShoppingCart size={"1.125rem"} /> Giỏ hàng

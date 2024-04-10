@@ -1,8 +1,8 @@
 import { FaCartArrowDown } from "react-icons/fa";
 const ProductActionComponent = () => {
   return (
-    <div className="col-span-1  p-2">
-      <button className="flex w-full items-center justify-center rounded-md border py-2 text-black hover:bg-primary hover:text-white">
+    <div className="col-span-1  cursor-pointer p-2">
+      <button className="flex w-full items-center justify-center rounded-md border bg-primary py-2 text-white">
         <span className="mr-2 text-2xl">
           <FaCartArrowDown />
         </span>

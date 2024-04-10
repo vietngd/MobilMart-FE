@@ -24,12 +24,12 @@ const Routes = [
   {
     path: "/dangky",
     page: SignUpPage,
-    isShowHeader: true,
+    isShowHeader: false,
   },
   {
     path: "/dangnhap",
     page: SignInPage,
-    isShowHeader: true,
+    isShowHeader: false,
   },
   {
     path: "*",
