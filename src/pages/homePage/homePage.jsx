@@ -9,7 +9,7 @@ import CarDProductComponent from "../../components/CardProductComponent/CardProd
 
 const ProductData = [
   {
-    title: "ĐIỆN THOẠI",
+    title: "ĐIỆN THOẠI NỔI BẬT NHẤT",
     options: ["Iphone", "Samsung", "Xiaomi", "Nokia", "Realme"],
   },
   {

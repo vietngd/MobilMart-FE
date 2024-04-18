@@ -23,7 +23,7 @@ html {
 
 @layer components {
   .btn {
-    @apply flex h-10 min-w-20 items-center gap-x-1 rounded bg-primary px-2 text-sm text-white hover:bg-[#ff5050];
+    @apply flex h-12  items-center gap-x-1 rounded bg-primary px-2 text-sm text-white;
   }
   .search-input {
     @apply h-10 w-96 rounded-l-lg px-3 py-2 text-lg outline-none;
@@ -34,4 +34,8 @@ html {
   .card_title {
     @apply rounded-xl bg-gradient-to-r from-black to-gray-600 px-20 py-2 font-semibold text-white;
   }
+}
+
+.shawdow-custom {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }

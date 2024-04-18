@@ -53,8 +53,8 @@ const CategoryData = [
 
 const CategoryComponent = () => {
   return (
-    <div className="col-span-1 mt-[65px]">
-      <ul className="overflow-hidden rounded-xl shadow-md">
+    <div className="col-span-1 mt-[70px]">
+      <ul className="shawdow-custom overflow-hidden rounded-xl">
         {CategoryData.map((item, index) => (
           <CategoryItem
             name={item.Name}

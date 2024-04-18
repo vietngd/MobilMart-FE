@@ -5,7 +5,7 @@ import { Pagination, Autoplay } from "swiper/modules";
 
 const SliderComponent = ({ sliders }) => {
   return (
-    <div className="col-span-4 mt-[65px] overflow-hidden rounded-xl shadow-md">
+    <div className="col-span-4 mt-[70px] overflow-hidden rounded-xl shadow-md">
       <Swiper
         loop={true}
         navigation={false}

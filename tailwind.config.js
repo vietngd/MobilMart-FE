@@ -8,7 +8,7 @@ export default {
         header_Height: "65px",
       },
       colors: {
-        primary: "#DD0000",
+        primary: "#d70018",
         main: "bg-red-50",
         category_hover: "#f5f5f5",
       },

@@ -28,7 +28,7 @@ const Card = ({ card }) => {
           </span>
         </div>
         <div className="flex">
-          <span className="mr-4 flex items-center text-[#D3CED2]">
+          <span className="mr-4 flex items-center text-yellow-400">
             <IoIosStar />
             <IoIosStar />
             <IoIosStar />
