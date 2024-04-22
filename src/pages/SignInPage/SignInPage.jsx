@@ -1,24 +1,72 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from "../../assets/images/logo-2.png";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import google_logo from "../../assets/images/Google-icon.png";
+import facebook_logo from "../../assets/images/facebook-icon.png";
+import { Link, useNavigate } from "react-router-dom";
+import InputFormComponent from "../../components/InputFormComponent/InputFormComponent";
+import * as UserServices from "../../services/UserServices.js";
+import { useMutationHook } from "../../hooks/userMutationHook.js";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { updateUser } from "../../redux/slides/userSlice.js";
 
 const SignInPage = () => {
   const [IsLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-  function handleLogin(event) {
-    event.preventDefault();
-    axios
-      .post("http://localhost:8080/dangky", { email, password })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const mutation = useMutationHook((data) =>
+    IsLogin ? UserServices.loginUser(data) : UserServices.createUser(data),
+  );
+  const { data, isSuccess, isError } = mutation;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Khi ấn nút đăng kí thì mới xóa input
+    !IsLogin && handleClearInput();
+
+    const data = await mutation.mutateAsync({
+      email,
+      password,
+    });
+    setMessage(data.message);
+  };
+
+  useEffect(() => {
+    if (IsLogin & isSuccess && data?.status === "OK") {
+      localStorage.setItem("access_token", JSON.stringify(data?.access_token));
+      navigate("/");
+      if (data?.access_token) {
+        const decoded = jwtDecode(data?.access_token);
+        if (decoded?.id) {
+          handleGetDetailUser(decoded.id, data.access_token);
+        }
+      }
+    }
+  }, [isSuccess, isError]);
+
+  const handleGetDetailUser = async (id, token) => {
+    const res = await UserServices.getDetailUser(id, token);
+    dispatch(updateUser({ ...res?.data, access_token: token }));
+  };
+
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleChangePassword = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const handleClearInput = () => {
+    setEmail("");
+    setPassword("");
+    setMessage("");
+  };
   return (
     <>
       <Link to="/">
@@ -28,8 +76,8 @@ const SignInPage = () => {
       </Link>
       <div className="m-auto max-w-screen-xl">
         <div className="flex h-screen items-center justify-center">
-          <div className="grid h-3/5 w-3/5 grid-cols-2 overflow-hidden rounded-3xl border shadow-md">
-            <div className="px-9 ">
+          <div className="grid w-3/5 grid-cols-2 overflow-hidden rounded-3xl border  shadow-md">
+            <div className="px-9 py-5">
               <div className="flex min-h-full flex-1 flex-col justify-center px-6  lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                   <img className="mx-auto h-10 w-auto" src={logo} />
@@ -39,7 +87,7 @@ const SignInPage = () => {
                 </div>
 
                 <div className="mt-2 sm:mx-auto sm:w-full sm:max-w-sm">
-                  <form className="space-y-4" onSubmit={handleLogin}>
+                  <form className="space-y-4" onSubmit={handleSubmit}>
                     <div>
                       <label
                         htmlFor="email"
@@ -48,13 +96,12 @@ const SignInPage = () => {
                         Email
                       </label>
                       <div className="mt-1">
-                        <input
+                        <InputFormComponent
                           id="email"
                           name="email"
-                          required
                           type="email"
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="block w-full rounded-md border-0 border-transparent px-1.5 py-1.5 text-gray-900 shadow-sm ring-1  ring-gray-300 placeholder:text-gray-400 focus:border-transparent  focus:ring-0  focus:ring-inset sm:text-sm sm:leading-6"
+                          valueInput={email}
+                          handleOnchange={handleChangeEmail}
                         />
                       </div>
                     </div>
@@ -67,27 +114,31 @@ const SignInPage = () => {
                         >
                           Mật khẩu
                         </label>
-                        <div className="text-sm">
-                          {IsLogin && (
-                            <a
-                              href="#"
-                              className="font-semibold text-indigo-600 hover:text-indigo-500"
-                            >
-                              Quên mật khẩu?
-                            </a>
-                          )}
-                        </div>
                       </div>
                       <div className="mt-1">
-                        <input
+                        <InputFormComponent
                           id="password"
                           name="password"
                           type="password"
-                          autoComplete="current-password"
-                          required
-                          onChange={(e) => setPassword(e.target.value)}
-                          className="block w-full rounded-md border-0 border-transparent px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:ring-inset sm:text-sm sm:leading-6"
+                          valueInput={password}
+                          handleOnchange={handleChangePassword}
                         />
+                      </div>
+
+                      <div className="float-right mb-2 mt-2 w-full text-sm">
+                        {message && (
+                          <div className="w-full text-start text-primary">
+                            {message}
+                          </div>
+                        )}
+                        {IsLogin && (
+                          <a
+                            href="#"
+                            className="font-semibold text-indigo-600 hover:text-indigo-500"
+                          >
+                            Quên mật khẩu?
+                          </a>
+                        )}
                       </div>
                     </div>
 
@@ -96,7 +147,11 @@ const SignInPage = () => {
                         type="submit"
                         className="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:shadow-lg  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                       >
-                        {IsLogin ? "Đăng nhập" : "Đăng ký"}
+                        {mutation.isPending
+                          ? "Login..."
+                          : IsLogin
+                            ? "Đăng nhập"
+                            : "Đăng ký"}
                       </button>
                     </div>
                   </form>
@@ -109,11 +164,27 @@ const SignInPage = () => {
                       className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
                       onClick={() => {
                         setIsLogin(!IsLogin);
+                        handleClearInput();
                       }}
                     >
                       {IsLogin ? "Đăng ký" : "Đăng nhập"}
                     </a>
                   </p>
+
+                  <div className="mt-3 flex items-center justify-center">
+                    <button className="min-w-30 mr-2 flex  items-center rounded-md border border-red-300 px-3 py-2 hover:border-red-600">
+                      <span className="mr-2">
+                        <img src={google_logo} alt="icon" className="w-5" />
+                      </span>
+                      <span>Google</span>
+                    </button>
+                    <button className=" min-w-30 flex items-center rounded-md border border-blue-300 px-3 py-2 hover:border-blue-600">
+                      <span className="mr-2">
+                        <img src={facebook_logo} alt="icon" className="w-5" />
+                      </span>
+                      <span>Facebook</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

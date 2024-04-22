@@ -1,8 +1,15 @@
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { IoMdSearch } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const HeaderComponent = () => {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
+
+  const handleNavigateLogin = () => {
+    navigate("/sign-in");
+  };
   return (
     <div className="fixed  left-0 right-0 z-50 max-w-full bg-primary">
       <header className="m-auto flex h-header_Height max-w-screen-xl items-center gap-x-1">
@@ -30,12 +37,13 @@ const HeaderComponent = () => {
           <span className="text-sm">Giỏ hàng</span>
         </div>
         <div className="flex gap-x-2">
-          <Link to={"/dangnhap"}>
-            <button className="btn flex flex-col justify-center rounded-lg bg-[#ffffff33]">
-              <FaRegUserCircle size={"1.125rem"} />
-              Đăng nhập
-            </button>
-          </Link>
+          <button
+            className="btn flex flex-col justify-center rounded-lg bg-[#ffffff33]"
+            onClick={handleNavigateLogin}
+          >
+            <FaRegUserCircle size={"1.125rem"} />
+            {user?.name ? user?.name : "Đăng nhập"}
+          </button>
         </div>
       </header>
     </div>

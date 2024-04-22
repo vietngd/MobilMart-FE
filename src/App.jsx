@@ -1,19 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import routes from "./routes/index.js";
 import defaultLayout from "./layout/DefaultLayout.jsx";
-import { Fragment, useEffect } from "react";
-import axios from "axios";
+import { Fragment } from "react";
 
 function App() {
-  useEffect(() => {
-    fetchApi();
-  }, []);
-
-  const fetchApi = async () => {
-    const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
-    const res = await axios.get(`${baseUrl}/product/getAll`);
-    console.log(res);
-  };
   return (
     <>
       <Router>
