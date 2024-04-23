@@ -58,4 +58,41 @@ const refreshToken = async () => {
   }
 };
 
-export { loginUser, createUser, getDetailUser, refreshToken, axiosJWT };
+const logoutUser = async () => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axios.post(
+      `${baseUrl}/user/logout`,
+      {},
+      {
+        withCredentials: true, // should be there
+        credentials: "include", // should be there
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const updateUser = async (data) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  const { userId } = data;
+  try {
+    const response = await axios.put(`${baseUrl}/user/update/${userId}`, {
+      ...data,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+export {
+  loginUser,
+  createUser,
+  getDetailUser,
+  refreshToken,
+  axiosJWT,
+  logoutUser,
+  updateUser,
+};

@@ -4,7 +4,7 @@ import google_logo from "../../assets/images/Google-icon.png";
 import facebook_logo from "../../assets/images/facebook-icon.png";
 import { Link, useNavigate } from "react-router-dom";
 import InputFormComponent from "../../components/InputFormComponent/InputFormComponent";
-import * as UserServices from "../../services/UserServices.js";
+import * as UserServices from "../../services/userServices.js";
 import { useMutationHook } from "../../hooks/userMutationHook.js";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
@@ -33,6 +33,7 @@ const SignInPage = () => {
       email,
       password,
     });
+
     setMessage(data.message);
   };
 

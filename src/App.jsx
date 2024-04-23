@@ -4,7 +4,7 @@ import defaultLayout from "./layout/DefaultLayout.jsx";
 import { Fragment, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
-import * as UserServices from "./services/UserServices.js";
+import * as UserServices from "./services/userServices.js";
 import { updateUser } from "./redux/slides/userSlice.js";
 
 function App() {

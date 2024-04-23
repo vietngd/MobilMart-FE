@@ -23,7 +23,7 @@ html {
 
 @layer components {
   .btn {
-    @apply flex h-12  items-center gap-x-1 rounded bg-primary px-2 text-sm text-white;
+    @apply flex h-12  items-center justify-center gap-x-1 rounded bg-primary px-2 text-sm text-white;
   }
   .search-input {
     @apply h-10 w-96 rounded-l-lg px-3 py-2 text-lg outline-none;
