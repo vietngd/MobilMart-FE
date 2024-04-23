@@ -1,55 +1,28 @@
 import Card from "./Card.jsx";
 import CardProductHeader from "./CardProductHeader.jsx";
-import iphone15 from "../../assets/images/product/1.webp";
-import iphone13 from "../../assets/images/product/2.webp";
+import { useQuery } from "@tanstack/react-query";
+import * as Productservices from "../../services/productServices.js";
 
-const CardDatas = [
-  {
-    img: iphone15,
-    title: "Iphone 15 Pro Max 256GB Chính hãng VN/A",
-    newPrice: "29.950.000 đ",
-    oldPrice: "36.990.990 đ",
-    rate: "19",
-  },
-  {
-    img: iphone13,
-    title: "Iphone 13 Pro 256GB Chính hãng VN/A",
-    newPrice: "22.950.000 đ",
-    oldPrice: "26.990.990 đ",
-    rate: "20",
-  },
-  {
-    img: iphone15,
-    title: "Iphone 15 Pro Max 256GB Chính hãng VN/A",
-    newPrice: "29.950.000 đ",
-    oldPrice: "36.990.990 đ",
-    rate: "19",
-  },
-  {
-    img: iphone13,
-    title: "Iphone 13 Pro 256GB Chính hãng VN/A",
-    newPrice: "22.950.000 đ",
-    oldPrice: "26.990.990 đ",
-    rate: "20",
-  },
-  {
-    img: iphone15,
-    title: "Iphone 15 Pro Max 256GB Chính hãng VN/A",
-    newPrice: "29.950.000 đ",
-    oldPrice: "36.990.990 đ",
-    rate: "19",
-  },
-];
-
+//Component cha
 const CardProductComponent = (props) => {
-  const { title, options } = props.data;
+  const { name, id } = props.data;
+  const fetchProductByCategory = async (categoryId) => {
+    const res = await Productservices.getProductByCategory(categoryId);
+    return res;
+  };
+  const { data } = useQuery({
+    queryKey: ["productsByCategory", id], //Nếu không có id đằng sau thì React Query chỉ xem xét một cache key duy nhất và chỉ gọi hàm fetchProductByCategory một lần.
+    queryFn: () => fetchProductByCategory(id),
+    retry: 3,
+    retryDelay: 1000,
+  });
   return (
     <>
       <div className="mb-5 mt-5">
-        <CardProductHeader title={title} options={options} />
+        <CardProductHeader title={name} />
       </div>
       <div className="grid grid-cols-5 gap-x-3">
-        {CardDatas.map((item, index) => {
+        {data?.Products.map((item, index) => {
           return <Card key={index} card={item} />;
         })}
       </div>

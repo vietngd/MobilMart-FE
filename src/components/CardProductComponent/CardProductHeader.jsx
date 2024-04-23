@@ -1,8 +1,8 @@
-const CardProductHeader = ({ title, options }) => {
+const CardProductHeader = ({ title }) => {
   return (
     <div className="flex justify-between">
       <button className="card_title">{title}</button>
-      <ul className="option flex gap-x-3">
+      {/* <ul className="option flex gap-x-3">
         {options.map((item, index) => {
           return (
             <li
@@ -13,7 +13,7 @@ const CardProductHeader = ({ title, options }) => {
             </li>
           );
         })}
-      </ul>
+      </ul> */}
     </div>
   );
 };
