@@ -1,5 +1,6 @@
 import SignInPage from "../pages/SignInPage/SignInPage";
 import SignUpPage from "../pages/SignUpPage/SignUpPage";
+import AdminPage from "../pages/adminPage/AdminPage";
 import CartPage from "../pages/cartPage/cartPage";
 import HomePage from "../pages/homePage/homePage";
 import NotFoundPage from "../pages/notFoundPage/notFoundPage";
@@ -36,6 +37,12 @@ const Routes = [
     path: "/profile-user",
     page: ProfilePage,
     isShowHeader: true,
+  },
+  {
+    path: "/admin",
+    page: AdminPage,
+    isShowHeader: false,
+    isPrivate: true,
   },
   {
     path: "*",

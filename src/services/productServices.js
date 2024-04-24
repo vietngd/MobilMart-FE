@@ -19,4 +19,14 @@ const getProductByCategory = async (categoryId) => {
   }
 };
 
-export { getAllProduct, getProductByCategory };
+const createProduct = async (data) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axios.post(`${baseUrl}/product/create`, data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export { getAllProduct, getProductByCategory, createProduct };

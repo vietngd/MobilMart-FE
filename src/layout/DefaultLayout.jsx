@@ -1,5 +1,5 @@
-import FooterComponent from "../components/FooterComponent/FooterComponent";
-import HeaderComponent from "../components/HeaderComponent/HeaderComponent";
+import FooterComponent from "../components/FooterComponent/FooterComponent.jsx";
+import HeaderComponent from "../components/HeaderComponent/HeaderComponent.jsx";
 
 const defaultLayout = ({ children }) => {
   return (

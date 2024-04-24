@@ -1,20 +1,25 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import routes from "./routes/index.js";
 import defaultLayout from "./layout/DefaultLayout.jsx";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as UserServices from "./services/userServices.js";
 import { updateUser } from "./redux/slides/userSlice.js";
+import Loading from "./components/Loading/LoadingComponent.jsx";
 
 function App() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const { decoded, accessToken } = handleDecoded();
     if (decoded?.id) {
       handleGetDetailUser(decoded.id, accessToken);
     }
+    setIsLoading(false);
   }, []);
   const handleDecoded = () => {
     let accessToken = localStorage.getItem("access_token");
@@ -53,26 +58,29 @@ function App() {
   };
   return (
     <>
-      <Router>
-        <Routes>
-          {routes.map((route, index) => {
-            const path = route.path;
-            const Page = route.page;
-            const Layout = route.isShowHeader ? defaultLayout : Fragment;
-            return (
-              <Route
-                path={path}
-                key={index}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
-          })}
-        </Routes>
-      </Router>
+      <Loading isLoading={isLoading}>
+        <Router>
+          <Routes>
+            {routes.map((route, index) => {
+              const isCheckAuth = !route.isPrivate || user.isAdmin;
+              const path = route.path;
+              const Page = route.page;
+              const Layout = route.isShowHeader ? defaultLayout : Fragment;
+              return (
+                <Route
+                  path={isCheckAuth ? path : undefined}
+                  key={index}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              );
+            })}
+          </Routes>
+        </Router>
+      </Loading>
     </>
   );
 }

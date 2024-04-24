@@ -16,8 +16,9 @@ const ProfilePage = () => {
   const [phone, setPhone] = useState(user.phone);
   const [message, setMessage] = useState("");
 
-  const mutation = useMutationHook((data) => {
-    UserServices.updateUser(data);
+  const mutation = useMutationHook(async (data) => {
+    const res = await UserServices.updateUser(data);
+    return res;
   });
   const dispatch = useDispatch();
   const { isSuccess, isError } = mutation;
@@ -50,7 +51,6 @@ const ProfilePage = () => {
     };
 
     const res = await mutation.mutateAsync(data);
-
     setMessage(res?.message);
   };
 
