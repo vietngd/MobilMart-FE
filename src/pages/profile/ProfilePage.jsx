@@ -56,10 +56,12 @@ const ProfilePage = () => {
 
   const handleUploadAvatar = async ({ fileList }) => {
     const file = fileList[0];
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+    if (file) {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj);
+      }
+      setAvatar(file.preview);
     }
-    setAvatar(file.preview);
   };
 
   return (
