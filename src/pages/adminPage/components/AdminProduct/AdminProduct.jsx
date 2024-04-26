@@ -8,20 +8,21 @@ import {
   Upload,
   Space,
 } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
-import TableComponent from "../../../../components/TableComponent/TableComponent";
 import { useEffect, useState } from "react";
+import { PlusOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
+import { useQuery } from "@tanstack/react-query";
+import TableComponent from "../../../../components/TableComponent/TableComponent";
 import { useMutationHook } from "../../../../hooks/userMutationHook.js";
 import * as ProductServices from "../../../../services/productServices.js";
 import * as CategoryServices from "../../../../services/categoryServices.js";
-import { useQuery } from "@tanstack/react-query";
 import { getBase64 } from "../../../../ultils.js";
 import * as Productservices from "../../../../services/productServices.js";
 import DrawerComponent from "../Drawer/DrawerComponent.jsx";
 import Loading from "../../../../components/Loading/LoadingComponent.jsx";
 import { useSelector } from "react-redux";
 import * as message from "../../../../components/Message/MessageComponent.jsx";
+import ModalComponent from "../../../../components/Modal/ModalComponent.jsx";
 
 const AdminProduct = () => {
   const [fileList, setFileList] = useState([]);
@@ -29,6 +30,7 @@ const AdminProduct = () => {
   const [images, setImages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalConfig, setIsModalCopnfig] = useState(false);
+  const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
   const [stateProduct, setStateProduct] = useState({
     name: " ",
     description: " ",
@@ -93,7 +95,11 @@ const AdminProduct = () => {
       configuration: JSON.stringify(configProduct),
       images: images || " ",
     };
-    mutation.mutateAsync(data);
+    mutation.mutateAsync(data, {
+      onSettled: () => {
+        queryProduct.refetch();
+      },
+    });
   };
 
   const mutationUpdate = useMutationHook(async ({ id, data, access_token }) => {
@@ -111,7 +117,6 @@ const AdminProduct = () => {
     if (isSuccessUpdated & (dataUpdated?.status === "OK")) {
       onCancel();
       setIsOpenDrawer(false);
-      window.location.reload();
       message.success();
     }
   }, [isSuccessUpdated, isErrorUpdated]);
@@ -131,11 +136,18 @@ const AdminProduct = () => {
       configuration: JSON.stringify(configProduct),
       images: images || " ",
     };
-    mutationUpdate.mutateAsync({
-      id: stateProduct?.id,
-      data,
-      access_token: user?.access_token,
-    });
+    mutationUpdate.mutateAsync(
+      {
+        id: stateProduct?.id,
+        data,
+        access_token: user?.access_token,
+      },
+      {
+        onSettled: () => {
+          queryProduct.refetch();
+        },
+      },
+    );
   };
 
   // Láy thông tin của product lưu vào State
@@ -219,12 +231,14 @@ const AdminProduct = () => {
     return res;
   };
 
-  const { data: products, isLoading } = useQuery({
+  const queryProduct = useQuery({
     queryKey: ["poducts"],
     queryFn: () => fetchProduct(),
     retry: 3,
     retryDelay: 1000,
   });
+
+  const { data: products, isLoading } = queryProduct;
 
   const columns = [
     {
@@ -264,7 +278,10 @@ const AdminProduct = () => {
           >
             Edit
           </button>
-          <button className="rounded border border-primary px-2 py-1">
+          <button
+            className="rounded border border-primary px-2 py-1"
+            onClick={() => setIsModalOpenDelete(true)}
+          >
             Delete
           </button>
         </Space>
@@ -277,6 +294,38 @@ const AdminProduct = () => {
     setIsOpenDrawer(true);
   };
 
+  // Xóa sản phẩm
+  const handleCancelDelete = () => {
+    setIsModalOpenDelete(false);
+  };
+
+  const mutationDelete = useMutationHook(async ({ id }) => {
+    const res = await ProductServices.deleteProduct(id);
+    return res;
+  });
+  const {
+    data: dataDelete,
+    isSuccess: isSuccessDelete,
+    isError: isErrorDelete,
+    isPending: isPendingDelete,
+  } = mutationDelete;
+
+  useEffect(() => {
+    if (isSuccessDelete & (dataDelete?.status === "OK")) {
+      handleCancelDelete();
+      message.success();
+    }
+  }, [isSuccessDelete, isErrorDelete]);
+  const handleDeleteProduct = () => {
+    mutationDelete.mutateAsync(
+      { id: stateProduct?.id },
+      {
+        onSettled: () => {
+          queryProduct.refetch();
+        },
+      },
+    );
+  };
   return (
     <div>
       <h1 className="text-2xl font-bold">Quản lý sản phẩm</h1>
@@ -580,6 +629,20 @@ const AdminProduct = () => {
           </div>
         </Form>
       </DrawerComponent>
+
+      {/* Xóa sản phẩm */}
+
+      <Loading isLoading={isPendingDelete}>
+        <ModalComponent
+          title="Xóa sản phẩm"
+          open={isModalOpenDelete}
+          onCancel={handleCancelDelete}
+          onOk={handleDeleteProduct}
+          okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
+        >
+          <div>Bạn có chắc xóa sản phẩm này không?</div>
+        </ModalComponent>
+      </Loading>
     </div>
   );
 };

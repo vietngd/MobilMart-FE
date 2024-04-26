@@ -61,10 +61,21 @@ const getDetailProduct = async (id) => {
   }
 };
 
+const deleteProduct = async (id) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axios.delete(`${baseUrl}/product/delete/${id}`);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export {
   getAllProduct,
   getProductByCategory,
   createProduct,
   getDetailProduct,
   updateProduct,
+  deleteProduct,
 };
