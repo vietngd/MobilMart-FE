@@ -1,4 +1,13 @@
-import { Modal, Checkbox, Form, Input, Select, Button, Upload } from "antd";
+import {
+  Modal,
+  Checkbox,
+  Form,
+  Input,
+  Select,
+  Button,
+  Upload,
+  Space,
+} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import TableComponent from "../../../../components/TableComponent/TableComponent";
 import { useEffect, useState } from "react";
@@ -8,21 +17,28 @@ import * as ProductServices from "../../../../services/productServices.js";
 import * as CategoryServices from "../../../../services/categoryServices.js";
 import { useQuery } from "@tanstack/react-query";
 import { getBase64 } from "../../../../ultils.js";
+import * as Productservices from "../../../../services/productServices.js";
+import DrawerComponent from "../Drawer/DrawerComponent.jsx";
+import Loading from "../../../../components/Loading/LoadingComponent.jsx";
+import { useSelector } from "react-redux";
+import * as message from "../../../../components/Message/MessageComponent.jsx";
 
 const AdminProduct = () => {
   const [fileList, setFileList] = useState([]);
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const [images, setImages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalConfig, setIsModalCopnfig] = useState(false);
   const [stateProduct, setStateProduct] = useState({
-    name: "",
-    description: "",
+    name: " ",
+    description: " ",
     hot: false,
-    price: "",
-    sale: "",
-    quantity: "",
+    price: " ",
+    sale: " ",
+    quantity: " ",
     category_id: "g7Ph8CmTazu6vndHbVAuBGMUa",
   });
+  //Lưu thông tin cấu hình của sản phẩm
   const [configProduct, setConfigProduct] = useState({
     ScreenSize: "",
     ScreenTechnology: "",
@@ -36,6 +52,7 @@ const AdminProduct = () => {
     ScreenResolution: "",
   });
 
+  //Get category thêm vào form
   const fetchAllCategory = async () => {
     const res = await CategoryServices.getAllCategory();
     return res;
@@ -52,15 +69,17 @@ const AdminProduct = () => {
     return res;
   });
 
-  const { data, isSuccess, isError } = mutation;
+  const { data, isSuccess, isError, isPending } = mutation;
+
   useEffect(() => {
     if (isSuccess & (data?.status === "OK")) {
+      message.success();
       onCancel();
     }
   }, [isSuccess, isError]);
 
   // Tạo mới sản phẩm khi click vào nút OK
-  const handleOk = async () => {
+  const handleCreateProduct = async () => {
     const data = {
       name: stateProduct.name !== null ? stateProduct.name : " ",
       description:
@@ -75,6 +94,48 @@ const AdminProduct = () => {
       images: images || " ",
     };
     mutation.mutateAsync(data);
+  };
+
+  const mutationUpdate = useMutationHook(async ({ id, data, access_token }) => {
+    const res = await ProductServices.updateProduct(id, data, access_token);
+    return res;
+  });
+  const {
+    data: dataUpdated,
+    isSuccess: isSuccessUpdated,
+    isError: isErrorUpdated,
+    isPending: isPendingUpdated,
+  } = mutationUpdate;
+
+  useEffect(() => {
+    if (isSuccessUpdated & (dataUpdated?.status === "OK")) {
+      onCancel();
+      setIsOpenDrawer(false);
+      window.location.reload();
+      message.success();
+    }
+  }, [isSuccessUpdated, isErrorUpdated]);
+
+  const user = useSelector((state) => state.user);
+  const handleUpdateProduct = async () => {
+    const data = {
+      name: stateProduct.name !== null ? stateProduct.name : " ",
+      description:
+        stateProduct.description !== null ? stateProduct.description : " ",
+      hot: stateProduct.hot !== null ? stateProduct.hot : false,
+      price: stateProduct.price !== null ? stateProduct.price : " ",
+      sale: stateProduct.sale !== null ? stateProduct.sale : " ",
+      quantity: stateProduct.quantity !== null ? stateProduct.quantity : " ",
+      category_id:
+        stateProduct.category_id !== null ? stateProduct.category_id : " ",
+      configuration: JSON.stringify(configProduct),
+      images: images || " ",
+    };
+    mutationUpdate.mutateAsync({
+      id: stateProduct?.id,
+      data,
+      access_token: user?.access_token,
+    });
   };
 
   // Láy thông tin của product lưu vào State
@@ -99,8 +160,9 @@ const AdminProduct = () => {
     });
   };
 
+  // Xóa tất cả các tệp ảnh đã chọn bằng cách cập nhật fileList về mảng rỗng
   const handleRemove = () => {
-    setFileList([]); // Xóa tất cả các tệp đã chọn bằng cách cập nhật fileList về mảng rỗng
+    setFileList([]);
   };
 
   const onCancel = () => {
@@ -130,11 +192,11 @@ const AdminProduct = () => {
       OperatingSystem: "",
       ScreenResolution: "",
     });
+
     handleRemove();
   };
 
   // Xử lý up ảnh lên cloudinary
-
   const handleUpload = async ({ fileList }) => {
     setFileList(fileList); // Set số lượng ảnh đã chọn vào state để hiển thị lên form
     const images = [];
@@ -151,6 +213,70 @@ const AdminProduct = () => {
     setIsModalCopnfig(true);
   };
 
+  //Get All Product từ CSDL
+  const fetchProduct = async () => {
+    const res = await Productservices.getAllProduct();
+    return res;
+  };
+
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["poducts"],
+    queryFn: () => fetchProduct(),
+    retry: 3,
+    retryDelay: 1000,
+  });
+
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "Name",
+      render: (text) => <a className="hover:text-blue-500">{text}</a>,
+    },
+    {
+      title: "Hot",
+      dataIndex: "hot",
+      key: "Hot",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+    },
+    {
+      title: "Sale",
+      key: "Sale",
+      dataIndex: "sale",
+    },
+    {
+      title: "Quantity",
+      key: "Quantity",
+      dataIndex: "quantity",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: () => (
+        <Space size="middle">
+          <button
+            className="rounded border border-blue-500 px-2 py-1"
+            onClick={handleDetailProduct}
+          >
+            Edit
+          </button>
+          <button className="rounded border border-primary px-2 py-1">
+            Delete
+          </button>
+        </Space>
+      ),
+    },
+  ];
+
+  //Khi kick vào một row trên table
+  const handleDetailProduct = () => {
+    setIsOpenDrawer(true);
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-bold">Quản lý sản phẩm</h1>
@@ -161,7 +287,23 @@ const AdminProduct = () => {
         Thêm sản phẩm
       </button>
       <div className="mt-4">
-        <TableComponent />
+        <TableComponent
+          products={products?.data}
+          columms={columns}
+          isLoading={isLoading}
+          onRow={(record) => {
+            return {
+              onClick: () => {
+                setStateProduct({
+                  ...record,
+                  category_id: "g7Ph8CmTazu6vndHbVAuBGMUa",
+                });
+
+                setConfigProduct(JSON.parse(record?.configuration));
+              }, // click row
+            };
+          }}
+        />
       </div>
       <Modal
         title="Thêm sản phẩm"
@@ -201,8 +343,12 @@ const AdminProduct = () => {
               value={stateProduct.description}
             />
           </Form.Item>
-          <Form.Item label="Hot" name="disabled" valuePropName="checked">
-            <Checkbox onChange={handleOnchange} name="hot"></Checkbox>
+          <Form.Item label="Hot" name="disabled">
+            <Checkbox
+              onChange={handleOnchange}
+              name="hot"
+              checked={stateProduct.hot}
+            ></Checkbox>
           </Form.Item>
           <Form.Item label="Ảnh" valuePropName="fileList">
             <Upload
@@ -273,17 +419,65 @@ const AdminProduct = () => {
         </Form>
       </Modal>
       {/* Form nhập cấu hình điện thoại */}
-      <Modal
-        title="Cấu hình sản phẩm"
-        open={isModalConfig}
-        onCancel={onCancel}
-        okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
-        footer={null}
-        width={500}
+      <Loading isLoading={isPendingUpdated || isPending}>
+        <Modal
+          title="Cấu hình sản phẩm"
+          open={isModalConfig}
+          onCancel={onCancel}
+          okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
+          footer={null}
+          width={500}
+        >
+          <Form
+            labelCol={{
+              span: 6,
+            }}
+            wrapperCol={{
+              span: 14,
+            }}
+            layout="horizontal"
+            style={{
+              width: "100%",
+              marginTop: 20,
+            }}
+            onFinish={isOpenDrawer ? handleUpdateProduct : handleCreateProduct}
+          >
+            {Object.keys(configProduct).map((key) => (
+              <Form.Item key={key} label={key}>
+                <Input
+                  onChange={handleOnchangeConfig}
+                  name={key}
+                  value={configProduct[key]}
+                  required
+                />
+              </Form.Item>
+            ))}
+
+            <div className="flex w-full justify-end">
+              <Button onClick={onCancel}>Cancel</Button>
+
+              <Button
+                type="primary"
+                htmlType="submit"
+                style={{ background: "#1677FF", marginLeft: "12px" }}
+              >
+                {isOpenDrawer ? "Cập nhật" : "Thêm"}
+              </Button>
+            </div>
+          </Form>
+        </Modal>
+      </Loading>
+      {/* Chi tiết sản phẩm */}
+      <DrawerComponent
+        title="Chi tiết sản phẩm"
+        isOpen={isOpenDrawer}
+        placement={"right"}
+        onClose={() => setIsOpenDrawer(false)}
+        width="90%"
       >
         <Form
           labelCol={{
-            span: 6,
+            span: 4,
           }}
           wrapperCol={{
             span: 14,
@@ -293,31 +487,99 @@ const AdminProduct = () => {
             width: "100%",
             marginTop: 20,
           }}
-          onFinish={handleOk}
+          onFinish={handleNextModal}
         >
-          {Object.keys(configProduct).map((key) => (
-            <Form.Item key={key} label={key}>
-              <Input
-                onChange={handleOnchangeConfig}
-                name={key}
-                value={configProduct[key]}
-                required
-              />
-            </Form.Item>
-          ))}
-
+          <Form.Item label="Tên">
+            <Input
+              onChange={handleOnchange}
+              name="name"
+              value={stateProduct?.name}
+              required
+            />
+          </Form.Item>
+          <Form.Item label="Mô tả">
+            <TextArea
+              rows={4}
+              onChange={handleOnchange}
+              name="description"
+              value={stateProduct?.description}
+            />
+          </Form.Item>
+          <Form.Item label="Hot" name="disabled">
+            <Checkbox
+              onChange={handleOnchange}
+              checked={stateProduct?.hot}
+              name="hot"
+            ></Checkbox>
+          </Form.Item>
+          <Form.Item label="Ảnh" valuePropName="fileList">
+            <Upload
+              listType="picture-card"
+              multiple={true}
+              onChange={handleUpload}
+              fileList={fileList}
+            >
+              <button style={{ border: 0, background: "none" }} type="button">
+                <PlusOutlined />
+                <div style={{ marginTop: 8 }}>Upload</div>
+              </button>
+            </Upload>
+          </Form.Item>
+          <Form.Item label="Giá gốc">
+            <Input
+              style={{ width: "150px" }}
+              onChange={handleOnchange}
+              name="price"
+              required
+              value={stateProduct?.price}
+            />
+          </Form.Item>
+          <Form.Item label="Giá sale">
+            <Input
+              style={{ width: "150px" }}
+              onChange={handleOnchange}
+              name="sale"
+              required
+              value={stateProduct?.sale}
+            />
+          </Form.Item>
+          <Form.Item label="Số lượng">
+            <Input
+              style={{ width: "50px" }}
+              onChange={handleOnchange}
+              name="quantity"
+              required
+              value={stateProduct?.quantity}
+            />
+          </Form.Item>
+          <Form.Item label="Danh mục">
+            <Select
+              style={{ width: "200px" }}
+              onChange={handleOnchangeSelect}
+              name="category_id"
+              value={stateProduct?.category_id}
+            >
+              {resCategory?.categories.map((item) => {
+                return (
+                  <Select.Option value={item.id} key={item.id}>
+                    {item.name}
+                  </Select.Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
           <div className="flex w-full justify-end">
-            <Button onClick={onCancel}>Cancel</Button>
+            <Button onClick={() => setIsOpenDrawer(false)}>Cancel</Button>
             <Button
               type="primary"
               htmlType="submit"
               style={{ background: "#1677FF", marginLeft: "12px" }}
             >
-              Cập nhật
+              Sửa cấu hình
             </Button>
           </div>
         </Form>
-      </Modal>
+      </DrawerComponent>
     </div>
   );
 };

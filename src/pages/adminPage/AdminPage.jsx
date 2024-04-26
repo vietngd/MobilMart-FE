@@ -28,7 +28,7 @@ const renderContent = (key) => {
 };
 
 const AdminPage = () => {
-  const [keyContent, setKeyContent] = useState("");
+  const [keyContent, setKeyContent] = useState("product");
 
   const handleClick = ({ key }) => {
     setKeyContent(key);
@@ -36,18 +36,19 @@ const AdminPage = () => {
   return (
     <>
       <HeaderComponent isHidenSearch isHidenCart />
-      <div className="flex pt-[70px]">
+      <div className="flex">
         <Menu
           mode="inline"
-          defaultSelectedKeys={["account"]}
+          defaultSelectedKeys={["product"]}
           style={{
             width: 256,
             height: "100vh",
+            paddingTop: "70px",
           }}
           items={items}
           onClick={handleClick}
         />
-        <div className="flex-1 px-2">{renderContent(keyContent)}</div>
+        <div className="flex-1 px-2 pt-[70px]">{renderContent(keyContent)}</div>
       </div>
     </>
   );

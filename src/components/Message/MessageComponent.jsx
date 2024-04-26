@@ -1,33 +1,15 @@
-import { Button, message, Space } from "antd";
-const App = () => {
-  const [messageApi, contextHolder] = message.useMessage();
-  const success = () => {
-    messageApi.open({
-      type: "success",
-      content: "This is a success message",
-    });
-  };
-  const error = () => {
-    messageApi.open({
-      type: "error",
-      content: "This is an error message",
-    });
-  };
-  const warning = () => {
-    messageApi.open({
-      type: "warning",
-      content: "This is a warning message",
-    });
-  };
-  return (
-    <>
-      {contextHolder}
-      <Space>
-        <Button onClick={success}>Success</Button>
-        <Button onClick={error}>Error</Button>
-        <Button onClick={warning}>Warning</Button>
-      </Space>
-    </>
-  );
+import { message } from "antd";
+
+const success = (mes = "Success") => {
+  message.success(mes);
 };
-export default App;
+
+const error = (mes = "Error") => {
+  message.error(mes);
+};
+
+const warning = (mes = "Warning") => {
+  message.warning(mes);
+};
+
+export { success, error, warning };

@@ -19,6 +19,9 @@ html {
   body::-webkit-scrollbar {
     display: none;
   }
+  a:hover {
+    color: black;
+  }
 }
 
 @layer components {
