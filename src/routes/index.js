@@ -13,7 +13,7 @@ const Routes = [
     isShowHeader: true,
   },
   {
-    path: "/product",
+    path: "/product/:id",
     page: ProductPage,
     isShowHeader: true,
   },

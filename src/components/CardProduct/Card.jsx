@@ -1,12 +1,14 @@
 import { IoIosStar } from "react-icons/io";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import img from "../../assets/images/product/1.webp";
+
 const Card = ({ card }) => {
+  const imgs = card.images.split(",");
+
   return (
-    <Link className="card mb-4" to={"/product"}>
+    <Link className="card mb-4" to={`/product/${card.id}`}>
       <div className="relative flex justify-center">
-        <img src={img} alt="product" className="h-[150px] max-w-full"></img>
+        <img src={imgs[0]} alt="product" className="h-[150px] max-w-full"></img>
         <span className="absolute bottom-0 left-0 rounded-r bg-black pr-1 text-xs text-white">
           Miễn phí ship
         </span>

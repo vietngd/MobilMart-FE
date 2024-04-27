@@ -26,6 +26,7 @@ import ModalComponent from "../../../../components/Modal/ModalComponent.jsx";
 
 const AdminProduct = () => {
   const [fileList, setFileList] = useState([]);
+
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   const [images, setImages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -157,6 +158,7 @@ const AdminProduct = () => {
       [e.target.name]: e.target.value || e.target.checked,
     });
   };
+
   // Láy thông tin cấu hình của product lưu vào State
   const handleOnchangeConfig = (e) => {
     setConfigProduct({
@@ -232,7 +234,7 @@ const AdminProduct = () => {
   };
 
   const queryProduct = useQuery({
-    queryKey: ["poducts"],
+    queryKey: ["products"],
     queryFn: () => fetchProduct(),
     retry: 3,
     retryDelay: 1000,
@@ -331,7 +333,10 @@ const AdminProduct = () => {
       <h1 className="text-2xl font-bold">Quản lý sản phẩm</h1>
       <button
         className="btn mt-4 bg-[#1677FF] px-5"
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => {
+          onCancel();
+          setIsModalOpen(true);
+        }}
       >
         Thêm sản phẩm
       </button>
@@ -445,6 +450,7 @@ const AdminProduct = () => {
               onChange={handleOnchangeSelect}
               name="category_id"
               defaultValue="Iphone"
+              value={stateProduct.category_id}
             >
               {resCategory?.categories.map((item) => {
                 return (
@@ -468,15 +474,16 @@ const AdminProduct = () => {
         </Form>
       </Modal>
       {/* Form nhập cấu hình điện thoại */}
-      <Loading isLoading={isPendingUpdated || isPending}>
-        <Modal
-          title="Cấu hình sản phẩm"
-          open={isModalConfig}
-          onCancel={onCancel}
-          okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
-          footer={null}
-          width={500}
-        >
+
+      <Modal
+        title="Cấu hình sản phẩm"
+        open={isModalConfig}
+        onCancel={onCancel}
+        okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
+        footer={null}
+        width={500}
+      >
+        <Loading isLoading={isPending || isPendingUpdated}>
           <Form
             labelCol={{
               span: 6,
@@ -514,8 +521,9 @@ const AdminProduct = () => {
               </Button>
             </div>
           </Form>
-        </Modal>
-      </Loading>
+        </Loading>
+      </Modal>
+
       {/* Chi tiết sản phẩm */}
       <DrawerComponent
         title="Chi tiết sản phẩm"
