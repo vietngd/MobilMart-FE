@@ -5,6 +5,12 @@ import ProductActionComponent from "../ProductActionComponent/ProductActionCompo
 const InfoProductComponent = ({ sale = "", price = "" }) => {
   return (
     <div>
+      <div className="mb-4 flex items-center justify-center rounded border border-primary py-1 text-white">
+        <span className="text-3xl">
+          <CiDeliveryTruck color="#d70018" />
+        </span>
+        <span className="ml-3 text-primary">MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC</span>
+      </div>
       <div className="mb-4 flex items-center justify-between">
         <div>
           <span className="mr-2 text-2xl font-bold text-primary">{sale} đ</span>
@@ -15,12 +21,6 @@ const InfoProductComponent = ({ sale = "", price = "" }) => {
         <div>
           <input type="checkbox" defaultChecked={true} /> Còn hàng
         </div>
-      </div>
-      <div className="mb-4 flex items-center justify-center rounded bg-primary py-1 text-white">
-        <span className="text-3xl">
-          <CiDeliveryTruck />
-        </span>
-        <span className="ml-3">MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC</span>
       </div>
 
       <div className="grid grid-cols-3 gap-x-1">

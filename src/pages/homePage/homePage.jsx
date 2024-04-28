@@ -8,6 +8,7 @@ import slider5 from "../../assets/images/Slider/slider5.webp";
 import CardProductComponent from "../../components/CardProduct/CardProductComponent.jsx";
 import * as CategoryServices from "../../services/categoryServices.js";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 const HomePage = () => {
   const fetchAllCategory = async () => {
@@ -20,6 +21,10 @@ const HomePage = () => {
     retry: 3,
     retryDelay: 1000,
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   // console.log("Categories", isLoading, data?.categories);
   const sliders = [slider1, slider2, slider3, slider4, slider5];
   return (

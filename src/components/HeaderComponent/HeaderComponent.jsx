@@ -40,6 +40,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
     disPatch(resetUser());
     localStorage.removeItem("access_token");
     setLoading(false);
+    navigate("/");
   };
   const content = (
     <>

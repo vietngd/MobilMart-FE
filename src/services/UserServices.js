@@ -75,12 +75,47 @@ const logoutUser = async () => {
   }
 };
 
-const updateUser = async (data) => {
+const updateUser = async (data, access_token) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
   const { userId } = data;
   try {
-    const response = await axios.put(`${baseUrl}/user/update/${userId}`, {
-      ...data,
+    const response = await axiosJWT.put(
+      `${baseUrl}/user/update/${userId}`,
+      {
+        ...data,
+      },
+      {
+        headers: {
+          token: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const getAllUser = async (access_token) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axiosJWT.get(`${baseUrl}/user/getAllUser`, {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+const deleteUser = async (id, access_token) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axiosJWT.delete(`${baseUrl}/user/delete/${id}`, {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
     });
     return response.data;
   } catch (err) {
@@ -95,4 +130,6 @@ export {
   axiosJWT,
   logoutUser,
   updateUser,
+  getAllUser,
+  deleteUser,
 };

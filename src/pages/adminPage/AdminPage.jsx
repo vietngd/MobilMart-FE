@@ -28,7 +28,7 @@ const renderContent = (key) => {
 };
 
 const AdminPage = () => {
-  const [keyContent, setKeyContent] = useState("product");
+  const [keyContent, setKeyContent] = useState("user");
 
   const handleClick = ({ key }) => {
     setKeyContent(key);
@@ -39,7 +39,7 @@ const AdminPage = () => {
       <div className="flex">
         <Menu
           mode="inline"
-          defaultSelectedKeys={["product"]}
+          defaultSelectedKeys={["user"]}
           style={{
             width: 256,
             height: "100vh",

@@ -1,9 +1,11 @@
 import { FaMapMarkerAlt, FaPhone } from "react-icons/fa";
 import { HiQuestionMarkCircle } from "react-icons/hi2";
+import facebook_logo from "../../assets/images/facebook-icon.png";
+import google_logo from "../../assets/images/Google-icon.png";
 
 const FooterComponent = () => {
   return (
-    <div className=" mt-5 flex items-center justify-center bg-[#fafafa]">
+    <div className=" mt-5 flex items-center justify-center bg-[#fafafa] ">
       <div className="grid h-full w-full max-w-screen-xl grid-cols-3 py-5">
         <div className="col-span-1">
           <h1 className="flex items-center font-semibold">
@@ -12,7 +14,7 @@ const FooterComponent = () => {
             </span>
             HỆ THỐNG CỬA HÀNG
           </h1>
-          <ul className="mt-4 max-w-[80%] list-disc text-base">
+          <ul className="mt-4 max-w-[80%] list-disc text-sm">
             <li>Thôn Trung Bạn, Thị Trấn Chờ, Yên Phong, Bắc Ninh</li>
             <li>
               Nghách 80/92 đường Xuân Phương, Phường Phương Canh, Quận Nam Từ
@@ -27,15 +29,12 @@ const FooterComponent = () => {
             </span>
             HỆ THỐNG - CHÍNH SÁCH
           </h1>
-          <ul className="mt-4 grid max-w-[80%] list-disc gap-y-3 text-base">
+          <ul className="mt-4 grid max-w-[80%] list-disc gap-y-3 text-sm">
             <li>Chính sách bảo hành</li>
-            <li>Chính sách vận chuyển</li>
             <li>Chính sách đổi trả hàng</li>
             <li>Chính sách bảo mật thông tin</li>
             <li>Hướng dẫn thanh toán</li>
             <li>Hướng dẫn mua hàng Online</li>
-            <li>Dịch vụ Ship COD Toàn quốc</li>
-            <li>Chính sách đại lý linh, phụ kiện</li>
           </ul>
         </div>
         <div className="col-span-1">
@@ -45,8 +44,22 @@ const FooterComponent = () => {
             </span>
             LIÊN HỆ
           </h1>
-          <ul className="mt-4 grid max-w-[80%] list-disc gap-y-3 text-base">
+          <ul className="mt-4 grid max-w-[80%] list-disc gap-y-3 text-sm">
             <li>Hotline CSKH: 0389389891</li>
+            <li className="flex">
+              <button className="min-w-30 mr-2 flex  items-center rounded-md border border-red-300 px-3 py-2 hover:border-red-600">
+                <span className="mr-2">
+                  <img src={google_logo} alt="icon" className="w-5" />
+                </span>
+                <span>Email</span>
+              </button>
+              <button className=" min-w-30 flex items-center rounded-md border border-blue-300 px-3 py-2 hover:border-blue-600">
+                <span className="mr-2">
+                  <img src={facebook_logo} alt="icon" className="w-5" />
+                </span>
+                <span>Facebook</span>
+              </button>
+            </li>
           </ul>
         </div>
       </div>

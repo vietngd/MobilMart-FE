@@ -1,12 +1,15 @@
 import { IoIosStar } from "react-icons/io";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Card = ({ card }) => {
   const imgs = card.images.split(",");
-
+  const navigate = useNavigate();
+  const handleNavigateDetailProduct = () => {
+    navigate(`/product/${card.id}`);
+  };
   return (
-    <Link className="card mb-4" to={`/product/${card.id}`}>
+    <div className="card mb-4" onClick={handleNavigateDetailProduct}>
       <div className="relative flex justify-center">
         <img src={imgs[0]} alt="product" className="h-[150px] max-w-full"></img>
         <span className="absolute bottom-0 left-0 rounded-r bg-black pr-1 text-xs text-white">
@@ -36,7 +39,7 @@ const Card = ({ card }) => {
           <span className="text-sm opacity-80">(20 Đánh giá)</span>
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

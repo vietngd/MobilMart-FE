@@ -16,8 +16,8 @@ const ProfilePage = () => {
   const [phone, setPhone] = useState(user.phone);
   const [message, setMessage] = useState("");
 
-  const mutation = useMutationHook(async (data) => {
-    const res = await UserServices.updateUser(data);
+  const mutation = useMutationHook(async ({ access_token, ...rest }) => {
+    const res = await UserServices.updateUser(rest, access_token);
     return res;
   });
   const dispatch = useDispatch();
@@ -50,7 +50,10 @@ const ProfilePage = () => {
       phone: phone !== null ? phone : " ",
     };
 
-    const res = await mutation.mutateAsync(data);
+    const res = await mutation.mutateAsync({
+      ...data,
+      access_token: user?.access_token,
+    });
     setMessage(res?.message);
   };
 

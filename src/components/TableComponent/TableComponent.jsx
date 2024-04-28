@@ -6,8 +6,8 @@ const paginationConfig = {
 };
 
 const TableComponent = (props) => {
-  const { products = [], columms = [], isLoading = false } = props;
-  const data = products.map((product) => {
+  const { dataProp = [], columms = [], isLoading = false } = props;
+  const data = dataProp.map((product) => {
     return {
       ...product,
       key: product.id,
