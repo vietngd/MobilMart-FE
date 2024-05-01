@@ -9,36 +9,36 @@ const WarrantyComponent = () => {
         <ul>
           <li className="flex text-xs">
             <span className="mr-1">
-              <IoIosCheckmarkCircle size={"1.4rem"} color="#0A9EFF" />
+              <IoIosCheckmarkCircle size={"1.4rem"} color="#2c84ff" />
             </span>
             <span>
               <span className="text-green-400">
                 Bảo hành chính hãng 12 tháng
               </span>{" "}
-              <span className="text-primary"> ( Miễn phí )</span> : Bảo hành sửa
+              <span className="text-red-600"> ( Miễn phí )</span> : Bảo hành sửa
               chữa thay thế linh kiện tại các trung tâm bảo hành chính hãng
               Samsung. Bao test đổi sản phẩm lỗi 30 ngày.
             </span>
           </li>
           <li className="flex text-xs">
             <span className="mr-1">
-              <IoIosCheckmarkCircle size={"1.4rem"} color="#0A9EFF" />
+              <IoIosCheckmarkCircle size={"1.4rem"} color="#2c84ff" />
             </span>
             <span>
               <span className="text-green-400">
                 Bảo hành rơi vỡ, vào nước 12 tháng
               </span>{" "}
-              <span className="text-primary"> ( Miễn phí )</span>: Hỗ trợ khắc
+              <span className="text-red-600"> ( Miễn phí )</span>: Hỗ trợ khắc
               phục miễn phí các lỗi rơi vỡ, vào nước 12 tháng.
             </span>
           </li>
           <li className="flex text-xs">
             <span className="mr-1">
-              <IoIosCheckmarkCircle size={"1.4rem"} color="#0A9EFF" />
+              <IoIosCheckmarkCircle size={"1.4rem"} color="#2c84ff" />
             </span>
             <span>
               <span className="text-green-400">Gia hạn bảo hành 24 tháng</span>{" "}
-              <span className="text-primary"> ( Miễn phí )</span>: Năm đầu bảo
+              <span className="text-red-600"> ( Miễn phí )</span>: Năm đầu bảo
               hành chính hãng, năm 2 bảo hành toàn bộ lỗi phần cứng, nguồn, màn
               hình... tại MobileMart.
             </span>
@@ -49,11 +49,11 @@ const WarrantyComponent = () => {
       <div className="rounded-md border p-3">
         <div className="flex">
           <span className="mr-1">
-            <FaMapMarked color="#0A9EFF" />
+            <FaMapMarked color="#2c84ff" />
           </span>
           <span className="text-xs">
             Thôn Trung Bạn- Thị Trấn Chờ - Yên Phong - Bắc Ninh :{" "}
-            <span className="text-primary">0389389891</span>
+            <span className="text-red-600">0389389891</span>
           </span>
         </div>
       </div>

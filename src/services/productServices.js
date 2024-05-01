@@ -1,22 +1,32 @@
 import axios from "axios";
 import { axiosJWT } from "./userServices";
 
-const getAllProduct = async () => {
+const getAllProduct = async (productName) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  let params = { page: 1, pageSize: 20 };
+  if (productName) {
+    params.productName = productName;
+  }
 
   try {
     const response = await axios.get(`${baseUrl}/product/getAll`, {
-      params: { page: 1, pageSize: 20 },
+      params: params,
     });
     return response.data;
   } catch (err) {
     console.log(err);
   }
 };
-const getProductByCategory = async (categoryId) => {
+const getProductByCategory = async (categoryId, pageSize) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  let params = { page: 1, pageSize };
   try {
-    const response = await axios.get(`${baseUrl}/product/getAll/${categoryId}`);
+    const response = await axios.get(
+      `${baseUrl}/product/getAll/${categoryId}`,
+      {
+        params: params,
+      },
+    );
     return response.data;
   } catch (err) {
     console.log(err);

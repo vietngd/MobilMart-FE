@@ -14,6 +14,7 @@ const SliderComponent = ({ sliders }) => {
         }}
         autoplay={{ delay: 2000 }}
         modules={[Pagination, Autoplay]}
+        // style={{ width: "600px", height: "400px" }}
       >
         {sliders.map((slider, index) => {
           return (

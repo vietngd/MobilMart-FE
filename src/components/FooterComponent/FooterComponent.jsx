@@ -5,7 +5,7 @@ import google_logo from "../../assets/images/Google-icon.png";
 
 const FooterComponent = () => {
   return (
-    <div className=" mt-5 flex items-center justify-center bg-[#fafafa] ">
+    <div className=" mt-10 flex items-center justify-center bg-[#fafafa] ">
       <div className="grid h-full w-full max-w-screen-xl grid-cols-3 py-5">
         <div className="col-span-1">
           <h1 className="flex items-center font-semibold">

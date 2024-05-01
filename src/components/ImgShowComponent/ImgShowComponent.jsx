@@ -35,7 +35,7 @@ const ImgShowComponent = ({ imgs }) => {
         >
           {imgs?.map((item, index) => {
             return (
-              <SwiperSlide className=" border p-1" key={index}>
+              <SwiperSlide className=" cursor-pointer border p-1" key={index}>
                 <img
                   src={item}
                   alt=""

@@ -37,6 +37,10 @@ html {
   .card_title {
     @apply rounded-xl bg-gradient-to-r from-black to-gray-600 px-20 py-2 font-semibold text-white;
   }
+
+  .absolute_center {
+    @apply absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-white;
+  }
 }
 
 .shawdow-custom {

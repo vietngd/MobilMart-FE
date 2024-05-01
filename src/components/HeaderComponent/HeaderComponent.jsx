@@ -8,14 +8,18 @@ import { Popover } from "antd";
 import { resetUser } from "../../redux/slides/userSlice.js";
 import { useEffect, useState } from "react";
 import Loading from "../Loading/LoadingComponent.jsx";
+import { getAllProduct } from "../../services/productServices.js";
+import logo from "../../assets/images/logo-2.png";
+import useDebounce from "../../hooks/useDebounce.js";
 
 const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
   const navigate = useNavigate();
   const disPatch = useDispatch();
   const [userName, setUserName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
-
   const [isLoading, setLoading] = useState(false);
+  const [isSearchText, setIsSearchText] = useState("");
+  const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -34,6 +38,12 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
     navigate("/admin");
   };
 
+  const handleNavigateDetailProduct = (id) => {
+    setIsSearchText("");
+    navigate(`/product/${id}`);
+    window.location.reload();
+  };
+
   const handleLogout = async () => {
     setLoading(true);
     await UserServices.logoutUser();
@@ -42,6 +52,21 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
     setLoading(false);
     navigate("/");
   };
+
+  const onchangeSearch = (e) => {
+    setIsSearchText(e.target.value);
+  };
+
+  const searchText = useDebounce(isSearchText, 500); // Hạn chế số lần gọi request khi người dùng chưa nhập xong
+  useEffect(() => {
+    fetchProduct(searchText);
+  }, [searchText]);
+
+  const fetchProduct = async (isSearchText) => {
+    const res = await getAllProduct(isSearchText);
+    setProducts(res?.data);
+  };
+
   const content = (
     <>
       <div className="cursor-pointer">
@@ -76,7 +101,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
             className="flex items-center font-bold text-white hover:text-white"
           >
             <img
-              src="./src/assets/images/logo-2.png"
+              src={logo}
               alt="logo"
               className="h-[65px] cursor-pointer brightness-0 invert"
             />
@@ -84,14 +109,59 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
           </Link>
 
           {!isHidenSearch && (
-            <div className="flex grow items-center justify-center">
+            <div className="relative flex grow items-center justify-center">
               <input
                 placeholder="Tìm kiếm sản phẩm ..."
                 className="search-input"
+                value={isSearchText}
+                onChange={(e) => onchangeSearch(e)}
               ></input>
               <button className="block h-10 rounded-r-lg bg-white px-3 text-xl leading-[100%] text-gray-500">
                 <IoMdSearch className="text-primary" />
               </button>
+
+              {/* Search Result */}
+
+              {isSearchText && (
+                <div className="absolute left-1/2  top-[110%] flex w-[429px] -translate-x-1/2 items-center overflow-hidden rounded-md bg-white">
+                  <ul className="w-full ">
+                    {products?.slice(0, 10).map((item, index) => {
+                      return (
+                        <li
+                          className="flex cursor-pointer border-b px-2 py-1 hover:bg-[#F3F3F3]"
+                          key={index}
+                          onClick={() => handleNavigateDetailProduct(item?.id)}
+                        >
+                          <img
+                            src={item?.images.split(",")[0]}
+                            alt="img"
+                            className="mr-2 w-14 object-cover"
+                          ></img>
+                          <div className="flex-1">
+                            <p className="font-thin text-[#505050] ">
+                              {item?.name}
+                            </p>
+                            <span className="text-xs">
+                              <span className="mr-1 text-primary">
+                                {item?.sale.toLocaleString("vi", {
+                                  style: "currency",
+                                  currency: "VND",
+                                })}
+                              </span>
+                              <span className="line-through">
+                                {item?.price.toLocaleString("vi", {
+                                  style: "currency",
+                                  currency: "VND",
+                                })}
+                              </span>
+                            </span>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
 
@@ -106,7 +176,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
               {user?.access_token ? (
                 <Popover content={content} trigger="hover">
                   <button
-                    className="btn flex flex-col justify-center rounded-lg bg-[#ffffff33]"
+                    className="btn ml-2 flex flex-col justify-center rounded-lg bg-[#ffffff33]"
                     onClick={handleNavigateLogin}
                     disabled
                   >
@@ -123,7 +193,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
                 </Popover>
               ) : (
                 <button
-                  className="btn flex flex-col justify-center rounded-lg bg-[#ffffff33]"
+                  className="btn ml-2 flex flex-col justify-center rounded-lg bg-[#ffffff33]"
                   onClick={handleNavigateLogin}
                 >
                   <FaRegUserCircle size={"1.125rem"} />

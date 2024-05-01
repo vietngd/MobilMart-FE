@@ -15,18 +15,26 @@ const Card = ({ card }) => {
         <span className="absolute bottom-0 left-0 rounded-r bg-black pr-1 text-xs text-white">
           Miễn phí ship
         </span>
-        <span className="absolute bottom-5 left-0 rounded-r bg-primary pr-1 text-xs text-white">
+        <span className="absolute bottom-5 left-0 rounded-r bg-red-700 pr-1 text-xs text-white">
           Trả góp 0%
         </span>
       </div>
       <div className="cart_body grid gap-y-3 px-3 py-3">
-        <div className="title font-bold hover:text-primary">{card.name}</div>
+        <div className="title h-16 font-bold hover:text-primary">
+          {card.name}
+        </div>
         <div className="price">
-          <span className="new_price mr-6 text-sm font-semibold text-primary">
-            {card.sale}
+          <span className="new_price mr-6 text-sm font-semibold text-red-700">
+            {card.sale.toLocaleString("vi", {
+              style: "currency",
+              currency: "VND",
+            })}
           </span>
           <span className="old_price text-xs font-thin text-[#D3CED2] line-through">
-            {card.price}
+            {card.price.toLocaleString("vi", {
+              style: "currency",
+              currency: "VND",
+            })}
           </span>
         </div>
         <div className="flex">

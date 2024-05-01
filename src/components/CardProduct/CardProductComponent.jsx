@@ -2,31 +2,50 @@ import Card from "./Card.jsx";
 import CardProductHeader from "./CardProductHeader.jsx";
 import { useQuery } from "@tanstack/react-query";
 import * as Productservices from "../../services/productServices.js";
+import { useState } from "react";
+import Loading from "../Loading/LoadingComponent.jsx";
 
 //Component cha
 const CardProductComponent = (props) => {
+  const [pageSize, setPageSize] = useState(5);
   const { name, id } = props.data;
-  const fetchProductByCategory = async (categoryId) => {
-    const res = await Productservices.getProductByCategory(categoryId);
+  const fetchProductByCategory = async (context) => {
+    const pageSize = context?.queryKey[2]; //context là thứ mà useQuery trả về trong đó có queryKey
+    const res = await Productservices.getProductByCategory(id, pageSize);
     return res;
   };
-  const { data } = useQuery({
-    queryKey: ["productsByCategory", id], //Nếu không có id đằng sau thì React Query chỉ xem xét một cache key duy nhất và chỉ gọi hàm fetchProductByCategory một lần.
-    queryFn: () => fetchProductByCategory(id),
+  const { data, isLoading } = useQuery({
+    queryKey: ["productsByCategory", id, pageSize], //Nếu không có id đằng sau thì React Query chỉ xem xét một cache key duy nhất và chỉ gọi hàm fetchProductByCategory một lần.
+    queryFn: fetchProductByCategory,
     retry: 3,
     retryDelay: 1000,
   });
+
+  const handleLoadMore = () => {
+    setPageSize((prevLimit) => prevLimit + 5);
+  };
+
   return (
-    <>
-      <div className="mb-5 mt-5">
-        <CardProductHeader title={name} />
+    <Loading isLoading={isLoading}>
+      <div className="relative">
+        <div className="mb-5 mt-10">
+          <CardProductHeader title={name} />
+        </div>
+        <div className="grid grid-cols-5 gap-x-3">
+          {data?.Products.map((item, index) => {
+            return <Card key={index} card={item} />;
+          })}
+        </div>
+
+        <button
+          className="absolute_center"
+          onClick={handleLoadMore}
+          disabled={data?.Products.length === data?.pagination.totalCount}
+        >
+          Xem thêm điện thoại
+        </button>
       </div>
-      <div className="grid grid-cols-5 gap-x-3">
-        {data?.Products.map((item, index) => {
-          return <Card key={index} card={item} />;
-        })}
-      </div>
-    </>
+    </Loading>
   );
 };
 

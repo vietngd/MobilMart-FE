@@ -3,7 +3,7 @@ import { FaGift, FaCheck } from "react-icons/fa";
 const PromotionComponent = () => {
   return (
     <div className="col-span-2 rounded-md border p-2">
-      <div className="mb-3 flex items-center justify-center rounded-md bg-[#FEE2E2] py-2 text-lg text-primary">
+      <div className="mb-3 flex items-center justify-center rounded-md bg-primary py-2 text-lg text-white">
         <span className="mr-2">
           <FaGift />
         </span>
@@ -45,18 +45,6 @@ const PromotionComponent = () => {
             <FaCheck />
           </div>
           Ưu đãi mua Combo phụ kiện giá cực sốc tiết kiệm đến 300.000đ
-        </li>
-        <li className="mb-2 flex items-center  text-sm">
-          <div className="mr-2 text-xs text-primary">
-            <FaCheck />
-          </div>
-          Giảm thêm 100.000đ khi mua kèm iPad
-        </li>
-        <li className="mb-2 flex items-center text-sm">
-          <div className="mr-2 text-xs text-primary">
-            <FaCheck />
-          </div>
-          Giảm thêm 100.000đ khi mua kèm Apple Watch
         </li>
       </ul>
     </div>
