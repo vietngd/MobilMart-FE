@@ -5,7 +5,9 @@ import { Fragment, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import * as UserServices from "./services/userServices.js";
+import * as CategoryServices from "./services/categoryServices.js";
 import { updateUser } from "./redux/slides/userSlice.js";
+import { updateCategory } from "./redux/slides/categorySlice.js";
 import Loading from "./components/Loading/LoadingComponent.jsx";
 
 function App() {
@@ -19,6 +21,7 @@ function App() {
     if (decoded?.id) {
       handleGetDetailUser(decoded.id, accessToken);
     }
+    handleGetCategories();
     setIsLoading(false);
   }, []);
   const handleDecoded = () => {
@@ -55,6 +58,11 @@ function App() {
   const handleGetDetailUser = async (id, token) => {
     const res = await UserServices.getDetailUser(id, token);
     dispatch(updateUser({ ...res?.data, access_token: token }));
+  };
+
+  const handleGetCategories = async () => {
+    const res = await CategoryServices.getAllCategory();
+    dispatch(updateCategory(res?.categories));
   };
   return (
     <>

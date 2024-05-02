@@ -30,7 +30,7 @@ const HomePage = () => {
   return (
     <>
       <div>
-        <CategoryComponent />
+        <CategoryComponent categories={data} />
         <SliderComponent sliders={sliders} />
       </div>
       {data?.categories.map((item, index) => {

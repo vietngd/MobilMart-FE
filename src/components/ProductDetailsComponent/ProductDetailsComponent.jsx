@@ -4,16 +4,18 @@ import { IoIosStar } from "react-icons/io";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import WarrantyComponent from "../WarrantyComponent/WarrantyComponent";
 import * as Productservices from "../../services/productServices.js";
-
+import * as CategoryServices from "../../services/categoryServices.js";
 import Loading from "../Loading/LoadingComponent.jsx";
 import { useQuery } from "@tanstack/react-query";
+import Breadcrumb from "../Breadcrumb/Breadcrumb.jsx";
+import { useEffect, useState } from "react";
 
 const ProductDetailsComponent = ({ idProduct }) => {
+  const [categoryName, setCategoryName] = useState("");
   const fetchProduct = async () => {
     const res = await Productservices.getDetailProduct(idProduct);
     return res;
   };
-
   const queryProduct = useQuery({
     queryKey: ["productDetail"],
     queryFn: () => fetchProduct(idProduct),
@@ -29,11 +31,32 @@ const ProductDetailsComponent = ({ idProduct }) => {
 
   const productConfig = product && JSON.parse(product?.data[0]?.configuration);
 
+  const fetchCategory = async () => {
+    const categoryId = product.data[0].category_id;
+    const res = await CategoryServices.getCategory(categoryId);
+    return res;
+  };
+
+  useEffect(() => {
+    async function fetchCate() {
+      const res = await fetchCategory();
+      setCategoryName(res.category[0].name);
+    }
+    if (product) fetchCate();
+  }, [product]);
+
+  const paths = [
+    { name: "Home", url: "/" },
+    { name: categoryName, url: `/products/${categoryName}` },
+    { name: product?.data[0].name },
+  ];
+
   return (
     <>
       <Loading isLoading={isLoading}>
+        <Breadcrumb paths={paths} />
         <div className="my-5 flex justify-between">
-          <span className="text-2xl font-bold ">{product?.data[0].name}</span>
+          <span className="text-2xl ">{product?.data[0].name}</span>
           <div className="flex items-center">
             <span className="mr-2 flex items-center text-primary">
               <IoIosStar />
@@ -58,7 +81,6 @@ const ProductDetailsComponent = ({ idProduct }) => {
             <WarrantyComponent />
           </div>
         </div>
-
         <div className="mt-5 grid grid-cols-4 gap-x-4">
           <div className="col-span-3">Các bài post</div>
           <div className="col-span-1 rounded-md border p-2">

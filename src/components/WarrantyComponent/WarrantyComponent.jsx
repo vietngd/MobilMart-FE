@@ -5,7 +5,7 @@ const WarrantyComponent = () => {
   return (
     <div>
       <div className="mb-4 rounded-md border p-3">
-        <h3 className="mb-1 font-semibold">Chính sách bảo hành</h3>
+        <h3 className="mb-1">Chính sách bảo hành</h3>
         <ul>
           <li className="flex text-xs">
             <span className="mr-1">

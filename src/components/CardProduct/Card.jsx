@@ -3,7 +3,6 @@ import { FaRegStarHalfStroke } from "react-icons/fa6";
 
 const Card = ({ card }) => {
   const imgs = card.images.split(",");
-
   return (
     <a href={`/product/${card.id}`}>
       <div className="card mb-4">

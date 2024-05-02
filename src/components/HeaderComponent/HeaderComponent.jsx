@@ -142,7 +142,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
                               {item?.name}
                             </p>
                             <span className="text-xs">
-                              <span className="mr-1 text-primary">
+                              <span className="mr-1 text-red-600">
                                 {item?.sale.toLocaleString("vi", {
                                   style: "currency",
                                   currency: "VND",

@@ -3,7 +3,8 @@ import AdminPage from "../pages/adminPage/AdminPage";
 import CartPage from "../pages/cartPage/cartPage";
 import HomePage from "../pages/homePage/homePage";
 import NotFoundPage from "../pages/notFoundPage/notFoundPage";
-import ProductPage from "../pages/productPage/productPage";
+import ProductDetailPage from "../pages/productDetailPage/productDetailPage";
+import productPage from "../pages/productPage/ProductPage";
 import ProfilePage from "../pages/profile/ProfilePage";
 
 const Routes = [
@@ -14,7 +15,12 @@ const Routes = [
   },
   {
     path: "/product/:id",
-    page: ProductPage,
+    page: ProductDetailPage,
+    isShowHeader: true,
+  },
+  {
+    path: "/product/category/:name",
+    page: productPage,
     isShowHeader: true,
   },
   {
