@@ -4,11 +4,7 @@ import { useParams } from "react-router-dom";
 const ProductPage = () => {
   const { id } = useParams();
 
-  return (
-    <div className="m-auto max-w-screen-xl pt-[65px]">
-      <ProductDetailsComponent idProduct={id} />
-    </div>
-  );
+  return <ProductDetailsComponent idProduct={id} />;
 };
 
 export default ProductPage;

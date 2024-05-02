@@ -1,9 +1,5 @@
-
-
 const CartPage = () => {
-  return (
-    <div>cartPage</div>
-  )
-}
+  return <div className="h-screen">cartPage</div>;
+};
 
-export default CartPage
+export default CartPage;

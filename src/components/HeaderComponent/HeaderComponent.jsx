@@ -1,7 +1,7 @@
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { IoMdSearch } from "react-icons/io";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as UserServices from "../../services/userServices.js";
 import { Popover } from "antd";
@@ -96,8 +96,8 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
               : "flex items-center justify-between"
           }
         >
-          <Link
-            to={"/"}
+          <a
+            href={"/"}
             className="flex items-center font-bold text-white hover:text-white"
           >
             <img
@@ -106,7 +106,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
               className="h-[65px] cursor-pointer brightness-0 invert"
             />
             MOBILEMART
-          </Link>
+          </a>
 
           {!isHidenSearch && (
             <div className="relative flex grow items-center justify-center">
@@ -166,10 +166,12 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
           )}
 
           {!isHidenCart && (
-            <div className=" flex h-12 cursor-pointer items-center gap-x-1 rounded-lg p-2 text-white hover:bg-[#ffffff33]">
-              <IoBagHandleOutline size={"1.5rem"} />{" "}
-              <span className="text-sm">Giỏ hàng</span>
-            </div>
+            <a href="/cart">
+              <div className=" flex h-12 cursor-pointer items-center gap-x-1 rounded-lg p-2 text-white hover:bg-[#ffffff33]">
+                <IoBagHandleOutline size={"1.5rem"} />{" "}
+                <span className="text-sm">Giỏ hàng</span>
+              </div>
+            </a>
           )}
           <Loading isLoading={isLoading}>
             <div className="flex gap-x-2">

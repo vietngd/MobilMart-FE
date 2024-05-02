@@ -11,7 +11,7 @@ export default {
         primary: "#978535",
         main: "bg-red-50",
         category_hover: "#f5f5f5",
-        blue: "#2c84ff",
+        blue: "#5d83db",
       },
     },
   },

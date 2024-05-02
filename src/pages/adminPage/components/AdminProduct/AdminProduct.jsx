@@ -378,13 +378,13 @@ const AdminProduct = () => {
       render: () => (
         <Space size="middle">
           <button
-            className="rounded border border-blue-500 px-2 py-1"
+            className="border-blue rounded border px-2 py-1"
             onClick={handleDetailProduct}
           >
             Edit
           </button>
           <button
-            className="rounded border border-primary px-2 py-1"
+            className="rounded border border-red-600 px-2 py-1"
             onClick={() => setIsModalOpenDelete(true)}
           >
             Delete

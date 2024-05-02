@@ -68,7 +68,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="m-auto max-w-screen-xl pt-[70px]">
+    <div className="m-auto max-w-screen-xl">
       <h1 className=" text-center text-2xl font-semibold">
         Thông tin người dùng
       </h1>

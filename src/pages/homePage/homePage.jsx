@@ -29,15 +29,13 @@ const HomePage = () => {
   const sliders = [slider1, slider2, slider3, slider4, slider5];
   return (
     <>
-      <div className="m-auto max-w-screen-xl">
-        <div className="grid grid-cols-5 gap-4">
-          <CategoryComponent />
-          <SliderComponent sliders={sliders} />
-        </div>
-        {data?.categories.map((item, index) => {
-          return <CardProductComponent data={item} key={index} />;
-        })}
+      <div>
+        <CategoryComponent />
+        <SliderComponent sliders={sliders} />
       </div>
+      {data?.categories.map((item, index) => {
+        return <CardProductComponent data={item} key={index} />;
+      })}
     </>
   );
 };

@@ -38,7 +38,11 @@ const CardProductComponent = (props) => {
         </div>
 
         <button
-          className="absolute_center"
+          className={
+            data?.Products.length === data?.pagination.totalCount
+              ? "absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300"
+              : "absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-white"
+          }
           onClick={handleLoadMore}
           disabled={data?.Products.length === data?.pagination.totalCount}
         >
