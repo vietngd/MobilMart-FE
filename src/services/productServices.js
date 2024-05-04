@@ -17,9 +17,14 @@ const getAllProduct = async (productName) => {
     console.log(err);
   }
 };
-const getProductByCategory = async (categoryId, pageSize) => {
+const getProductByCategory = async ({
+  categoryId,
+  pageSize,
+  sortField = "sale",
+  sortOrder,
+}) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
-  let params = { page: 1, pageSize };
+  let params = { page: 1, pageSize, sortField, sortOrder };
   try {
     const response = await axios.get(
       `${baseUrl}/product/getAll/${categoryId}`,

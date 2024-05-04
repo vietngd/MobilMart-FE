@@ -1,10 +1,11 @@
 import { IoIosStar } from "react-icons/io";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const Card = ({ card }) => {
   const imgs = card.images.split(",");
   return (
-    <a href={`/product/${card.id}`}>
+    <Link to={`/product/${card.id}`}>
       <div className="card mb-4">
         <div className="relative flex justify-center">
           <img
@@ -48,7 +49,7 @@ const Card = ({ card }) => {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 

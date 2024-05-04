@@ -11,7 +11,8 @@ const CardProductComponent = (props) => {
   const { name, id } = props.data;
   const fetchProductByCategory = async (context) => {
     const pageSize = context?.queryKey[2]; //context là thứ mà useQuery trả về trong đó có queryKey
-    const res = await Productservices.getProductByCategory(id, pageSize);
+    const params = { categoryId: id, pageSize };
+    const res = await Productservices.getProductByCategory(params);
     return res;
   };
   const { data, isLoading } = useQuery({

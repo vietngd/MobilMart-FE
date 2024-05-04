@@ -10,7 +10,7 @@ const CategoryItem = ({
 }) => {
   const navigate = useNavigate();
   const handleNavigateProductPage = () => {
-    id && navigate(`/product/category/${name}`, { state: id });
+    id && navigate(`/product/category/${id}`, { state: name });
   };
   return (
     <li

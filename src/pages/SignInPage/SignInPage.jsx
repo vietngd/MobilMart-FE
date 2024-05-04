@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import logo from "../../assets/images/logo-2.png";
 import google_logo from "../../assets/images/Google-icon.png";
 import facebook_logo from "../../assets/images/facebook-icon.png";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import InputFormComponent from "../../components/InputFormComponent/InputFormComponent";
 import * as UserServices from "../../services/userServices.js";
 import { useMutationHook } from "../../hooks/userMutationHook.js";
@@ -11,11 +11,11 @@ import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/slides/userSlice.js";
 
 const SignInPage = () => {
+  const location = useLocation();
   const [IsLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -39,8 +39,14 @@ const SignInPage = () => {
 
   useEffect(() => {
     if (IsLogin & isSuccess && data?.status === "OK") {
+      if (location?.state) {
+        navigate(location?.state);
+      } else {
+        navigate("/");
+      }
+
       localStorage.setItem("access_token", JSON.stringify(data?.access_token));
-      navigate("/");
+
       if (data?.access_token) {
         const decoded = jwtDecode(data?.access_token);
         if (decoded?.id) {
@@ -179,7 +185,7 @@ const SignInPage = () => {
                       </span>
                       <span>Google</span>
                     </button>
-                    <button className=" min-w-30 flex items-center rounded-md border border-blue-300 px-3 py-2 hover:border-blue-600">
+                    <button className=" min-w-30 border-blue-300 hover:border-blue-600 flex items-center rounded-md border px-3 py-2">
                       <span className="mr-2">
                         <img src={facebook_logo} alt="icon" className="w-5" />
                       </span>

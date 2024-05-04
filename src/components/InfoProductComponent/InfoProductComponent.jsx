@@ -2,16 +2,22 @@ import { CiDeliveryTruck } from "react-icons/ci";
 import PromotionComponent from "../PromotionComponent/PromotionComponent";
 import ProductActionComponent from "../ProductActionComponent/ProductActionComponent";
 
-const InfoProductComponent = ({ sale = "", price = "" }) => {
+const InfoProductComponent = ({ product }) => {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center">
           <span className="mr-2 text-2xl font-bold text-red-700 ">
-            {sale.toLocaleString("vi", { style: "currency", currency: "VND" })}
+            {product?.sale.toLocaleString("vi", {
+              style: "currency",
+              currency: "VND",
+            })}
           </span>
           <span className="mr-2 text-base line-through">
-            {price.toLocaleString("vi", { style: "currency", currency: "VND" })}
+            {product?.price.toLocaleString("vi", {
+              style: "currency",
+              currency: "VND",
+            })}
           </span>
         </div>
         <div>
@@ -27,7 +33,7 @@ const InfoProductComponent = ({ sale = "", price = "" }) => {
 
       <div className="grid grid-cols-3 gap-x-1">
         <PromotionComponent />
-        <ProductActionComponent />
+        <ProductActionComponent product={product} />
       </div>
     </div>
   );

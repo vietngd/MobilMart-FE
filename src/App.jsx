@@ -64,6 +64,7 @@ function App() {
     const res = await CategoryServices.getAllCategory();
     dispatch(updateCategory(res?.categories));
   };
+
   return (
     <>
       <Loading isLoading={isLoading}>

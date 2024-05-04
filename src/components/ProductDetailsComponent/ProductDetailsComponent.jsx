@@ -12,13 +12,14 @@ import { useEffect, useState } from "react";
 
 const ProductDetailsComponent = ({ idProduct }) => {
   const [categoryName, setCategoryName] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const fetchProduct = async () => {
     const res = await Productservices.getDetailProduct(idProduct);
     return res;
   };
   const queryProduct = useQuery({
-    queryKey: ["productDetail"],
-    queryFn: () => fetchProduct(idProduct),
+    queryKey: ["productDetail", idProduct],
+    queryFn: fetchProduct,
     retry: 3,
     retryDelay: 1000,
     onError: (error) => {
@@ -41,20 +42,22 @@ const ProductDetailsComponent = ({ idProduct }) => {
     async function fetchCate() {
       const res = await fetchCategory();
       setCategoryName(res.category[0].name);
+      setCategoryId(res.category[0].id);
     }
     if (product) fetchCate();
-  }, [product]);
+  }, [product, idProduct]);
 
   const paths = [
     { name: "Home", url: "/" },
-    { name: categoryName, url: `/products/${categoryName}` },
+    { name: categoryName, url: `/product/category/${categoryId}` },
     { name: product?.data[0].name },
   ];
 
   return (
     <>
       <Loading isLoading={isLoading}>
-        <Breadcrumb paths={paths} />
+        <Breadcrumb paths={paths} categoryName={categoryName} />
+        {/* Header */}
         <div className="my-5 flex justify-between">
           <span className="text-2xl ">{product?.data[0].name}</span>
           <div className="flex items-center">
@@ -67,20 +70,20 @@ const ProductDetailsComponent = ({ idProduct }) => {
             <span className="text-sm opacity-80">(200 Đánh giá)</span>
           </div>
         </div>
+
         <div className="grid grid-cols-9 gap-x-4">
           <div className="col-span-3">
             <ImgShowComponent imgs={product?.data[0]?.images.split(",")} />
           </div>
           <div className="col-span-4">
-            <InfoProductComponent
-              sale={product?.data[0]?.sale}
-              price={product?.data[0]?.price}
-            />
+            <InfoProductComponent product={product?.data[0]} />
           </div>
           <div className="col-span-2">
             <WarrantyComponent />
           </div>
         </div>
+
+        {/* Cấu hình điện thoại */}
         <div className="mt-5 grid grid-cols-4 gap-x-4">
           <div className="col-span-3">Các bài post</div>
           <div className="col-span-1 rounded-md border p-2">

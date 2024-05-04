@@ -3,31 +3,55 @@ import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
 import * as ProductServices from "../../services/productServices.js";
 import { useEffect, useState } from "react";
 import Card from "../../components/CardProduct/Card";
+import { IoMdArrowDropdownCircle } from "react-icons/io";
+import { Popover } from "antd";
 
 const productPage = () => {
   const location = useLocation();
-  const params = useParams();
+  const { id } = useParams();
   const [products, setProducts] = useState([]);
-
-  const paths = [{ name: "Home", url: "/" }, { name: params?.name }];
+  const [sortOrder, setSortOrder] = useState("ASC");
 
   const fetchProducts = async () => {
-    const categoryId = location.state;
-    const res = await ProductServices.getProductByCategory(categoryId);
+    const params = { categoryId: id, sortOrder: sortOrder };
+    const res = await ProductServices.getProductByCategory(params);
     setProducts(res.Products);
     return res;
   };
 
   useEffect(() => {
-    if (location) fetchProducts();
-  }, [location]);
+    fetchProducts();
+  }, [sortOrder]);
+
+  const paths = [{ name: "Home", url: "/" }, { name: location.state }];
+
+  const content = (
+    <>
+      <div className="cursor-pointer">
+        <p className="hover:text-primary" onClick={() => setSortOrder("DESC")}>
+          Giá cao đến thấp
+        </p>
+        <p className="hover:text-primary" onClick={() => setSortOrder("ASC")}>
+          Giá thấp đến cao
+        </p>
+      </div>
+    </>
+  );
 
   return (
     <div>
       <Breadcrumb paths={paths} />
 
       <div className="mt-5">
-        <h2>Sắp xếp theo</h2>
+        <div className="flex justify-end py-2">
+          <Popover content={content} trigger="hover" placement="bottom">
+            <div className="flex cursor-pointer items-center">
+              <span className="mr-1">Sắp xếp theo</span>
+              <IoMdArrowDropdownCircle color="gray" />
+            </div>
+          </Popover>
+        </div>
+
         <div className="mt-4 grid grid-cols-5 gap-x-3">
           {products?.map((product, index) => {
             return <Card key={index} card={product} />;

@@ -1,7 +1,13 @@
 import { FaAngleRight } from "react-icons/fa6";
 import { IoMdHome } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
-const Breadcrumb = ({ paths }) => {
+const Breadcrumb = ({ paths, categoryName = "" }) => {
+  const navigate = useNavigate();
+
+  const handleNaviagte = (path) => {
+    navigate(`${path}`, { state: categoryName });
+  };
   return (
     <nav
       aria-label="breadcrumb"
@@ -14,16 +20,16 @@ const Breadcrumb = ({ paths }) => {
             {index === paths.length - 1 ? (
               <span>{path.name}</span>
             ) : (
-              <a
-                href={path.url}
-                className="flex items-center hover:text-primary"
+              <span
+                className="flex cursor-pointer items-center  hover:text-primary"
+                onClick={() => handleNaviagte(path.url)}
               >
                 {index === 0 && <IoMdHome style={{ marginRight: "8px" }} />}
                 {path.name}{" "}
                 <span className="ml-2">
                   <FaAngleRight />
                 </span>
-              </a>
+              </span>
             )}
           </li>
         ))}

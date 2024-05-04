@@ -1,7 +1,7 @@
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoBagHandleOutline } from "react-icons/io5";
 import { IoMdSearch } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as UserServices from "../../services/userServices.js";
 import { Popover } from "antd";
@@ -21,6 +21,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
   const [isSearchText, setIsSearchText] = useState("");
   const [products, setProducts] = useState([]);
   const user = useSelector((state) => state.user);
+  const order = useSelector((state) => state.order);
 
   useEffect(() => {
     setUserName(user?.name);
@@ -41,7 +42,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
   const handleNavigateDetailProduct = (id) => {
     setIsSearchText("");
     navigate(`/product/${id}`);
-    window.location.reload();
+    // window.location.reload();
   };
 
   const handleLogout = async () => {
@@ -96,8 +97,8 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
               : "flex items-center justify-between"
           }
         >
-          <a
-            href={"/"}
+          <Link
+            to={"/"}
             className="flex items-center font-bold text-white hover:text-white"
           >
             <img
@@ -106,7 +107,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
               className="h-[65px] cursor-pointer brightness-0 invert"
             />
             MOBILEMART
-          </a>
+          </Link>
 
           {!isHidenSearch && (
             <div className="relative flex grow items-center justify-center">
@@ -166,12 +167,17 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
           )}
 
           {!isHidenCart && (
-            <a href="/cart">
-              <div className=" flex h-12 cursor-pointer items-center gap-x-1 rounded-lg p-2 text-white hover:bg-[#ffffff33]">
-                <IoBagHandleOutline size={"1.5rem"} />{" "}
-                <span className="text-sm">Giỏ hàng</span>
+            <Link to="/cart" className="relative">
+              <div className="h-12 cursor-pointer rounded-lg p-2 text-white hover:bg-[#ffffff33]">
+                <IoBagHandleOutline size={"2.2rem"} />
               </div>
-            </a>
+
+              {order?.orderItems.length > 0 && (
+                <span className="absolute top-0 h-6 w-6 rounded-full border bg-red-600 text-center text-white">
+                  {order?.orderItems.length}
+                </span>
+              )}
+            </Link>
           )}
           <Loading isLoading={isLoading}>
             <div className="flex gap-x-2">
