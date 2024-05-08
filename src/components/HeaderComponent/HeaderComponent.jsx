@@ -45,6 +45,10 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
     // window.location.reload();
   };
 
+  const handleNavigateMyOrder = () => {
+    navigate("/my-order");
+  };
+
   const handleLogout = async () => {
     setLoading(true);
     await UserServices.logoutUser();
@@ -73,6 +77,10 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
       <div className="cursor-pointer">
         <p className="hover:text-primary" onClick={handleNavigateProfile}>
           Thông tin cá nhân
+        </p>
+
+        <p className="hover:text-primary" onClick={handleNavigateMyOrder}>
+          Đơn hàng của tôi
         </p>
         {user?.isAdmin ? (
           <p className="hover:text-primary" onClick={handleNavigateAdmin}>
@@ -172,9 +180,13 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
                 <IoBagHandleOutline size={"2.2rem"} />
               </div>
 
-              {order?.orderItems.length > 0 && (
+              {order?.orderItems.find((item) => item.user_id === user?.id)
+                ?.products.length > 0 && (
                 <span className="absolute top-0 h-6 w-6 rounded-full border bg-red-600 text-center text-white">
-                  {order?.orderItems.length}
+                  {
+                    order?.orderItems.find((item) => item.user_id === user?.id)
+                      .products.length
+                  }
                 </span>
               )}
             </Link>

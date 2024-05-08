@@ -43,7 +43,7 @@ const ProfilePage = () => {
 
   const handleUpdateUser = async () => {
     const data = {
-      userId: user?.id,
+      id: user?.id,
       name: name !== null ? name : " ",
       avatar: avatar !== null ? avatar : " ",
       address: address !== null ? address : " ",
@@ -132,7 +132,7 @@ const ProfilePage = () => {
             </div>
           </li>
           <li className="mb-8 flex items-center">
-            <span className="mr-4 block min-w-24">Só điện thoại</span>
+            <span className="mr-4 block min-w-24">Số điện thoại</span>
             <div className="flexitems-center h-full flex-1 justify-center">
               <div className="relative h-full">
                 <input

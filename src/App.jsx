@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import routes from "./routes/index.js";
 import defaultLayout from "./layout/DefaultLayout.jsx";
+import NoFooterLayout from "./layout/NoFooterLayout.jsx";
 import { Fragment, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +46,10 @@ function App() {
       if (decoded?.exp < currentTime.getTime() / 1000) {
         const data = await UserServices.refreshToken();
         //Thay đổi header trước khi gửi request
+        localStorage.setItem(
+          "access_token",
+          JSON.stringify(data?.access_token),
+        );
         config.headers["token"] = `Bearer ${data?.access_token}`;
       }
 
@@ -74,7 +79,14 @@ function App() {
               const isCheckAuth = !route.isPrivate || user.isAdmin;
               const path = route.path;
               const Page = route.page;
-              const Layout = route.isShowHeader ? defaultLayout : Fragment;
+              const Layout =
+                route.isShowHeader && route.isShowFooter
+                  ? defaultLayout
+                  : route.isShowFooter
+                    ? Fragment
+                    : route.isShowHeader
+                      ? NoFooterLayout
+                      : Fragment;
               return (
                 <Route
                   path={isCheckAuth ? path : undefined}

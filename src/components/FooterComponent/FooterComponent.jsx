@@ -53,7 +53,7 @@ const FooterComponent = () => {
                 </span>
                 <span>Email</span>
               </button>
-              <button className=" min-w-30 flex items-center rounded-md border border-blue-300 px-3 py-2 hover:border-blue-600">
+              <button className=" min-w-30 border-blue-300 hover:border-blue-600 flex items-center rounded-md border px-3 py-2">
                 <span className="mr-2">
                   <img src={facebook_logo} alt="icon" className="w-5" />
                 </span>

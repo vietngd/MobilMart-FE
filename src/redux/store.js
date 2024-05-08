@@ -26,6 +26,7 @@ const persistConfig = {
   version: 1,
   storage,
   blacklist: ["user", "categories"],
+  // blacklist: ["user", "categories", "order"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

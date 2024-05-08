@@ -1,6 +1,7 @@
 import { CiDeliveryTruck } from "react-icons/ci";
 import PromotionComponent from "../PromotionComponent/PromotionComponent";
 import ProductActionComponent from "../ProductActionComponent/ProductActionComponent";
+import { convertToMonney } from "../../ultils";
 
 const InfoProductComponent = ({ product }) => {
   return (
@@ -8,16 +9,10 @@ const InfoProductComponent = ({ product }) => {
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center">
           <span className="mr-2 text-2xl font-bold text-red-700 ">
-            {product?.sale.toLocaleString("vi", {
-              style: "currency",
-              currency: "VND",
-            })}
+            {convertToMonney(product?.sale)}
           </span>
           <span className="mr-2 text-base line-through">
-            {product?.price.toLocaleString("vi", {
-              style: "currency",
-              currency: "VND",
-            })}
+            {convertToMonney(product?.price)}
           </span>
         </div>
         <div>

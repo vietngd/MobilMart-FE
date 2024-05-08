@@ -1,9 +1,13 @@
 import { IoIosStar } from "react-icons/io";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { convertToMonney } from "../../ultils";
 
 const Card = ({ card }) => {
   const imgs = card.images.split(",");
+
+  const discountPercentage = ((card.price - card.sale) / card.price) * 100;
+
   return (
     <Link to={`/product/${card.id}`}>
       <div className="card mb-4">
@@ -13,11 +17,9 @@ const Card = ({ card }) => {
             alt="product"
             className="h-[150px] max-w-full"
           ></img>
-          <span className="absolute bottom-0 left-0 rounded-r bg-black pr-1 text-xs text-white">
-            Miễn phí ship
-          </span>
-          <span className="absolute bottom-5 left-0 rounded-r bg-red-700 pr-1 text-xs text-white">
-            Trả góp 0%
+
+          <span className="absolute right-0 top-5 rounded-l bg-red-700 px-1 pr-1 text-xs text-white">
+            Giảm {Math.round(discountPercentage)} %
           </span>
         </div>
         <div className="cart_body grid gap-y-3 px-3 py-3">
@@ -26,16 +28,10 @@ const Card = ({ card }) => {
           </div>
           <div className="price">
             <span className="new_price mr-6 text-sm font-semibold text-red-700">
-              {card.sale.toLocaleString("vi", {
-                style: "currency",
-                currency: "VND",
-              })}
+              {convertToMonney(card.sale)}
             </span>
             <span className="old_price text-xs font-thin text-[#D3CED2] line-through">
-              {card.price.toLocaleString("vi", {
-                style: "currency",
-                currency: "VND",
-              })}
+              {convertToMonney(card.price)}
             </span>
           </div>
           <div className="flex">

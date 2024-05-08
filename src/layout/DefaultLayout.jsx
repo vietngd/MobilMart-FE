@@ -5,7 +5,7 @@ const defaultLayout = ({ children }) => {
   return (
     <div>
       <HeaderComponent />
-      <div className="m-auto max-w-screen-xl pt-[70px]">{children}</div>
+      <div className="m-auto max-w-screen-xl pt-[70px] ">{children}</div>
       <FooterComponent />
     </div>
   );

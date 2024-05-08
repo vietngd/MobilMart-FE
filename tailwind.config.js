@@ -12,6 +12,7 @@ export default {
         main: "bg-red-50",
         category_hover: "#f5f5f5",
         blue: "#5d83db",
+        cart_bg: "#f4f6f8",
       },
     },
   },

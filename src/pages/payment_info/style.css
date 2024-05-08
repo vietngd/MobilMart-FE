@@ -1,0 +1,53 @@
+.input-group {
+  position: relative;
+  margin: 40px 0 0 0;
+}
+
+.input-group label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: gray;
+  pointer-events: none;
+  transition: 0.5s;
+}
+
+.input-group input {
+  width: 320px;
+  height: 40px;
+  font-size: 16px;
+  color: black;
+  background: transparent;
+  border-bottom: 0.8px solid rgb(190, 190, 190);
+  outline: none;
+  width: 100%;
+}
+
+@keyframes borderAnimation {
+  0% {
+    width: 0;
+    left: 0;
+  }
+  100% {
+    width: 100%;
+    left: 0;
+  }
+}
+
+.input-group input:focus {
+  animation: borderAnimation ease-in 0.3s;
+  border-color: rgb(243, 40, 40);
+}
+
+.input-group input:focus ~ label,
+.input-group input:valid ~ label {
+  top: -10px;
+  font-size: 15px;
+  color: rgb(243, 40, 40);
+}
+
+.shawdow_custom {
+  box-shadow: 0 -4px 20px -1px rgba(40, 124, 234, 0.15);
+}

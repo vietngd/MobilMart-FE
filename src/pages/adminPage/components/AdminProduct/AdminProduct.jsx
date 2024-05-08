@@ -378,7 +378,7 @@ const AdminProduct = () => {
       render: () => (
         <Space size="middle">
           <button
-            className="border-blue rounded border px-2 py-1"
+            className="rounded border border-blue px-2 py-1"
             onClick={handleDetailProduct}
           >
             Edit
