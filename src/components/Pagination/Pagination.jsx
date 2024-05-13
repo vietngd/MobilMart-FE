@@ -2,7 +2,6 @@ import { useState } from "react";
 
 const Pagination = ({ totalPage, getPageNumber }) => {
   const [pageActive, setPageActive] = useState(1);
-
   const handleSelectPage = (pageNumber) => {
     if (pageNumber !== pageActive) {
       setPageActive(pageNumber);
@@ -40,7 +39,9 @@ const Pagination = ({ totalPage, getPageNumber }) => {
           <span
             className={`mx-1 cursor-pointer border border-primary px-2 py-1 ${pageActive === pageNumber && "bg-primary text-white"}`}
             key={index}
-            onClick={() => handleSelectPage(pageNumber)}
+            onClick={() => {
+              handleSelectPage(pageNumber);
+            }}
           >
             {pageNumber}
           </span>

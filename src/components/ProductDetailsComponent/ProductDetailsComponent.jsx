@@ -81,6 +81,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
 
   const mutationReplyComment = useMutationHook(async (data) => {
     const res = await Productservices.ReplyComment(data);
+
     return res;
   });
 
@@ -108,6 +109,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
       setReplyText("");
     }
   }, [isPendingReply, isErrorReply]);
+
   const handleComment = async () => {
     const data = {
       product_id: idProduct,
@@ -117,32 +119,24 @@ const ProductDetailsComponent = ({ idProduct }) => {
       email: email,
       rating: rating,
     };
-
-    const res = await mutation.mutateAsync(data, {
-      onSettled: () => {
-        queryComment.refetch();
-      },
-    });
-
+    const res = await mutation.mutateAsync(data);
     setMessage(res?.message);
   };
 
   const fetchComment = async () => {
     const res = await Productservices.getAllComment(idProduct, pageNumber);
+    console.log(res);
     return res;
   };
-  const queryComment = useQuery({
-    queryKey: ["comments", pageNumber],
-    queryFn: fetchComment,
-    retry: 3,
-    retryDelay: 1000,
-    onError: (error) => {
-      console.log("Error fetching comment:", error);
-      // Handle error here if needed
-    },
-  });
 
-  const { data: comments, isLoading: isLoadingComment } = queryComment;
+  const [commentsFetch, setCommentsFetch] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      setCommentsFetch(await fetchComment());
+    }
+    fetchData();
+  }, [pageNumber, data, dataReplyComment]);
 
   // trả lời comment
   const [replyingToComment, setReplyingToComment] = useState(null);
@@ -160,11 +154,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
       content: replyText,
     };
 
-    mutationReplyComment.mutateAsync(data, {
-      onSettled: () => {
-        queryComment.refetch();
-      },
-    });
+    mutationReplyComment.mutateAsync(data);
   };
 
   const handleGetPageNumber = (pageNumber) => {
@@ -186,7 +176,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
               <IoIosStar /> <FaRegStarHalfStroke />
             </span>
             <span className="text-sm opacity-80">
-              ({comments?.data.length} Đánh giá)
+              ({commentsFetch?.data?.length} Đánh giá)
             </span>
           </div>
         </div>
@@ -276,7 +266,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
                     })}
                   </span>
                 </p>
-                <p>{comments?.data?.length} đánh giá và hỏi đáp</p>
+                <p>{commentsFetch?.data?.length} đánh giá và hỏi đáp</p>
               </div>
               <div className="col-span-2 flex flex-col justify-evenly border p-4">
                 <p className="flex items-center gap-x-2">
@@ -284,13 +274,13 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
                     <span
                       className={`absolute left-0 top-0 h-full w-[${
-                        comments?.data?.filter(
+                        commentsFetch?.data?.filter(
                           (comment) => comment.rating === 5,
                         ).length *
                           10 >
                         100
                           ? 100
-                          : comments?.data?.filter(
+                          : commentsFetch?.data?.filter(
                               (comment) => comment.rating === 5,
                             ).length * 10
                       }%] rounded-md bg-primary`}
@@ -298,8 +288,9 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   </span>
                   <span className="inline-block ">
                     {
-                      comments?.data?.filter((comment) => comment.rating === 5)
-                        .length
+                      commentsFetch?.data?.filter(
+                        (comment) => comment.rating === 5,
+                      ).length
                     }
                   </span>
                 </p>
@@ -308,13 +299,13 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
                     <span
                       className={`absolute left-0 top-0 h-full w-[${
-                        comments?.data?.filter(
+                        commentsFetch?.data?.filter(
                           (comment) => comment.rating === 4,
                         ).length *
                           10 >
                         100
                           ? 100
-                          : comments?.data?.filter(
+                          : commentsFetch?.data?.filter(
                               (comment) => comment.rating === 4,
                             ).length * 10
                       }%] rounded-md bg-primary`}
@@ -322,8 +313,9 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   </span>
                   <span className="inline-block ">
                     {
-                      comments?.data?.filter((comment) => comment.rating === 4)
-                        .length
+                      commentsFetch?.data?.filter(
+                        (comment) => comment.rating === 4,
+                      ).length
                     }
                   </span>
                 </p>
@@ -332,13 +324,13 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
                     <span
                       className={`absolute left-0 top-0 h-full w-[${
-                        comments?.data?.filter(
+                        commentsFetch?.data?.filter(
                           (comment) => comment.rating === 3,
                         ).length *
                           10 >
                         100
                           ? 100
-                          : comments?.data?.filter(
+                          : commentsFetch?.data?.filter(
                               (comment) => comment.rating === 3,
                             ).length * 10
                       }%] rounded-md bg-primary`}
@@ -346,8 +338,9 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   </span>
                   <span className="inline-block ">
                     {
-                      comments?.data?.filter((comment) => comment.rating === 3)
-                        .length
+                      commentsFetch?.data?.filter(
+                        (comment) => comment.rating === 3,
+                      ).length
                     }
                   </span>
                 </p>
@@ -356,13 +349,13 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
                     <span
                       className={`absolute left-0 top-0 h-full w-[${
-                        comments?.data?.filter(
+                        commentsFetch?.data?.filter(
                           (comment) => comment.rating === 2,
                         ).length *
                           10 >
                         100
                           ? 100
-                          : comments?.data?.filter(
+                          : commentsFetch?.data?.filter(
                               (comment) => comment.rating === 2,
                             ).length * 10
                       }%] rounded-md bg-primary`}
@@ -370,8 +363,9 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   </span>
                   <span className="inline-block ">
                     {
-                      comments?.data?.filter((comment) => comment.rating === 2)
-                        .length
+                      commentsFetch?.data?.filter(
+                        (comment) => comment.rating === 2,
+                      ).length
                     }
                   </span>
                 </p>
@@ -380,13 +374,13 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
                     <span
                       className={`absolute left-0 top-0 h-full w-[${
-                        comments?.data?.filter(
+                        commentsFetch?.data?.filter(
                           (comment) => comment.rating === 1,
                         ).length *
                           10 >
                         100
                           ? 100
-                          : comments?.data?.filter(
+                          : commentsFetch?.data?.filter(
                               (comment) => comment.rating === 1,
                             ).length * 10
                       }%] rounded-md bg-primary`}
@@ -394,8 +388,9 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   </span>
                   <span className="inline-block ">
                     {
-                      comments?.data?.filter((comment) => comment.rating === 1)
-                        .length
+                      commentsFetch?.data?.filter(
+                        (comment) => comment.rating === 1,
+                      ).length
                     }
                   </span>
                 </p>
@@ -502,138 +497,130 @@ const ProductDetailsComponent = ({ idProduct }) => {
 
             {/* Các comment */}
             <div className="mb-3">
-              <Loading isLoading={isLoadingComment}>
-                {comments &&
-                  comments?.data.length > 0 &&
-                  comments?.data?.map((comment) => {
-                    return (
-                      <div key={comment.id}>
-                        <div>
-                          <div className=" mt-10 flex py-3">
-                            <div className="mr-3 flex h-10 w-10 items-center justify-center bg-[#ebe9eb] ">
-                              {comment.name.split("")[0].toUpperCase()}
-                            </div>
-                            <div className="grid flex-1 gap-y-4 pr-3">
-                              <div className="flex justify-between">
-                                <div>
-                                  <span className="mr-3">{comment.name}</span>
-                                  <span>{comment.phone}</span>
-                                </div>
-                                <span className="mr-2 flex items-center">
-                                  {[...Array(5)].map((star, index) => {
-                                    const ratingValue = index + 1;
-                                    return (
-                                      <IoIosStar
-                                        size={"1rem"}
-                                        key={index}
-                                        style={{
-                                          color:
-                                            ratingValue <= comment.rating
-                                              ? "#978535"
-                                              : "#a29e9e",
-                                        }}
-                                      />
-                                    );
-                                  })}
-                                </span>
-                              </div>
-                              <span>{comment.content}</span>
+              {commentsFetch &&
+                commentsFetch?.data?.length > 0 &&
+                commentsFetch?.data?.map((comment) => {
+                  return (
+                    <div key={comment.id}>
+                      <div>
+                        <div className=" mt-10 flex py-3">
+                          <div className="mr-3 flex h-10 w-10 items-center justify-center bg-[#ebe9eb] ">
+                            {comment.name.split("")[0].toUpperCase()}
+                          </div>
+                          <div className="grid flex-1 gap-y-4 pr-3">
+                            <div className="flex justify-between">
                               <div>
-                                <span className="mr-2">
-                                  <AiOutlineLike
-                                    style={{ display: "inline-block" }}
-                                  />{" "}
-                                  2 Thích
-                                </span>
-                                <span className="mr-2">
-                                  {convertDateTime(comment.created_at).time}
-                                </span>
-                                <span className="mr-2">
-                                  {convertDateTime(comment.created_at).day}
-                                </span>
-                                {comment.reply_content === null &&
-                                  user?.isAdmin === 1 && (
-                                    <span
-                                      className=" cursor-pointer text-red-400"
-                                      onClick={() => handleReply(comment.id)}
-                                    >
-                                      Trả lời
-                                    </span>
-                                  )}
+                                <span className="mr-3">{comment.name}</span>
+                                <span>{comment.phone}</span>
                               </div>
+                              <span className="mr-2 flex items-center">
+                                {[...Array(5)].map((star, index) => {
+                                  const ratingValue = index + 1;
+                                  return (
+                                    <IoIosStar
+                                      size={"1rem"}
+                                      key={index}
+                                      style={{
+                                        color:
+                                          ratingValue <= comment.rating
+                                            ? "#978535"
+                                            : "#a29e9e",
+                                      }}
+                                    />
+                                  );
+                                })}
+                              </span>
+                            </div>
+                            <span>{comment.content}</span>
+                            <div>
+                              <span className="mr-2">
+                                <AiOutlineLike
+                                  style={{ display: "inline-block" }}
+                                />{" "}
+                                2 Thích
+                              </span>
+                              <span className="mr-2">
+                                {convertDateTime(comment.created_at).time}
+                              </span>
+                              <span className="mr-2">
+                                {convertDateTime(comment.created_at).day}
+                              </span>
+                              {comment.reply_content === null &&
+                                user?.isAdmin === 1 && (
+                                  <span
+                                    className=" cursor-pointer text-red-400"
+                                    onClick={() => handleReply(comment.id)}
+                                  >
+                                    Trả lời
+                                  </span>
+                                )}
                             </div>
                           </div>
-                          {replyingToComment === comment.id && (
-                            <div className="mb-1 flex">
-                              <input
-                                type="text"
-                                placeholder="Câu trả lời"
-                                className="flex-1 border border-primary px-2 py-1 outline-none"
-                                value={replyText}
-                                onChange={(e) => setReplyText(e.target.value)}
-                              ></input>
-                              <button
-                                className="ml-2 rounded bg-primary px-2 py-1 text-white"
-                                onClick={() => handleReplyComment(comment.id)}
-                              >
-                                Gửi
-                              </button>
-                            </div>
-                          )}
                         </div>
-                        {/* Phản hổi của admin */}
-                        {comment.admin_name != null && (
-                          <div className="relative flex border bg-[#f8f8f8] px-2 py-3">
-                            <div className="mr-3 flex h-10 w-10 items-center justify-center bg-[#ebe9eb] ">
-                              <img src={logo} alt="M" />
-                            </div>
-                            <div className="grid flex-1 gap-y-4 pr-3">
-                              <div className="flex justify-between">
-                                <div>
-                                  <span className="mr-3">
-                                    {comment.admin_name}
-                                  </span>
-                                  <span className="rounded bg-primary px-1 text-white">
-                                    Quản trị viên
-                                  </span>
-                                </div>
-                              </div>
-                              <span>{comment.reply_content}</span>
-                              <div>
-                                <span className="mr-2">
-                                  <AiOutlineLike
-                                    style={{ display: "inline-block" }}
-                                  />{" "}
-                                  2 Thích
-                                </span>
-                                <span className="mr-2">
-                                  {
-                                    convertDateTime(comment.created_at_reply)
-                                      .time
-                                  }
-                                </span>
-                                <span className="mr-2">
-                                  {
-                                    convertDateTime(comment.created_at_reply)
-                                      .day
-                                  }
-                                </span>
-                              </div>
-                            </div>
-                            <span className="absolute bottom-full left-4 border-[10px] border-[#f8f8f8] border-l-transparent border-r-transparent border-t-transparent "></span>
+                        {replyingToComment === comment.id && (
+                          <div className="mb-1 flex">
+                            <input
+                              type="text"
+                              placeholder="Câu trả lời"
+                              className="flex-1 border border-primary px-2 py-1 outline-none"
+                              value={replyText}
+                              onChange={(e) => setReplyText(e.target.value)}
+                            ></input>
+                            <button
+                              className="ml-2 rounded bg-primary px-2 py-1 text-white"
+                              onClick={() => handleReplyComment(comment.id)}
+                            >
+                              Gửi
+                            </button>
                           </div>
                         )}
                       </div>
-                    );
-                  })}
-              </Loading>
+                      {/* Phản hổi của admin */}
+                      {comment.admin_name != null && (
+                        <div className="relative flex border bg-[#f8f8f8] px-2 py-3">
+                          <div className="mr-3 flex h-10 w-10 items-center justify-center bg-[#ebe9eb] ">
+                            <img src={logo} alt="M" />
+                          </div>
+                          <div className="grid flex-1 gap-y-4 pr-3">
+                            <div className="flex justify-between">
+                              <div>
+                                <span className="mr-3">
+                                  {comment.admin_name}
+                                </span>
+                                <span className="rounded bg-primary px-1 text-white">
+                                  Quản trị viên
+                                </span>
+                              </div>
+                            </div>
+                            <span>{comment.reply_content}</span>
+                            <div>
+                              <span className="mr-2">
+                                <AiOutlineLike
+                                  style={{ display: "inline-block" }}
+                                />{" "}
+                                2 Thích
+                              </span>
+                              <span className="mr-2">
+                                {convertDateTime(comment.created_at_reply).time}
+                              </span>
+                              <span className="mr-2">
+                                {convertDateTime(comment.created_at_reply).day}
+                              </span>
+                            </div>
+                          </div>
+                          <span className="absolute bottom-full left-4 border-[10px] border-[#f8f8f8] border-l-transparent border-r-transparent border-t-transparent "></span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
             </div>
 
-            {/* Phân trang */}
-            {comments?.pagination?.totalPages > 1 && (
+            {/* Phân trang*/}
+            {commentsFetch?.pagination?.totalPages > 1 && (
               <div className="flex justify-center">
                 <Pagination
-                  totalPage={comments?.pagination?.totalPages}
+                  totalPage={commentsFetch?.pagination?.totalPages}
                   getPageNumber={handleGetPageNumber}
                 />
               </div>
