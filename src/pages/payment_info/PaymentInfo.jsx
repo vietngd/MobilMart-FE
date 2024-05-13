@@ -260,7 +260,7 @@ const PaymentInfo = () => {
                   type="text"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
-                  placeholder="Ghi chú"
+                  placeholder="Ghi chú : Màu sắc, số nhà ..."
                 />
               </div>
             </div>

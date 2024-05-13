@@ -14,6 +14,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+// import { orderTransform } from "../ultils.js";
 
 const rootReducer = combineReducers({
   categories: categoriesReducer,
@@ -26,6 +27,7 @@ const persistConfig = {
   version: 1,
   storage,
   blacklist: ["user", "categories"],
+  // transforms: [orderTransform], //Loại bỏ key selectedProduct khỏi localstorage
   // blacklist: ["user", "categories", "order"],
 };
 

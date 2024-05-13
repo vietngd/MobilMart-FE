@@ -16,19 +16,34 @@ const InfoProductComponent = ({ product }) => {
           </span>
         </div>
         <div>
-          <input type="checkbox" defaultChecked={true} /> Còn hàng
+          <input
+            type="checkbox"
+            checked={product?.quantity > 0}
+            onChange={() => {}}
+          />{" "}
+          {product?.quantity > 0 ? "Còn hàng" : "Hết hàng"}
         </div>
       </div>
       <div className="mb-4 flex items-center justify-start rounded py-1 text-white">
         <span className="text-xl">
-          <CiDeliveryTruck color="#978535" />
+          <CiDeliveryTruck color="#143820" />
         </span>
-        <span className="ml-3 text-primary">MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC</span>
+        <span className="ml-3 text-sm text-[#143820]">
+          MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC
+        </span>
       </div>
 
-      <div className="grid grid-cols-3 gap-x-1">
+      <div className="flex items-center justify-between">
+        <div className="pl-2 ">
+          <span className="text-[#8f8c8e]">Đã bán : {product?.total_pay}</span>
+        </div>
+        <div>
+          <ProductActionComponent product={product} />
+        </div>
+      </div>
+
+      <div className="mt-3 grid  gap-x-1">
         <PromotionComponent />
-        <ProductActionComponent product={product} />
       </div>
     </div>
   );

@@ -41,3 +41,38 @@ export function validation(values) {
 
   return message;
 }
+
+export function convertDateTime(timeString) {
+  const dateTime = new Date(timeString);
+
+  // Lấy thông tin về ngày, giờ, phút và giây
+  const year = dateTime.getFullYear();
+  const month = dateTime.getMonth() + 1; // Tháng bắt đầu từ 0 nên cần +1
+  const day = dateTime.getDate();
+  const hour = dateTime.getHours();
+  const minute = dateTime.getMinutes();
+  const second = dateTime.getSeconds();
+
+  return {
+    time: `${hour}:${minute < 10 ? `0${minute}` : minute}:${second}`,
+    day: `${day}/${month}/${year}`,
+  };
+}
+
+// import { createTransform } from "redux-persist";
+
+// export const orderTransform = createTransform(
+//   // Trả về state mới chỉ chứa các trường muốn lưu
+//   (inboundState) => {
+//     return {
+//       ...inboundState,
+//       selectedProduct: [], // Xóa trường selectedProduct
+//     };
+//   },
+//   // Không cần định nghĩa hàm transform cho việc đọc state từ localStorage
+//   (outboundState) => {
+//     return outboundState;
+//   },
+//   // Khai báo tên của reducer muốn áp dụng hàm transform
+//   { whitelist: ["order"] },
+// );

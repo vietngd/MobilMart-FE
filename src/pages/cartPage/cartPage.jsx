@@ -169,7 +169,13 @@ const CartPage = () => {
                         }
                       />
                       <label htmlFor="checkAll" className="cursor-pointer">
-                        Tất cả sản phẩm ( {orders?.orderItems.length} sản phẩm)
+                        Tất cả sản phẩm ({" "}
+                        {
+                          orders?.orderItems.find(
+                            (item) => item.user_id === user?.id,
+                          )?.products.length
+                        }{" "}
+                        sản phẩm)
                       </label>
                     </th>
                     <th className="py-2 font-normal">Số lượng</th>

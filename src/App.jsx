@@ -46,10 +46,10 @@ function App() {
       if (decoded?.exp < currentTime.getTime() / 1000) {
         const data = await UserServices.refreshToken();
         //Thay đổi header trước khi gửi request
-        localStorage.setItem(
-          "access_token",
-          JSON.stringify(data?.access_token),
-        );
+        // localStorage.setItem(
+        //   "access_token",
+        //   JSON.stringify(data?.access_token),
+        // );
         config.headers["token"] = `Bearer ${data?.access_token}`;
       }
 

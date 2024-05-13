@@ -2,7 +2,7 @@ import { FaGift, FaCheck } from "react-icons/fa";
 
 const PromotionComponent = () => {
   return (
-    <div className="col-span-2 rounded-md border p-2">
+    <div className="col-span-3 rounded-md border p-2">
       <div className="mb-3 flex items-center justify-center rounded-md bg-primary py-2 text-lg text-white">
         <span className="mr-2">
           <FaGift />
@@ -10,12 +10,6 @@ const PromotionComponent = () => {
         Khuyến mãi
       </div>
       <ul>
-        <li className="item-start mb-2 flex text-sm">
-          <div className="mr-2 text-xs text-primary">
-            <FaCheck />
-          </div>
-          Hotsale từ 16 - 20.3 giảm thêm 200.000đ
-        </li>
         <li className="mb-2 flex items-center  text-sm">
           <div className="mr-2 text-xs text-primary">
             <FaCheck />

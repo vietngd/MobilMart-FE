@@ -1,18 +1,20 @@
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { convertToMonney } from "../../ultils";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useMutationHook } from "../../hooks/userMutationHook";
 import * as OrderServices from "../../services/orderServices";
 import { useNavigate } from "react-router-dom";
 import { removeOrderInfo } from "../../redux/slides/orderSlice";
 import * as message from "../../components/Message/MessageComponent";
+import axios from "axios";
 
 const Payment = () => {
   const orders = useSelector((state) => state.order);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [paymentMethod, setPaymentMethod] = useState("offline");
 
   const QuantityProduct = useMemo(() => {
     return orders?.selectedProduct.reduce((total, item) => {
@@ -20,22 +22,49 @@ const Payment = () => {
     }, 0);
   }, [orders]);
 
+  const handleSelectMethodPayment = async (e) => {
+    if (e.target.value === "online") {
+      setPaymentMethod("online");
+      // paymentOnline();
+    } else {
+      setPaymentMethod("offline");
+    }
+  };
+
+  const paymentOnline = async () => {
+    const res = await axios.post(
+      "http://localhost:8080/api/vnpay/create_payment_url",
+      {
+        amount: orders?.totalMonney,
+        bankCode: "",
+        language: "vn",
+      },
+    );
+    window.location.href = res.data.url;
+  };
+
   const mutation = useMutationHook(async ({ access_token, ...rest }) => {
     const res = await OrderServices.createOrder(access_token, rest);
     return res;
   });
+
   const handleAddOrder = () => {
-    mutation.mutateAsync({
-      access_token: user?.access_token,
-      user_id: user?.id,
-      address: orders?.address,
-      note: orders?.note || "",
-      order_status_payment: false,
-      products: orders?.selectedProduct?.map((item) => ({
-        product_id: item.product_id,
-        quantity: item.quantity,
-      })),
-    });
+    localStorage.removeItem("vnp_ResponseCode");
+    if (paymentMethod === "offline") {
+      mutation.mutateAsync({
+        access_token: user?.access_token,
+        user_id: user?.id,
+        address: orders?.address,
+        note: orders?.note || "",
+        order_status_payment: false,
+        products: orders?.selectedProduct?.map((item) => ({
+          product_id: item.product_id,
+          quantity: item.quantity,
+        })),
+      });
+    } else {
+      paymentOnline();
+    }
   };
 
   const { data, isSuccess, isError } = mutation;
@@ -104,6 +133,7 @@ const Payment = () => {
                   name="method"
                   value="offline"
                   defaultChecked
+                  onChange={handleSelectMethodPayment}
                 />
                 Thanh toán khi nhận hàng
               </div>
@@ -113,8 +143,9 @@ const Payment = () => {
                   className="mr-2"
                   name="method"
                   value="online"
+                  onChange={handleSelectMethodPayment}
                 />
-                Thanh toán trực tuyến
+                Thanh toán bằng VnPay
               </div>
             </div>
           </div>

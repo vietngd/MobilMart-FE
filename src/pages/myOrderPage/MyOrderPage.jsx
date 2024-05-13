@@ -32,7 +32,11 @@ const MyOrderPage = () => {
           data?.data?.map((order) => {
             return (
               <div className="mt-5 rounded bg-white p-2" key={order?.order_id}>
-                <div className="text-right text-orange-600">CHỜ THANH TOÁN</div>
+                <div className="text-right text-orange-600">
+                  {order.order_status_payment
+                    ? "ĐÃ THANH TOÁN"
+                    : "CHỜ THANH TOÁN"}
+                </div>
                 <div className="flex items-center justify-between">
                   <div>
                     {/* Danh sách sản phẩm */}
@@ -82,15 +86,21 @@ const MyOrderPage = () => {
                   Địa chỉ nhận hàng : <span>{order?.address}</span>
                 </p>
                 <div className="mt-3 flex justify-between">
-                  <span className="mr-3">
+                  <span className="mr-3 ">
                     Phương thức thanh toán :{" "}
-                    {order.order_status_payment === 0
-                      ? "Thanh toán khi nhận hàng"
-                      : "Thanh toán Online"}
+                    {order.order_status_payment === 0 ? (
+                      <span className="text-orange-600">
+                        Thanh toán khi nhận hàng
+                      </span>
+                    ) : (
+                      <span className="text-orange-600">Thanh toán Online</span>
+                    )}
                   </span>
-                  <button className=" rounded border px-5 py-2">
-                    Hủy đơn hàng
-                  </button>
+                  {!order.order_status_payment && (
+                    <button className=" rounded border px-5 py-2">
+                      Hủy đơn hàng
+                    </button>
+                  )}
                 </div>
               </div>
             );

@@ -5,6 +5,7 @@ import HomePage from "../pages/homePage/homePage";
 import MyOrderPage from "../pages/myOrderPage/MyOrderPage";
 import NotFoundPage from "../pages/notFoundPage/notFoundPage";
 import Payment from "../pages/payment/Payment";
+import PaymentStatus from "../pages/paymentStatus/PaymentStatus";
 import PaymentInfo from "../pages/payment_info/PaymentInfo";
 import ProductDetailPage from "../pages/productDetailPage/productDetailPage";
 import productPage from "../pages/productPage/ProductPage";
@@ -42,6 +43,11 @@ const Routes = [
   {
     path: "/cart/payment",
     page: Payment,
+    isShowHeader: true,
+  },
+  {
+    path: "/payment-status",
+    page: PaymentStatus,
     isShowHeader: true,
   },
   {

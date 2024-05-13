@@ -16,6 +16,7 @@ const Card = ({ card }) => {
             src={imgs[0]}
             alt="product"
             className="h-[150px] max-w-full"
+            loading="lazy"
           ></img>
 
           <span className="absolute right-0 top-5 rounded-l bg-red-700 px-1 pr-1 text-xs text-white">

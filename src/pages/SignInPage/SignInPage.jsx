@@ -134,7 +134,7 @@ const SignInPage = () => {
 
                       <div className="float-right mb-2 mt-2 w-full text-sm">
                         {message && (
-                          <div className="w-full text-start text-primary">
+                          <div className="w-full text-start text-red-600">
                             {message}
                           </div>
                         )}
