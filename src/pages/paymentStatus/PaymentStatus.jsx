@@ -30,15 +30,20 @@ const PaymentStatus = () => {
   });
 
   const handleAddOrder = () => {
+    console.log(user?.totalMonney);
     mutation.mutateAsync({
       access_token: user?.access_token,
       user_id: user?.id,
+      name: user?.name,
+      phone: user?.phone,
+      total_money: orders?.totalMonney,
       address: orders?.address,
       note: orders?.note || "",
       order_status_payment: true,
       products: orders?.selectedProduct?.map((item) => ({
         product_id: item.product_id,
         quantity: item.quantity,
+        price: item.sale,
       })),
     });
   };

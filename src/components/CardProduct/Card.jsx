@@ -42,7 +42,9 @@ const Card = ({ card }) => {
               <IoIosStar />
               <IoIosStar /> <FaRegStarHalfStroke />
             </span>
-            <span className="text-sm opacity-80">(20 Đánh giá)</span>
+            <span className="text-sm opacity-80">
+              ({card.total_comments} Đánh giá)
+            </span>
           </div>
         </div>
       </div>

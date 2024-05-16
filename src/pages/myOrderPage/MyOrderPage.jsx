@@ -11,7 +11,7 @@ const MyOrderPage = () => {
   const fetchOrders = async () => {
     const access_token = user?.access_token;
     const user_id = user?.id;
-    const res = await OrderServices.getAllOrder(access_token, user_id);
+    const res = await OrderServices.getOrderByUser(access_token, user_id);
     return res;
   };
 
@@ -71,11 +71,7 @@ const MyOrderPage = () => {
                   <p className=" text-right">
                     Số tiền phải trả :{" "}
                     <span className="text-red-600">
-                      {convertToMonney(
-                        JSON.parse(order.products).reduce((total, product) => {
-                          return total + product.sale * product.quantity;
-                        }, 0),
-                      )}
+                      {convertToMonney(order?.total_money)}
                     </span>
                   </p>
                 </div>

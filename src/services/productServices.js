@@ -86,48 +86,6 @@ const deleteProduct = async (id) => {
   }
 };
 
-const createComment = async (data) => {
-  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
-  try {
-    const response = await axios.post(`${baseUrl}/product/comment`, data);
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getAllComment = async (product_id, page, pageSize) => {
-  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
-  const params = {
-    product_id,
-    page,
-    pageSize,
-  };
-  try {
-    const response = await axios.get(`${baseUrl}/product/getAllComment`, {
-      params: params,
-    });
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const ReplyComment = async (data) => {
-  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
-  const { user_id, comment_id, content } = data;
-  try {
-    const response = await axios.post(`${baseUrl}/product/reply-comment`, {
-      user_id,
-      comment_id,
-      content,
-    });
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 export {
   getAllProduct,
   getProductByCategory,
@@ -135,7 +93,4 @@ export {
   getDetailProduct,
   updateProduct,
   deleteProduct,
-  createComment,
-  getAllComment,
-  ReplyComment,
 };

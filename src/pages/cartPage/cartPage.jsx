@@ -35,6 +35,9 @@ const CartPage = () => {
       dispatch(increaseQuantity({ user_id: user?.id, product_id }));
     }
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   //Tính tổng tiền những đơn hàng được chọn (Done)
   const products = orders?.orderItems.find(

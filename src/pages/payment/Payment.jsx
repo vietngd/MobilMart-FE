@@ -54,12 +54,16 @@ const Payment = () => {
       mutation.mutateAsync({
         access_token: user?.access_token,
         user_id: user?.id,
+        name: user?.name,
+        phone: user?.phone,
         address: orders?.address,
         note: orders?.note || "",
+        total_money: orders?.totalMonney,
         order_status_payment: false,
         products: orders?.selectedProduct?.map((item) => ({
           product_id: item.product_id,
           quantity: item.quantity,
+          price: item.sale,
         })),
       });
     } else {

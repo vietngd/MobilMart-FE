@@ -2,18 +2,19 @@ import { useState } from "react";
 // import { AppstoreOutlined } from "@ant-design/icons";
 import { MdSmartphone } from "react-icons/md";
 import { Menu } from "antd";
-import { FaUser } from "react-icons/fa";
-// import { FaShoppingCart } from "react-icons/fa";
+import { FaShoppingCart, FaUser } from "react-icons/fa";
+
 import { getItem } from "../../ultils";
 import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
 import AdminUser from "./components/AdminUser/AdminUser";
 import AdminProduct from "./components/AdminProduct/AdminProduct";
+import AdminOrder from "./components/AdminOrder/AdminOrder";
 
 const items = [
   getItem("Quản lý tài khoản", "user", <FaUser />),
   //   getItem("Quản lý danh mục", "category", <AppstoreOutlined />),
   getItem("Quản lý sản phẩm", "product", <MdSmartphone />),
-  //   getItem("Quản lý đơn hàng", "cart", <FaShoppingCart />),
+  getItem("Quản lý đơn hàng", "order", <FaShoppingCart />),
 ];
 
 const renderContent = (key) => {
@@ -22,6 +23,8 @@ const renderContent = (key) => {
       return <AdminUser />;
     case "product":
       return <AdminProduct />;
+    case "order":
+      return <AdminOrder />;
     default:
       return <></>;
   }

@@ -47,7 +47,7 @@ const CardProductComponent = (props) => {
           onClick={handleLoadMore}
           disabled={data?.Products.length === data?.pagination.totalCount}
         >
-          Xem thêm điện thoại
+          Xem thêm
         </button>
       </div>
     </Loading>

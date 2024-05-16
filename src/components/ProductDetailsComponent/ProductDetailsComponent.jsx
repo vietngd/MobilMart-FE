@@ -1,18 +1,18 @@
+import { IoIosStar } from "react-icons/io";
+import { useQuery } from "@tanstack/react-query";
+import { AiOutlineLike } from "react-icons/ai";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import "animate.css";
 import ImgShowComponent from "../ImgShowComponent/ImgShowComponent";
 import InfoProductComponent from "../InfoProductComponent/InfoProductComponent";
-import { IoIosStar } from "react-icons/io";
-import { FaRegStarHalfStroke } from "react-icons/fa6";
 import WarrantyComponent from "../WarrantyComponent/WarrantyComponent";
 import * as Productservices from "../../services/productServices.js";
 import * as CategoryServices from "../../services/categoryServices.js";
+import * as CommentServices from "../../services/commentServices.js";
 import Loading from "../Loading/LoadingComponent.jsx";
-import { useQuery } from "@tanstack/react-query";
 import Breadcrumb from "../Breadcrumb/Breadcrumb.jsx";
-import { useEffect, useState } from "react";
 import { useMutationHook } from "../../hooks/userMutationHook.js";
-import { AiOutlineLike } from "react-icons/ai";
-import "animate.css";
-import { useSelector } from "react-redux";
 import { convertDateTime } from "../../ultils.js";
 import logo from "../../assets/images/logo-2.png";
 import Pagination from "../Pagination/Pagination.jsx";
@@ -75,12 +75,12 @@ const ProductDetailsComponent = ({ idProduct }) => {
   ];
 
   const mutation = useMutationHook(async (data) => {
-    const res = await Productservices.createComment(data);
+    const res = await CommentServices.createComment(data);
     return res;
   });
 
   const mutationReplyComment = useMutationHook(async (data) => {
-    const res = await Productservices.ReplyComment(data);
+    const res = await CommentServices.ReplyComment(data);
 
     return res;
   });
@@ -124,8 +124,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
   };
 
   const fetchComment = async () => {
-    const res = await Productservices.getAllComment(idProduct, pageNumber);
-    console.log(res);
+    const res = await CommentServices.getAllComment(idProduct, pageNumber);
     return res;
   };
 
@@ -165,87 +164,25 @@ const ProductDetailsComponent = ({ idProduct }) => {
     <>
       <Loading isLoading={isLoading}>
         <Breadcrumb paths={paths} categoryName={categoryName} />
-        {/* Header */}
-        <div className="my-5 flex justify-between">
-          <span className="text-2xl ">{product?.data[0].name}</span>
-          <div className="flex items-center">
-            <span className="mr-2 flex items-center text-primary">
-              <IoIosStar />
-              <IoIosStar />
-              <IoIosStar />
-              <IoIosStar /> <FaRegStarHalfStroke />
-            </span>
-            <span className="text-sm opacity-80">
-              ({commentsFetch?.data?.length} Đánh giá)
-            </span>
-          </div>
-        </div>
 
-        <div className="grid grid-cols-10 gap-x-4">
+        <div className="mt-5 grid grid-cols-9 gap-x-2">
           <div className="col-span-3">
             <ImgShowComponent imgs={product?.data[0]?.images.split(",")} />
           </div>
           <div className="col-span-4">
-            <InfoProductComponent product={product?.data[0]} />
+            <InfoProductComponent
+              product={product?.data[0]}
+              total_comments={commentsFetch?.pagination?.totalCount}
+            />
           </div>
-          <div className="col-span-3">
-            <div className=" rounded-md border p-2">
-              <h3 className="font-semibold">Thông số kĩ thuật</h3>
-              <ul className="boder mt-2 overflow-hidden rounded-md">
-                <li className=" flex bg-[#F2F2F2] px-2 py-3">
-                  <span className="flex-1">Kích thước màn hình </span>
-                  <span className="flex-1">{productConfig?.ScreenSize}</span>
-                </li>
-                <li className="flex  px-2 py-3">
-                  <span className="flex-1">Công nghệ màn hình </span>
-                  <span className="flex-1">
-                    {productConfig?.ScreenTechnology}
-                  </span>
-                </li>
-                <li className="flex bg-[#F2F2F2] px-2 py-3">
-                  <span className="flex-1">Camera sau </span>
-                  <span className="flex-1">{productConfig?.AfterCamera}</span>
-                </li>
-                <li className="flex  px-2 py-3">
-                  <span className="flex-1">Camera trước </span>
-                  <span className="flex-1">{productConfig?.BeforeCamera} </span>
-                </li>
-                <li className="flex bg-[#F2F2F2] px-2 py-3">
-                  <span className="flex-1">Chipset </span>
-                  <span className="flex-1">{productConfig?.Chipset} </span>
-                </li>
-                <li className="flex  px-2 py-3">
-                  <span className="flex-1">Dung lượng Ram </span>
-                  <span className="flex-1">{productConfig?.Ram} </span>
-                </li>
-                <li className="flex bg-[#F2F2F2] px-2 py-3">
-                  <span className="flex-1">Bộ nhớ trong </span>
-                  <span className="flex-1">{productConfig?.Storage} </span>
-                </li>
-                <li className=" flex px-2 py-3">
-                  <span className="flex-1">Pin </span>
-                  <span className="flex-1">{productConfig?.Battery} </span>
-                </li>
-                <li className="flex bg-[#F2F2F2] px-2 py-3">
-                  <span className="flex-1">Hệ điều hành </span>
-                  <span className="flex-1">
-                    {productConfig?.OperatingSystem}
-                  </span>
-                </li>
-                <li className="flex  px-2 py-3">
-                  <span className="flex-1">Độ phân giải màn hình </span>
-                  <span className="flex-1">
-                    {productConfig?.ScreenResolution}
-                  </span>
-                </li>
-              </ul>
-            </div>
+          <div className="col-span-2">
+            <WarrantyComponent />
           </div>
         </div>
 
         {/* Đánh giá */}
-        <div className="mt-5 grid grid-cols-4 gap-x-4">
-          <div className="col-span-3">
+        <div className="mt-10 grid grid-cols-7 gap-x-1">
+          <div className="col-span-5">
             <div className="grid h-36 grid-cols-4">
               <div className="col-span-1 grid gap-y-3 border py-10 text-center">
                 <p className="text-xl">5/5</p>
@@ -266,134 +203,34 @@ const ProductDetailsComponent = ({ idProduct }) => {
                     })}
                   </span>
                 </p>
-                <p>{commentsFetch?.data?.length} đánh giá và hỏi đáp</p>
+                <p>
+                  {commentsFetch?.pagination?.totalCount} đánh giá và hỏi đáp
+                </p>
               </div>
               <div className="col-span-2 flex flex-col justify-evenly border p-4">
-                <p className="flex items-center gap-x-2">
-                  <span>5 Sao</span>
-                  <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
-                    <span
-                      className={`absolute left-0 top-0 h-full w-[${
-                        commentsFetch?.data?.filter(
-                          (comment) => comment.rating === 5,
-                        ).length *
-                          10 >
-                        100
-                          ? 100
-                          : commentsFetch?.data?.filter(
-                              (comment) => comment.rating === 5,
-                            ).length * 10
-                      }%] rounded-md bg-primary`}
-                    ></span>
-                  </span>
-                  <span className="inline-block ">
-                    {
-                      commentsFetch?.data?.filter(
-                        (comment) => comment.rating === 5,
-                      ).length
-                    }
-                  </span>
-                </p>
-                <p className="flex items-center gap-x-2">
-                  <span>4 Sao</span>
-                  <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
-                    <span
-                      className={`absolute left-0 top-0 h-full w-[${
-                        commentsFetch?.data?.filter(
-                          (comment) => comment.rating === 4,
-                        ).length *
-                          10 >
-                        100
-                          ? 100
-                          : commentsFetch?.data?.filter(
-                              (comment) => comment.rating === 4,
-                            ).length * 10
-                      }%] rounded-md bg-primary`}
-                    ></span>
-                  </span>
-                  <span className="inline-block ">
-                    {
-                      commentsFetch?.data?.filter(
-                        (comment) => comment.rating === 4,
-                      ).length
-                    }
-                  </span>
-                </p>
-                <p className="flex items-center gap-x-2">
-                  <span>3 Sao</span>
-                  <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
-                    <span
-                      className={`absolute left-0 top-0 h-full w-[${
-                        commentsFetch?.data?.filter(
-                          (comment) => comment.rating === 3,
-                        ).length *
-                          10 >
-                        100
-                          ? 100
-                          : commentsFetch?.data?.filter(
-                              (comment) => comment.rating === 3,
-                            ).length * 10
-                      }%] rounded-md bg-primary`}
-                    ></span>
-                  </span>
-                  <span className="inline-block ">
-                    {
-                      commentsFetch?.data?.filter(
-                        (comment) => comment.rating === 3,
-                      ).length
-                    }
-                  </span>
-                </p>
-                <p className="flex items-center gap-x-2">
-                  <span>2 Sao</span>
-                  <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
-                    <span
-                      className={`absolute left-0 top-0 h-full w-[${
-                        commentsFetch?.data?.filter(
-                          (comment) => comment.rating === 2,
-                        ).length *
-                          10 >
-                        100
-                          ? 100
-                          : commentsFetch?.data?.filter(
-                              (comment) => comment.rating === 2,
-                            ).length * 10
-                      }%] rounded-md bg-primary`}
-                    ></span>
-                  </span>
-                  <span className="inline-block ">
-                    {
-                      commentsFetch?.data?.filter(
-                        (comment) => comment.rating === 2,
-                      ).length
-                    }
-                  </span>
-                </p>
-                <p className="flex items-center gap-x-2">
-                  <span>1 Sao</span>
-                  <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
-                    <span
-                      className={`absolute left-0 top-0 h-full w-[${
-                        commentsFetch?.data?.filter(
-                          (comment) => comment.rating === 1,
-                        ).length *
-                          10 >
-                        100
-                          ? 100
-                          : commentsFetch?.data?.filter(
-                              (comment) => comment.rating === 1,
-                            ).length * 10
-                      }%] rounded-md bg-primary`}
-                    ></span>
-                  </span>
-                  <span className="inline-block ">
-                    {
-                      commentsFetch?.data?.filter(
-                        (comment) => comment.rating === 1,
-                      ).length
-                    }
-                  </span>
-                </p>
+                {[...Array(5).keys()].reverse().map((index) => {
+                  return (
+                    <p className="flex items-center gap-x-2" key={index}>
+                      <span>{index + 1} Sao</span>
+                      <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
+                        <span
+                          style={{
+                            width: `${
+                              commentsFetch?.ratingCounts?.[index + 1] * 10 >
+                              100
+                                ? 100
+                                : commentsFetch?.ratingCounts?.[index + 1] * 10
+                            }%`,
+                          }}
+                          className="absolute left-0 top-0 h-full rounded-md bg-primary"
+                        ></span>
+                      </span>
+                      <span className="inline-block ">
+                        {commentsFetch?.ratingCounts?.[index + 1]}
+                      </span>
+                    </p>
+                  );
+                })}
               </div>
               <div className="col-span-1 flex  items-center justify-center border text-center">
                 <div>
@@ -418,7 +255,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
             </div>
             {isShowComment && (
               <Loading isLoading={isPending}>
-                <div className="animate__zoomIn animate__animated  relative mt-10 grid gap-y-3 border bg-[#f5f5f5] p-3">
+                <div className="animate__fadeIn animate__animated  relative mt-10 grid gap-y-3 border bg-[#f5f5f5] p-3">
                   <p>Bạn muốn đánh giá sản phẩm bao nhiêu sao?</p>
                   <p>
                     <span className="mr-2 flex items-center ">
@@ -564,6 +401,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
                               placeholder="Câu trả lời"
                               className="flex-1 border border-primary px-2 py-1 outline-none"
                               value={replyText}
+                              autoFocus={replyingToComment === comment.id}
                               onChange={(e) => setReplyText(e.target.value)}
                             ></input>
                             <button
@@ -626,8 +464,58 @@ const ProductDetailsComponent = ({ idProduct }) => {
               </div>
             )}
           </div>
-          <div className="col-span-1 rounded-md p-2">
-            <WarrantyComponent />
+          <div className="col-span-2 rounded-md ">
+            <div className=" rounded-md border p-2">
+              <h3 className="font-semibold">Thông số kĩ thuật</h3>
+              <ul className="boder mt-2 overflow-hidden rounded-md">
+                <li className=" flex bg-[#F2F2F2] px-2 py-3">
+                  <span className="flex-1">Kích thước màn hình </span>
+                  <span className="flex-1">{productConfig?.ScreenSize}</span>
+                </li>
+                <li className="flex  px-2 py-3">
+                  <span className="flex-1">Công nghệ màn hình </span>
+                  <span className="flex-1">
+                    {productConfig?.ScreenTechnology}
+                  </span>
+                </li>
+                <li className="flex bg-[#F2F2F2] px-2 py-3">
+                  <span className="flex-1">Camera sau </span>
+                  <span className="flex-1">{productConfig?.AfterCamera}</span>
+                </li>
+                <li className="flex  px-2 py-3">
+                  <span className="flex-1">Camera trước </span>
+                  <span className="flex-1">{productConfig?.BeforeCamera} </span>
+                </li>
+                <li className="flex bg-[#F2F2F2] px-2 py-3">
+                  <span className="flex-1">Chipset </span>
+                  <span className="flex-1">{productConfig?.Chipset} </span>
+                </li>
+                <li className="flex  px-2 py-3">
+                  <span className="flex-1">Dung lượng Ram </span>
+                  <span className="flex-1">{productConfig?.Ram} </span>
+                </li>
+                <li className="flex bg-[#F2F2F2] px-2 py-3">
+                  <span className="flex-1">Bộ nhớ trong </span>
+                  <span className="flex-1">{productConfig?.Storage} </span>
+                </li>
+                <li className=" flex px-2 py-3">
+                  <span className="flex-1">Pin </span>
+                  <span className="flex-1">{productConfig?.Battery} </span>
+                </li>
+                <li className="flex bg-[#F2F2F2] px-2 py-3">
+                  <span className="flex-1">Hệ điều hành </span>
+                  <span className="flex-1">
+                    {productConfig?.OperatingSystem}
+                  </span>
+                </li>
+                <li className="flex  px-2 py-3">
+                  <span className="flex-1">Độ phân giải màn hình </span>
+                  <span className="flex-1">
+                    {productConfig?.ScreenResolution}
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </Loading>

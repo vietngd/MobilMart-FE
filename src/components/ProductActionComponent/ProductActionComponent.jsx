@@ -35,7 +35,7 @@ const ProductActionComponent = ({ product }) => {
   };
   return (
     <div className="col-span-1  cursor-pointer p-2">
-      <button className=" flex w-full items-center rounded-md border  bg-blue p-2   text-white hover:shadow">
+      <button className=" flex w-full items-center rounded-md border  bg-red-600 p-2   text-white hover:shadow">
         <p className="mr-2">
           <FaCartArrowDown size={"1.5rem"} />
         </p>
