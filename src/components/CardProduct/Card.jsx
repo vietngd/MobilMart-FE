@@ -10,7 +10,7 @@ const Card = ({ card }) => {
 
   return (
     <Link to={`/product/${card.id}`}>
-      <div className="card mb-4">
+      <div className="card-product mb-4">
         <div className="relative flex justify-center">
           <img
             src={imgs[0]}

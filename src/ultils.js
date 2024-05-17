@@ -76,3 +76,33 @@ export async function URLtoFile(url) {
 
   return file;
 }
+
+export function calculateDailySale(apiData) {
+  const dailySale = {};
+
+  // Lấy ngày hiện tại và 15 ngày trước đó
+  const now = new Date();
+  const pastDate = new Date();
+  pastDate.setDate(now.getDate() - 15);
+
+  apiData.forEach((order) => {
+    const orderDate = new Date(order.created_at);
+
+    // Chỉ lấy dữ liệu của ngày hiện tại và 15 ngày trước đó
+    if (orderDate >= pastDate && orderDate <= now) {
+      const date = convertDateTime(order.created_at).day;
+      if (dailySale[date]) {
+        dailySale[date] += order.total_money;
+      } else {
+        dailySale[date] = order.total_money;
+      }
+    }
+  });
+
+  const result = Object.keys(dailySale).map((date) => ({
+    name: `Ngày ${date}`,
+    sale: dailySale[date],
+  }));
+
+  return result;
+}

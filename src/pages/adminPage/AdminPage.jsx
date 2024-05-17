@@ -1,8 +1,7 @@
 import { useState } from "react";
-// import { AppstoreOutlined } from "@ant-design/icons";
 import { MdSmartphone } from "react-icons/md";
 import { Menu } from "antd";
-import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaHome } from "react-icons/fa";
 import { TfiLayoutSlider } from "react-icons/tfi";
 
 import { getItem } from "../../ultils";
@@ -11,17 +10,20 @@ import AdminUser from "./components/AdminUser/AdminUser";
 import AdminProduct from "./components/AdminProduct/AdminProduct";
 import AdminOrder from "./components/AdminOrder/AdminOrder";
 import AdminSlider from "./components/AdminSlider/AdminSlider";
+import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
 
 const items = [
-  getItem("Quản lý tài khoản", "user", <FaUser />),
-  //   getItem("Quản lý danh mục", "category", <AppstoreOutlined />),
-  getItem("Quản lý sản phẩm", "product", <MdSmartphone />),
-  getItem("Quản lý đơn hàng", "order", <FaShoppingCart />),
+  getItem("Trang chủ", "dashboard", <FaHome />),
+  getItem("Tài khoản", "user", <FaUser />),
+  getItem("Sản phẩm", "product", <MdSmartphone />),
+  getItem("Đơn hàng", "order", <FaShoppingCart />),
   getItem("Slider", "slider", <TfiLayoutSlider />),
 ];
 
 const renderContent = (key) => {
   switch (key) {
+    case "dashboard":
+      return <AdminDashboard />;
     case "user":
       return <AdminUser />;
     case "product":
@@ -36,7 +38,7 @@ const renderContent = (key) => {
 };
 
 const AdminPage = () => {
-  const [keyContent, setKeyContent] = useState("user");
+  const [keyContent, setKeyContent] = useState("dashboard");
 
   const handleClick = ({ key }) => {
     setKeyContent(key);
@@ -44,18 +46,21 @@ const AdminPage = () => {
   return (
     <>
       <HeaderComponent isHidenSearch isHidenCart />
-      <div className="flex">
-        <Menu
-          mode="inline"
-          defaultSelectedKeys={["user"]}
-          style={{
-            width: 256,
-            height: "100vh",
-            paddingTop: "70px",
-          }}
-          items={items}
-          onClick={handleClick}
-        />
+      <div className="flex ">
+        <div className="w-[256px]">
+          <Menu
+            mode="inline"
+            defaultSelectedKeys={["dashboard"]}
+            style={{
+              width: 256,
+              height: "100vh",
+              paddingTop: "70px",
+              position: "fixed",
+            }}
+            items={items}
+            onClick={handleClick}
+          />
+        </div>
         <div className="flex-1 px-2 pt-[70px]">{renderContent(keyContent)}</div>
       </div>
     </>

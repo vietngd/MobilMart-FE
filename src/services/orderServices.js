@@ -102,6 +102,21 @@ const deleteOrder = async (access_token, order_id) => {
     console.log(err);
   }
 };
+// Thống kê số lượng bán cho từng category
+
+const statisticalOrder = async (access_token) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axiosJWT.get(`${baseUrl}/order/statistical`, {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 export {
   createOrder,
@@ -110,4 +125,5 @@ export {
   getDetailOrder,
   updateTransport,
   deleteOrder,
+  statisticalOrder,
 };
