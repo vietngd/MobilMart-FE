@@ -66,7 +66,7 @@ const AdminOrder = () => {
         orderId,
       );
 
-      if (res.status === "OK") setUpdateTransportStatus(true); // Cập nhật trạng thái giao hàng
+      if (res && res.status === "OK") setUpdateTransportStatus(true); // Cập nhật trạng thái giao hàng
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {

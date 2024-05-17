@@ -59,20 +59,20 @@ export function convertDateTime(timeString) {
   };
 }
 
-// import { createTransform } from "redux-persist";
+export async function URLtoFile(url) {
+  const res = await fetch(url);
+  const blob = await res.blob();
+  // Gets URL data and read to blob
 
-// export const orderTransform = createTransform(
-//   // Trả về state mới chỉ chứa các trường muốn lưu
-//   (inboundState) => {
-//     return {
-//       ...inboundState,
-//       selectedProduct: [], // Xóa trường selectedProduct
-//     };
-//   },
-//   // Không cần định nghĩa hàm transform cho việc đọc state từ localStorage
-//   (outboundState) => {
-//     return outboundState;
-//   },
-//   // Khai báo tên của reducer muốn áp dụng hàm transform
-//   { whitelist: ["order"] },
-// );
+  const mime = blob.type;
+  const ext = mime.slice(mime.lastIndexOf("/") + 1, mime.length);
+  // Gets blob MIME type (e.g. image/png) and extracts extension
+
+  const file = new File([blob], `filename.${ext}`, {
+    type: mime,
+  });
+
+  file.thumbUrl = await getBase64(file);
+
+  return file;
+}

@@ -38,17 +38,21 @@ const getProductByCategory = async ({
   }
 };
 
-const createProduct = async (data) => {
+const createProduct = async (access_token, data) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
   try {
-    const response = await axios.post(`${baseUrl}/product/create`, data);
+    const response = await axiosJWT.post(`${baseUrl}/product/create`, data, {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    });
     return response.data;
   } catch (err) {
     console.log(err);
   }
 };
 
-const updateProduct = async (id, data, access_token) => {
+const updateProduct = async (id, access_token, data) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
   try {
     const response = await axiosJWT.put(
@@ -76,10 +80,14 @@ const getDetailProduct = async (id) => {
   }
 };
 
-const deleteProduct = async (id) => {
+const deleteProduct = async (id, access_token) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
   try {
-    const response = await axios.delete(`${baseUrl}/product/delete/${id}`);
+    const response = await axiosJWT.delete(`${baseUrl}/product/delete/${id}`, {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    });
     return response.data;
   } catch (err) {
     console.log(err);

@@ -47,7 +47,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
 
   const { data: product, isLoading } = queryProduct;
 
-  const productConfig = product && JSON.parse(product?.data[0]?.configuration);
+  const productConfig = product && product?.data["config"][0];
 
   const fetchCategory = async () => {
     const categoryId = product.data[0].category_id;
@@ -470,48 +470,50 @@ const ProductDetailsComponent = ({ idProduct }) => {
               <ul className="boder mt-2 overflow-hidden rounded-md">
                 <li className=" flex bg-[#F2F2F2] px-2 py-3">
                   <span className="flex-1">Kích thước màn hình </span>
-                  <span className="flex-1">{productConfig?.ScreenSize}</span>
+                  <span className="flex-1">{productConfig?.screen_size}</span>
                 </li>
                 <li className="flex  px-2 py-3">
                   <span className="flex-1">Công nghệ màn hình </span>
                   <span className="flex-1">
-                    {productConfig?.ScreenTechnology}
+                    {productConfig?.screen_technology}
                   </span>
                 </li>
                 <li className="flex bg-[#F2F2F2] px-2 py-3">
                   <span className="flex-1">Camera sau </span>
-                  <span className="flex-1">{productConfig?.AfterCamera}</span>
+                  <span className="flex-1">{productConfig?.after_camera}</span>
                 </li>
                 <li className="flex  px-2 py-3">
                   <span className="flex-1">Camera trước </span>
-                  <span className="flex-1">{productConfig?.BeforeCamera} </span>
+                  <span className="flex-1">
+                    {productConfig?.before_camera}{" "}
+                  </span>
                 </li>
                 <li className="flex bg-[#F2F2F2] px-2 py-3">
                   <span className="flex-1">Chipset </span>
-                  <span className="flex-1">{productConfig?.Chipset} </span>
+                  <span className="flex-1">{productConfig?.chipset} </span>
                 </li>
                 <li className="flex  px-2 py-3">
                   <span className="flex-1">Dung lượng Ram </span>
-                  <span className="flex-1">{productConfig?.Ram} </span>
+                  <span className="flex-1">{productConfig?.ram} </span>
                 </li>
                 <li className="flex bg-[#F2F2F2] px-2 py-3">
                   <span className="flex-1">Bộ nhớ trong </span>
-                  <span className="flex-1">{productConfig?.Storage} </span>
+                  <span className="flex-1">{productConfig?.storage} </span>
                 </li>
                 <li className=" flex px-2 py-3">
                   <span className="flex-1">Pin </span>
-                  <span className="flex-1">{productConfig?.Battery} </span>
+                  <span className="flex-1">{productConfig?.battery} </span>
                 </li>
                 <li className="flex bg-[#F2F2F2] px-2 py-3">
                   <span className="flex-1">Hệ điều hành </span>
                   <span className="flex-1">
-                    {productConfig?.OperatingSystem}
+                    {productConfig?.operating_system}
                   </span>
                 </li>
                 <li className="flex  px-2 py-3">
                   <span className="flex-1">Độ phân giải màn hình </span>
                   <span className="flex-1">
-                    {productConfig?.ScreenResolution}
+                    {productConfig?.screen_resolution}
                   </span>
                 </li>
               </ul>
