@@ -3,18 +3,21 @@ import { useState } from "react";
 import { MdSmartphone } from "react-icons/md";
 import { Menu } from "antd";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
+import { TfiLayoutSlider } from "react-icons/tfi";
 
 import { getItem } from "../../ultils";
 import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
 import AdminUser from "./components/AdminUser/AdminUser";
 import AdminProduct from "./components/AdminProduct/AdminProduct";
 import AdminOrder from "./components/AdminOrder/AdminOrder";
+import AdminSlider from "./components/AdminSlider/AdminSlider";
 
 const items = [
   getItem("Quản lý tài khoản", "user", <FaUser />),
   //   getItem("Quản lý danh mục", "category", <AppstoreOutlined />),
   getItem("Quản lý sản phẩm", "product", <MdSmartphone />),
   getItem("Quản lý đơn hàng", "order", <FaShoppingCart />),
+  getItem("Slider", "slider", <TfiLayoutSlider />),
 ];
 
 const renderContent = (key) => {
@@ -25,6 +28,8 @@ const renderContent = (key) => {
       return <AdminProduct />;
     case "order":
       return <AdminOrder />;
+    case "slider":
+      return <AdminSlider />;
     default:
       return <></>;
   }

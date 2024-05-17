@@ -81,6 +81,20 @@ const MyOrderPage = () => {
                 <p className="mt-3 text-left">
                   Địa chỉ nhận hàng : <span>{order?.address}</span>
                 </p>
+                <p className="mt-3 text-left">
+                  Tình trạng đơn hàng :{" "}
+                  <span>
+                    {order.order_status_transport === 0 ? (
+                      <span className="text-orange-600">
+                        Người bán đang chuẩn bị hàng
+                      </span>
+                    ) : (
+                      <span className="text-green-500">
+                        Đơn hàng đã giao cho đơn vị vận chuyển
+                      </span>
+                    )}
+                  </span>
+                </p>
                 <div className="mt-3 flex justify-between">
                   <span className="mr-3 ">
                     Phương thức thanh toán :{" "}
@@ -92,11 +106,13 @@ const MyOrderPage = () => {
                       <span className="text-orange-600">Thanh toán Online</span>
                     )}
                   </span>
-                  {!order.order_status_payment && (
-                    <button className=" rounded border px-5 py-2">
-                      Hủy đơn hàng
-                    </button>
-                  )}
+
+                  {!order.order_status_payment &&
+                    !order.order_status_transport && (
+                      <button className=" rounded border px-5 py-2">
+                        Hủy đơn hàng
+                      </button>
+                    )}
                 </div>
               </div>
             );

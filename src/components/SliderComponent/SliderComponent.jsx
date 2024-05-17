@@ -2,8 +2,20 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
+import { useEffect, useState } from "react";
+import * as SliderServices from "../../services/SliderServices";
 
-const SliderComponent = ({ sliders }) => {
+const SliderComponent = () => {
+  const [sliders, setSliders] = useState([]);
+  const fetchSliders = async () => {
+    const res = await SliderServices.GetAllSlider();
+    if (res && res.status === "OK") {
+      setSliders(res.data);
+    }
+  };
+  useEffect(() => {
+    fetchSliders();
+  }, []);
   return (
     <div className="col-span-4 overflow-hidden rounded-xl shadow-md">
       <Swiper
@@ -20,7 +32,7 @@ const SliderComponent = ({ sliders }) => {
           return (
             <SwiperSlide key={index}>
               <img
-                src={slider}
+                src={slider.link}
                 alt="slider"
                 className="w-full rounded-xl"
               ></img>

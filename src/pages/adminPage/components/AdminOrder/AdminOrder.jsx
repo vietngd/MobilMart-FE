@@ -82,7 +82,7 @@ const AdminOrder = () => {
     setLoading(true);
     try {
       const res = await OrderServices.deleteOrder(user?.access_token, orderId);
-      if (res.status === "OK") setDeleteStatus(true); // Cập nhật trạng thái giao hàng
+      if (res.status === "OK") setDeleteStatus(true);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
