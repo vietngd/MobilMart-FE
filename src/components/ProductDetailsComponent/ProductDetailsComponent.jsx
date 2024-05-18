@@ -81,7 +81,16 @@ const ProductDetailsComponent = ({ idProduct }) => {
 
   const mutationReplyComment = useMutationHook(async (data) => {
     const res = await CommentServices.ReplyComment(data);
+    return res;
+  });
 
+  const mutationDeleteComment = useMutationHook(async (data) => {
+    const { id, access_token, product_id } = data;
+    const res = await CommentServices.DeleteComment(
+      id,
+      access_token,
+      product_id,
+    );
     return res;
   });
 
@@ -91,6 +100,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
     isPending: isPendingReply,
     isError: isErrorReply,
   } = mutationReplyComment;
+  const { data: dataDeleteComment } = mutationDeleteComment;
 
   useEffect(() => {
     if (data && data.status === "OK") {
@@ -135,7 +145,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
       setCommentsFetch(await fetchComment());
     }
     fetchData();
-  }, [pageNumber, data, dataReplyComment]);
+  }, [pageNumber, data, dataReplyComment, dataDeleteComment]);
 
   // trả lời comment
   const [replyingToComment, setReplyingToComment] = useState(null);
@@ -154,6 +164,17 @@ const ProductDetailsComponent = ({ idProduct }) => {
     };
 
     mutationReplyComment.mutateAsync(data);
+  };
+
+  const handleDeleteComment = (id) => {
+    if (user && user.access_token) {
+      const data = {
+        id,
+        access_token: user?.access_token,
+        product_id: idProduct,
+      };
+      mutationDeleteComment.mutateAsync(data);
+    }
   };
 
   const handleGetPageNumber = (pageNumber) => {
@@ -385,12 +406,22 @@ const ProductDetailsComponent = ({ idProduct }) => {
                               {comment.reply_content === null &&
                                 user?.isAdmin === 1 && (
                                   <span
-                                    className=" cursor-pointer text-red-400"
+                                    className=" mr-3 cursor-pointer text-red-400"
                                     onClick={() => handleReply(comment.id)}
                                   >
                                     Trả lời
                                   </span>
                                 )}
+                              {user?.isAdmin === 1 && (
+                                <span
+                                  className=" cursor-pointer text-red-400"
+                                  onClick={() =>
+                                    handleDeleteComment(comment.id)
+                                  }
+                                >
+                                  Xóa
+                                </span>
+                              )}
                             </div>
                           </div>
                         </div>

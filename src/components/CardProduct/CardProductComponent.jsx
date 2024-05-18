@@ -28,28 +28,29 @@ const CardProductComponent = (props) => {
 
   return (
     <Loading isLoading={isLoading}>
-      <div className="relative">
-        <div className="mb-5 mt-10">
-          <CardProductHeader title={name} />
+      {data?.Products?.length > 0 && (
+        <div className="relative">
+          <div className="mb-5 mt-10">
+            <CardProductHeader title={name} />
+          </div>
+          <div className="grid grid-cols-5 gap-x-3">
+            {data?.Products?.map((item, index) => {
+              return <Card key={index} card={item} />;
+            })}
+          </div>
+          <button
+            className={
+              data?.Products.length === data?.pagination.totalCount
+                ? "absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300"
+                : "absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-white"
+            }
+            onClick={handleLoadMore}
+            disabled={data?.Products.length === data?.pagination.totalCount}
+          >
+            Xem thêm
+          </button>
         </div>
-        <div className="grid grid-cols-5 gap-x-3">
-          {data?.Products.map((item, index) => {
-            return <Card key={index} card={item} />;
-          })}
-        </div>
-
-        <button
-          className={
-            data?.Products.length === data?.pagination.totalCount
-              ? "absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300"
-              : "absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-white"
-          }
-          onClick={handleLoadMore}
-          disabled={data?.Products.length === data?.pagination.totalCount}
-        >
-          Xem thêm
-        </button>
-      </div>
+      )}
     </Loading>
   );
 };

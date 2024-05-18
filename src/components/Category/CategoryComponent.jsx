@@ -39,7 +39,7 @@ const CategoryComponent = () => {
         categories.map((item, index) => (
           <CategoryItem
             name={item.name}
-            Icon={Icons[index].Icon}
+            Icon={Icons[index]?.Icon || IoPhonePortraitOutline}
             key={index}
             id={item.id}
           />

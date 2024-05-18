@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     setIsLoading(true);
     const { decoded, accessToken } = handleDecoded();
-    if (decoded?.id) {
+    if (decoded && decoded?.id) {
       handleGetDetailUser(decoded.id, accessToken);
     }
     handleGetCategories();
@@ -38,18 +38,18 @@ function App() {
   //Chạy trước khi axios gửi request đến máy chủ
   UserServices.axiosJWT.interceptors.request.use(
     async (config) => {
-      // Do something before request is sent
       const { decoded } = handleDecoded();
 
       const currentTime = new Date();
 
       if (decoded?.exp < currentTime.getTime() / 1000) {
         const data = await UserServices.refreshToken();
-        //Thay đổi header trước khi gửi request
-        // localStorage.setItem(
-        //   "access_token",
-        //   JSON.stringify(data?.access_token),
-        // );
+
+        localStorage.setItem(
+          "access_token",
+          JSON.stringify(data?.access_token),
+        );
+
         config.headers["token"] = `Bearer ${data?.access_token}`;
       }
 

@@ -3,7 +3,7 @@ import { MdSmartphone } from "react-icons/md";
 import { Menu } from "antd";
 import { FaShoppingCart, FaUser, FaHome } from "react-icons/fa";
 import { TfiLayoutSlider } from "react-icons/tfi";
-
+import { BiSolidCategory } from "react-icons/bi";
 import { getItem } from "../../ultils";
 import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
 import AdminUser from "./components/AdminUser/AdminUser";
@@ -11,13 +11,15 @@ import AdminProduct from "./components/AdminProduct/AdminProduct";
 import AdminOrder from "./components/AdminOrder/AdminOrder";
 import AdminSlider from "./components/AdminSlider/AdminSlider";
 import AdminDashboard from "./components/AdminDashboard/AdminDashboard";
+import AdminCategory from "./components/AdminCategory/AdminCategory";
 
 const items = [
   getItem("Trang chủ", "dashboard", <FaHome />),
-  getItem("Tài khoản", "user", <FaUser />),
-  getItem("Sản phẩm", "product", <MdSmartphone />),
-  getItem("Đơn hàng", "order", <FaShoppingCart />),
-  getItem("Slider", "slider", <TfiLayoutSlider />),
+  getItem("Quản lý tài khoản", "user", <FaUser />),
+  getItem("Danh mục sản phẩm", "category", <BiSolidCategory />),
+  getItem("Quản lý sản phẩm", "product", <MdSmartphone />),
+  getItem("Quản lý đơn hàng", "order", <FaShoppingCart />),
+  getItem("Quản lý slider", "slider", <TfiLayoutSlider />),
 ];
 
 const renderContent = (key) => {
@@ -26,6 +28,8 @@ const renderContent = (key) => {
       return <AdminDashboard />;
     case "user":
       return <AdminUser />;
+    case "category":
+      return <AdminCategory />;
     case "product":
       return <AdminProduct />;
     case "order":

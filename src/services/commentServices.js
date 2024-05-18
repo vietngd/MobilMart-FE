@@ -41,5 +41,21 @@ const ReplyComment = async (data) => {
     console.log(err);
   }
 };
+const DeleteComment = async (id, access_token, product_id) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axios.delete(`${baseUrl}/comment/delete/${id}`, {
+      params: {
+        product_id,
+      },
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-export { createComment, getAllComment, ReplyComment };
+export { createComment, getAllComment, ReplyComment, DeleteComment };

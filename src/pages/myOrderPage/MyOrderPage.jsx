@@ -3,11 +3,16 @@ import * as OrderServices from "../../services/orderServices";
 import { useQuery } from "@tanstack/react-query";
 import { convertToMonney } from "../../ultils";
 import noOrder from "../../assets/images/no-order.jpg";
+import * as message from "../../components/Message/MessageComponent";
+import ModalComponent from "../../components/Modal/ModalComponent";
+import { useState } from "react";
 
 const MyOrderPage = () => {
   const user = useSelector((state) => state.user);
+  const [isModalCancel, setIsModalCancel] = useState(false);
+  const [idCancel, setIdCancel] = useState("");
 
-  //Get All Product từ CSDL
+  // Fetch orders function
   const fetchOrders = async () => {
     const access_token = user?.access_token;
     const user_id = user?.id;
@@ -15,27 +20,46 @@ const MyOrderPage = () => {
     return res;
   };
 
-  const queryOrders = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["order", user],
     queryFn: fetchOrders,
     retry: 3,
     retryDelay: 1000,
   });
 
-  const { data } = queryOrders;
+  const cancelOrder = async (id, access_token) => {
+    const res = await OrderServices.cancelOrder(id, access_token);
+    if (res && res.status === "OK") {
+      message.success("Yêu cầu hủy đã được ghi nhận");
+      setIsModalCancel(false);
+      refetch();
+    } else if (res && res.status !== "OK") {
+      message.error("Có lỗi thử lại sau!");
+      setIsModalCancel(false);
+    }
+  };
+
+  const handleCancelOrder = () => {
+    if (user && user?.access_token && idCancel) {
+      cancelOrder(idCancel, user?.access_token);
+    }
+  };
 
   return (
-    <div className=" min-h-screen bg-cart_bg">
+    <div className="min-h-screen bg-cart_bg">
       <div className="m-auto max-w-screen-xl pb-3 pt-3">
         <h1 className="mt-3 text-center text-xl">THÔNG TIN ĐƠN HÀNG</h1>
         {data && data?.data?.length > 0 ? (
           data?.data?.map((order) => {
             return (
               <div className="mt-5 rounded bg-white p-2" key={order?.order_id}>
-                <div className="text-right text-orange-600">
-                  {order.order_status_payment
-                    ? "ĐÃ THANH TOÁN"
-                    : "CHỜ THANH TOÁN"}
+                <div className="mb-3 flex justify-between text-orange-600">
+                  <span>Mã đơn hàng : {order?.order_id}</span>
+                  <span>
+                    {order?.order_status_payment
+                      ? "ĐÃ THANH TOÁN"
+                      : "CHỜ THANH TOÁN"}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div>
@@ -68,7 +92,7 @@ const MyOrderPage = () => {
                       );
                     })}
                   </div>
-                  <p className=" text-right">
+                  <p className="text-right">
                     Số tiền phải trả :{" "}
                     <span className="text-red-600">
                       {convertToMonney(order?.total_money)}
@@ -108,11 +132,23 @@ const MyOrderPage = () => {
                   </span>
 
                   {!order.order_status_payment &&
-                    !order.order_status_transport && (
-                      <button className=" rounded border px-5 py-2">
+                  !order.order_status_transport ? (
+                    !order.order_status_cancel ? (
+                      <button
+                        className="rounded border px-5 py-2"
+                        onClick={() => {
+                          setIdCancel(order.order_id);
+                          setIsModalCancel(true);
+                        }}
+                      >
                         Hủy đơn hàng
                       </button>
-                    )}
+                    ) : (
+                      <span>Yêu cầu hủy đã ghi nhận</span>
+                    )
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             );
@@ -123,6 +159,16 @@ const MyOrderPage = () => {
           </div>
         )}
       </div>
+
+      <ModalComponent
+        title="Xóa đơn hàng"
+        open={isModalCancel}
+        onCancel={() => setIsModalCancel(false)}
+        onOk={handleCancelOrder}
+        okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
+      >
+        <div>Bạn có chắc xóa đơn hàng này không?</div>
+      </ModalComponent>
     </div>
   );
 };

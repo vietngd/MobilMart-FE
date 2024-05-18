@@ -166,7 +166,7 @@ const AdminProduct = () => {
 
   const columns = [
     {
-      title: "Name",
+      title: "Tên sản phẩm",
       dataIndex: "name",
       key: "Name",
       ...getColumnSearchProps("name"),
@@ -177,22 +177,28 @@ const AdminProduct = () => {
       key: "Hot",
     },
     {
-      title: "Price",
+      title: "Giá cũ",
       dataIndex: "price",
       key: "price",
       sorter: (a, b) => a.price - b.price,
     },
     {
-      title: "Sale",
+      title: "Giá sale",
       key: "Sale",
       dataIndex: "sale",
       sorter: (a, b) => a.sale - b.sale,
     },
     {
-      title: "Quantity",
+      title: "Số lượng còn",
       key: "Quantity",
       dataIndex: "quantity",
       sorter: (a, b) => a.quantity - b.quantity,
+    },
+    {
+      title: "Số lượng bán",
+      key: "Total_pay",
+      dataIndex: "total_pay",
+      sorter: (a, b) => a.total_pay - b.total_pay,
     },
     {
       title: "Action",

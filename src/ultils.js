@@ -100,7 +100,7 @@ export function calculateDailySale(apiData) {
   });
 
   const result = Object.keys(dailySale).map((date) => ({
-    name: `Ngày ${date}`,
+    name: `${date}`,
     sale: dailySale[date],
   }));
 

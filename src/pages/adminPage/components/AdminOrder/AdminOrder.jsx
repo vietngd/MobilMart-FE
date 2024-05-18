@@ -13,8 +13,6 @@ const AdminOrder = () => {
   const [isOrderDetail, setIsOrderDetail] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [visiblePopover, setVisiblePopover] = useState();
-  const [updateTransportStatus, setUpdateTransportStatus] = useState(false);
-  const [deleteStatus, setDeleteStatus] = useState(false);
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -30,7 +28,7 @@ const AdminOrder = () => {
 
   useEffect(() => {
     fetchOrders();
-  }, [updateTransportStatus, deleteStatus]); // Sử dụng updateTransportStatus làm dependency
+  }, []); // Sử dụng updateTransportStatus làm dependency
 
   const handleDetailOrder = (orderId) => {
     setOrderId(orderId);
@@ -61,15 +59,11 @@ const AdminOrder = () => {
   const updateTransport = async (orderId) => {
     setLoading(true);
     try {
-      const res = await OrderServices.updateTransport(
-        user?.access_token,
-        orderId,
-      );
-
-      if (res && res.status === "OK") setUpdateTransportStatus(true); // Cập nhật trạng thái giao hàng
+      await OrderServices.updateTransport(user?.access_token, orderId);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
+      fetchOrders();
       setLoading(false);
     }
   };
@@ -82,7 +76,7 @@ const AdminOrder = () => {
     setLoading(true);
     try {
       const res = await OrderServices.deleteOrder(user?.access_token, orderId);
-      if (res.status === "OK") setDeleteStatus(true);
+      if (res.status === "OK") fetchOrders();
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
@@ -106,11 +100,15 @@ const AdminOrder = () => {
             <table className="min-w-full border-collapse rounded-lg border bg-white shadow-md">
               <thead>
                 <tr>
-                  <th className="border   px-4 py-2 text-left">#</th>
+                  <th className="border px-4 py-2 text-left">#</th>
+                  <th className="border px-4 py-2 text-left">Mã Đơn</th>
                   <th className="border px-4 py-2 text-left">Khách hàng</th>
-                  <th className="border px-4 py-2 text-left">Số điện thoại</th>
+                  <th className="border px-4 py-2 text-left">SĐT</th>
                   <th className="border px-4 py-2 text-left">Thanh toán</th>
                   <th className="border px-4 py-2 text-left">Trạng thái</th>
+                  <th className="border px-4 py-2 text-left">
+                    Yêu cầu khách hàng
+                  </th>
                   <th className="border px-4 py-2 text-left">Ngày đặt</th>
                   <th className="border px-4 py-2 text-left">Tổng tiền</th>
                   <th className="border px-4 py-2 text-left">Thao tác</th>
@@ -123,6 +121,7 @@ const AdminOrder = () => {
                     return (
                       <tr className=" hover:bg-gray-100" key={index}>
                         <td className="border px-4 py-2">{index + 1}</td>
+                        <td className="border px-4 py-2">{order?.id}</td>
                         <td className="border px-4 py-2">{order?.name}</td>
                         <td className="border px-4 py-2">{order?.phone}</td>
                         <td className="border px-4 py-2">
@@ -140,6 +139,17 @@ const AdminOrder = () => {
                           ) : (
                             <span className="rounded bg-yellow-300 p-1">
                               Đang xử lý
+                            </span>
+                          )}
+                        </td>
+                        <td className="border px-4 py-2">
+                          {order?.order_status_cancel === 1 ? (
+                            <span className="rounded bg-red-500 p-1 text-white">
+                              Khách yêu cầu hủy
+                            </span>
+                          ) : (
+                            <span className="rounded bg-green-500 p-1 text-white ">
+                              Không
                             </span>
                           )}
                         </td>

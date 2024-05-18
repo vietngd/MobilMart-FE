@@ -83,6 +83,9 @@ function AdminDashboard() {
       fetchStatisticalOrder(user.access_token);
     }
   }, [user]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const renderCustomizedLabel = ({
     cx,
