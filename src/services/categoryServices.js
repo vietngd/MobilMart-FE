@@ -55,4 +55,29 @@ const deleteCategory = async (id, access_token) => {
   }
 };
 
-export { getAllCategory, getCategory, createCategory, deleteCategory };
+const updateCategory = async (id, access_token, name) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axiosJWT.put(
+      `${baseUrl}/category/update/${id}`,
+      {
+        name,
+      },
+      {
+        headers: {
+          token: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+export {
+  getAllCategory,
+  getCategory,
+  createCategory,
+  deleteCategory,
+  updateCategory,
+};

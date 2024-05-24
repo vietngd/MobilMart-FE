@@ -1,9 +1,11 @@
 import { IoIosStar } from "react-icons/io";
 import { useQuery } from "@tanstack/react-query";
 import { AiOutlineLike } from "react-icons/ai";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import "animate.css";
+import { FaRegStarHalfStroke } from "react-icons/fa6";
+
 import ImgShowComponent from "../ImgShowComponent/ImgShowComponent";
 import InfoProductComponent from "../InfoProductComponent/InfoProductComponent";
 import WarrantyComponent from "../WarrantyComponent/WarrantyComponent";
@@ -13,7 +15,7 @@ import * as CommentServices from "../../services/commentServices.js";
 import Loading from "../Loading/LoadingComponent.jsx";
 import Breadcrumb from "../Breadcrumb/Breadcrumb.jsx";
 import { useMutationHook } from "../../hooks/userMutationHook.js";
-import { convertDateTime } from "../../ultils.js";
+import { calculateAverageRating, convertDateTime } from "../../ultils.js";
 import logo from "../../assets/images/logo-2.png";
 import Pagination from "../Pagination/Pagination.jsx";
 
@@ -145,7 +147,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
       setCommentsFetch(await fetchComment());
     }
     fetchData();
-  }, [pageNumber, data, dataReplyComment, dataDeleteComment]);
+  }, [pageNumber, data, dataReplyComment, dataDeleteComment, idProduct]);
 
   // trả lời comment
   const [replyingToComment, setReplyingToComment] = useState(null);
@@ -181,6 +183,10 @@ const ProductDetailsComponent = ({ idProduct }) => {
     setPageNumber(pageNumber);
   };
 
+  const averageRating = useMemo(() => {
+    return calculateAverageRating(commentsFetch?.ratingCounts);
+  }, [commentsFetch]);
+
   return (
     <>
       <Loading isLoading={isLoading}>
@@ -194,6 +200,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
             <InfoProductComponent
               product={product?.data[0]}
               total_comments={commentsFetch?.pagination?.totalCount}
+              rating_counts={commentsFetch?.ratingCounts}
             />
           </div>
           <div className="col-span-2">
@@ -202,24 +209,36 @@ const ProductDetailsComponent = ({ idProduct }) => {
         </div>
 
         {/* Đánh giá */}
-        <div className="mt-10 grid grid-cols-7 gap-x-1">
+        <div className=" mt-10 grid grid-cols-7 gap-x-1">
           <div className="col-span-5">
-            <div className="grid h-36 grid-cols-4">
+            <div className="mb-3 grid grid-cols-4">
               <div className="col-span-1 grid gap-y-3 border py-10 text-center">
-                <p className="text-xl">5/5</p>
+                <p className="text-xl">{`${averageRating}/5`}</p>
                 <p className="flex justify-center">
                   <span className="mr-2 flex items-center text-primary">
                     {[...Array(5)].map((star, index) => {
                       const ratingValue = index + 1;
+                      const isHalfStar = averageRating - index >= 0.5;
                       return (
-                        <IoIosStar
-                          size={"1.5rem"}
-                          key={index}
-                          style={{
-                            color:
-                              ratingValue <= rating ? "#978535" : "#a29e9e",
-                          }}
-                        />
+                        <span key={index}>
+                          {ratingValue <= averageRating ? (
+                            <IoIosStar
+                              size={"1.5rem"}
+                              style={{ color: "#978535" }}
+                            />
+                          ) : isHalfStar &&
+                            parseInt(averageRating) === ratingValue - 1 ? (
+                            <FaRegStarHalfStroke
+                              size={"1.5rem"}
+                              style={{ color: "#978535" }}
+                            />
+                          ) : (
+                            <IoIosStar
+                              size={"1.5rem"}
+                              style={{ color: "#a29e9e" }}
+                            />
+                          )}
+                        </span>
                       );
                     })}
                   </span>
@@ -267,6 +286,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
                         setMessage("");
                       }
                       setIsShowComment(!isShowComment);
+                      setRating(5);
                     }}
                   >
                     Gửi câu hỏi
@@ -276,7 +296,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
             </div>
             {isShowComment && (
               <Loading isLoading={isPending}>
-                <div className="animate__fadeIn animate__animated  relative mt-10 grid gap-y-3 border bg-[#f5f5f5] p-3">
+                <div className="animate__fadeIn animate__animated  relative grid gap-y-3 border bg-[#f5f5f5] p-3">
                   <p>Bạn muốn đánh giá sản phẩm bao nhiêu sao?</p>
                   <p>
                     <span className="mr-2 flex items-center ">
@@ -361,7 +381,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   return (
                     <div key={comment.id}>
                       <div>
-                        <div className=" mt-10 flex py-3">
+                        <div className=" mt-3 flex py-3">
                           <div className="mr-3 flex h-10 w-10 items-center justify-center bg-[#ebe9eb] ">
                             {comment.name.split("")[0].toUpperCase()}
                           </div>

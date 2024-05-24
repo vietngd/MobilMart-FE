@@ -47,13 +47,13 @@ const FooterComponent = () => {
           <ul className="mt-4 grid max-w-[80%] list-disc gap-y-3 text-sm">
             <li>Hotline CSKH: 0389389891</li>
             <li className="flex">
-              <button className="min-w-30 mr-2 flex  items-center rounded-md border border-red-300 px-3 py-2 hover:border-red-600">
+              <button className="min-w-30 mr-2 flex  items-center rounded-md border border-red-600 px-3 py-2">
                 <span className="mr-2">
                   <img src={google_logo} alt="icon" className="w-5" />
                 </span>
                 <span>Email</span>
               </button>
-              <button className=" min-w-30 border-blue-300 hover:border-blue-600 flex items-center rounded-md border px-3 py-2">
+              <button className=" min-w-30 border-blue-300 flex items-center rounded-md border border-blue px-3 py-2">
                 <span className="mr-2">
                   <img src={facebook_logo} alt="icon" className="w-5" />
                 </span>

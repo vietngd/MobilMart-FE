@@ -2,9 +2,10 @@ import { useSelector } from "react-redux";
 import * as OrderServices from "../../../../services/orderServices";
 import { useEffect, useState } from "react";
 import Loading from "../../../../components/Loading/LoadingComponent";
-import { convertDateTime } from "../../../../ultils.js";
+import { convertDateTime, convertToMonney } from "../../../../ultils.js";
 import AdminOrderDetail from "./AdminOrderDetail.jsx";
 import { Popover } from "antd";
+import Pagination from "../../../../components/Pagination/Pagination.jsx";
 
 const AdminOrder = () => {
   const user = useSelector((state) => state.user);
@@ -13,12 +14,18 @@ const AdminOrder = () => {
   const [isOrderDetail, setIsOrderDetail] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [visiblePopover, setVisiblePopover] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
 
   const fetchOrders = async () => {
     setLoading(true);
     try {
-      const res = await OrderServices.getAllOrder(user?.access_token);
-      setOrders(res.data);
+      const res = await OrderServices.getAllOrder(
+        user?.access_token,
+        pageNumber,
+        10,
+      );
+
+      setOrders(res);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
@@ -28,7 +35,7 @@ const AdminOrder = () => {
 
   useEffect(() => {
     fetchOrders();
-  }, []); // Sử dụng updateTransportStatus làm dependency
+  }, [pageNumber]); // Sử dụng updateTransportStatus làm dependency
 
   const handleDetailOrder = (orderId) => {
     setOrderId(orderId);
@@ -89,6 +96,10 @@ const AdminOrder = () => {
     setVisiblePopover("");
   };
 
+  const handleGetPageNumber = (pageNumber) => {
+    setPageNumber(pageNumber);
+  };
+
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold">
@@ -97,10 +108,9 @@ const AdminOrder = () => {
       {!isOrderDetail ? (
         <div className="overflow-x-auto">
           <Loading isLoading={loading}>
-            <table className="min-w-full border-collapse rounded-lg border bg-white shadow-md">
+            <table className="mb-3 min-w-full border-collapse rounded-lg border bg-white">
               <thead>
                 <tr>
-                  <th className="border px-4 py-2 text-left">#</th>
                   <th className="border px-4 py-2 text-left">Mã Đơn</th>
                   <th className="border px-4 py-2 text-left">Khách hàng</th>
                   <th className="border px-4 py-2 text-left">SĐT</th>
@@ -116,11 +126,10 @@ const AdminOrder = () => {
               </thead>
 
               <tbody>
-                {orders && orders.length > 0 ? (
-                  orders?.map((order, index) => {
+                {orders && orders.data && orders?.data.length > 0 ? (
+                  orders?.data?.map((order, index) => {
                     return (
                       <tr className=" hover:bg-gray-100" key={index}>
-                        <td className="border px-4 py-2">{index + 1}</td>
                         <td className="border px-4 py-2">{order?.id}</td>
                         <td className="border px-4 py-2">{order?.name}</td>
                         <td className="border px-4 py-2">{order?.phone}</td>
@@ -131,7 +140,7 @@ const AdminOrder = () => {
                             <span className="text-red-500">Đã thanh toán</span>
                           )}
                         </td>
-                        <td className="border px-4 py-2">
+                        <td className="border px-4 py-2 text-center">
                           {order?.order_status_transport === 1 ? (
                             <span className="rounded bg-green-500 p-1 text-white">
                               Đã gửi hàng
@@ -142,7 +151,7 @@ const AdminOrder = () => {
                             </span>
                           )}
                         </td>
-                        <td className="border px-4 py-2">
+                        <td className="border px-4 py-2 text-center">
                           {order?.order_status_cancel === 1 ? (
                             <span className="rounded bg-red-500 p-1 text-white">
                               Khách yêu cầu hủy
@@ -157,11 +166,11 @@ const AdminOrder = () => {
                           {convertDateTime(order?.created_at)?.day}
                         </td>
                         <td className="border px-4 py-2">
-                          {order.total_money}
+                          {convertToMonney(order.total_money)}
                         </td>
                         <td className="border px-4 py-2">
                           <button
-                            className="rounded border bg-green-500 px-2 py-1 text-white"
+                            className="mr-1 rounded border bg-green-500 px-2 py-1 text-white"
                             onClick={() => handleDetailOrder(order.id)}
                           >
                             Xem
@@ -169,10 +178,13 @@ const AdminOrder = () => {
                           <Popover
                             content={content}
                             trigger="click"
-                            open={visiblePopover === order.id}
+                            open={
+                              visiblePopover === order.id &&
+                              order?.order_status_transport !== 1
+                            }
                           >
                             <button
-                              className="rounded border bg-red-500 px-2 py-1 text-white"
+                              className={`rounded border px-2 py-1 ${order?.order_status_transport !== 1 ? " bg-red-500 text-white" : "cursor-default"}`}
                               onClick={() => {
                                 setOrderId(order.id);
                                 if (visiblePopover === order.id) {
@@ -199,6 +211,15 @@ const AdminOrder = () => {
               </tbody>
             </table>
           </Loading>
+          {/* Phân trang*/}
+          {orders?.pagination?.totalPages > 1 && (
+            <div className="flex justify-center">
+              <Pagination
+                totalPage={orders?.pagination?.totalPages}
+                getPageNumber={handleGetPageNumber}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <AdminOrderDetail orderId={orderId} />

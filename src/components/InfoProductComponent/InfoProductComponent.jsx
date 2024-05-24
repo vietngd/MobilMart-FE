@@ -1,11 +1,15 @@
 import { CiDeliveryTruck } from "react-icons/ci";
 import PromotionComponent from "../PromotionComponent/PromotionComponent";
 import ProductActionComponent from "../ProductActionComponent/ProductActionComponent";
-import { convertToMonney } from "../../ultils";
+import { calculateAverageRating, convertToMonney } from "../../ultils";
 import { IoIosStar } from "react-icons/io";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
+import { useMemo } from "react";
 
-const InfoProductComponent = ({ product, total_comments }) => {
+const InfoProductComponent = ({ product, total_comments, rating_counts }) => {
+  const averageRating = useMemo(() => {
+    return calculateAverageRating(rating_counts);
+  }, [rating_counts]);
   return (
     <div>
       <div className="mb-5">
@@ -42,10 +46,25 @@ const InfoProductComponent = ({ product, total_comments }) => {
         <div className="pl-2 ">
           <div className="flex items-center">
             <span className="mr-2 flex items-center text-primary">
-              <IoIosStar />
-              <IoIosStar />
-              <IoIosStar />
-              <IoIosStar /> <FaRegStarHalfStroke />
+              {[...Array(5)].map((star, index) => {
+                const ratingValue = index + 1;
+                const isHalfStar = averageRating - index >= 0.5;
+                return (
+                  <span key={index}>
+                    {ratingValue <= averageRating ? (
+                      <IoIosStar size={"1rem"} style={{ color: "#978535" }} />
+                    ) : isHalfStar &&
+                      parseInt(averageRating) === ratingValue - 1 ? (
+                      <FaRegStarHalfStroke
+                        size={"1rem"}
+                        style={{ color: "#978535" }}
+                      />
+                    ) : (
+                      <IoIosStar size={"1rem"} style={{ color: "#a29e9e" }} />
+                    )}
+                  </span>
+                );
+              })}
             </span>
             <span className="mr-2 text-xs opacity-80">
               ({total_comments} Đánh giá)

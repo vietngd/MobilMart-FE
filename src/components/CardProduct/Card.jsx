@@ -36,11 +36,26 @@ const Card = ({ card }) => {
             </span>
           </div>
           <div className="flex">
-            <span className="mr-4 flex items-center text-yellow-400">
-              <IoIosStar />
-              <IoIosStar />
-              <IoIosStar />
-              <IoIosStar /> <FaRegStarHalfStroke />
+            <span className="mr-4 flex items-center">
+              {[...Array(5)].map((star, index) => {
+                const ratingValue = index + 1;
+                const isHalfStar = card.rating - index >= 0.5;
+                return (
+                  <span key={index}>
+                    {ratingValue <= card.rating ? (
+                      <IoIosStar size={"1rem"} className="text-yellow-400" />
+                    ) : isHalfStar &&
+                      parseInt(card.rating) === ratingValue - 1 ? (
+                      <FaRegStarHalfStroke
+                        size={"1rem"}
+                        className="text-yellow-400"
+                      />
+                    ) : (
+                      <IoIosStar size={"1rem"} style={{ color: "#a29e9e" }} />
+                    )}
+                  </span>
+                );
+              })}
             </span>
             <span className="text-sm opacity-80">
               ({card.total_comments} Đánh giá)

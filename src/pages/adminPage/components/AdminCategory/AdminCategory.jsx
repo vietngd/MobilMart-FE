@@ -10,11 +10,13 @@ const AdminCategory = () => {
   const [loading, setLoading] = useState(false);
   const [loadingCreate, setLoadingCreate] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [categories, setCategories] = useState([]);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
   const [isModalOpenCreate, setIsModalOpenCreate] = useState(false);
+  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
   const [newCategory, setNewCategory] = useState("");
-  const [idCategoryDelete, setIdCategoryDelete] = useState("");
+  const [idCategory, setIdCategory] = useState("");
   const fetchCategory = async () => {
     setLoading(true);
     try {
@@ -64,11 +66,11 @@ const AdminCategory = () => {
         message.success("Xóa dạnh mục thành công");
         setIsModalOpenDelete(false);
         fetchCategory();
-        setIdCategoryDelete("");
+        setIdCategory("");
       } else {
         message.error("Còn sản phẩm trong danh mục không thể xóa.");
         setIsModalOpenDelete(false);
-        setIdCategoryDelete("");
+        setIdCategory("");
       }
     } catch (error) {
       console.error("Error create category:", error);
@@ -76,7 +78,27 @@ const AdminCategory = () => {
       setLoadingDelete(false);
     }
   };
-
+  const updateCategory = async (id, access_token, name) => {
+    setLoadingUpdate(true);
+    try {
+      const res = await CategoryServices.updateCategory(id, access_token, name);
+      if (res && res.status && res.status === "OK") {
+        message.success("Cập nhật danh mục thành công");
+        setIsModalOpenUpdate(false);
+        fetchCategory();
+        setIdCategory("");
+        setNewCategory("");
+      } else {
+        message.error("Cập nhật thất bại.");
+        setIsModalOpenUpdate(false);
+        setIdCategory("");
+      }
+    } catch (error) {
+      console.error("Error update category:", error);
+    } finally {
+      setLoadingUpdate(false);
+    }
+  };
   const handleCreateCategory = () => {
     if (user && user.access_token && newCategory) {
       createCategory(newCategory, user.access_token);
@@ -84,11 +106,18 @@ const AdminCategory = () => {
   };
 
   const handleDeleteCategory = () => {
-    if (user && user.access_token && idCategoryDelete) {
-      deleteCategory(idCategoryDelete, user.access_token);
+    if (user && user.access_token && idCategory) {
+      deleteCategory(idCategory, user.access_token);
     }
   };
 
+  const handleUpdateCategory = () => {
+    if (user && user.access_token && idCategory && newCategory) {
+      updateCategory(idCategory, user.access_token, newCategory);
+    } else {
+      message.error("Vui lòng nhập tên danh mục");
+    }
+  };
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold">Quản lý danh mục</h1>
@@ -122,9 +151,20 @@ const AdminCategory = () => {
                     </td>
                     <td className="border px-4 py-2 text-center">
                       <button
+                        className="mr-2 rounded border bg-green-500 px-2 py-1 text-white"
+                        onClick={() => {
+                          setIdCategory(category.id);
+                          setNewCategory(category.name);
+                          setIsModalOpenUpdate(true);
+                        }}
+                      >
+                        Sửa
+                      </button>
+                      <button
                         className="rounded border bg-red-500 px-2 py-1 text-white"
                         onClick={() => {
-                          setIdCategoryDelete(category.id);
+                          setIdCategory(category.id);
+                          setNewCategory(category.name);
                           setIsModalOpenDelete(true);
                         }}
                       >
@@ -158,6 +198,25 @@ const AdminCategory = () => {
         okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
       >
         <Loading isLoading={loadingCreate}>
+          <div>
+            <input
+              type="text"
+              className="w-full rounded border p-2 outline-none"
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+            />
+          </div>
+        </Loading>
+      </ModalComponent>
+
+      <ModalComponent
+        title="Sửa tên danh mục"
+        open={isModalOpenUpdate}
+        onCancel={() => setIsModalOpenUpdate(false)}
+        onOk={handleUpdateCategory}
+        okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
+      >
+        <Loading isLoading={loadingUpdate}>
           <div>
             <input
               type="text"

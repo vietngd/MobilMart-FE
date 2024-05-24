@@ -37,10 +37,15 @@ const getOrderByUser = async (access_token, user_id) => {
   }
 };
 
-const getAllOrder = async (access_token) => {
+const getAllOrder = async (access_token, page, pageSize) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  const params = {
+    page,
+    pageSize: pageSize,
+  };
   try {
     const response = await axiosJWT.get(`${baseUrl}/order/getAllOrder`, {
+      params,
       headers: {
         token: `Bearer ${access_token}`,
       },
@@ -117,14 +122,18 @@ const statisticalOrder = async (access_token) => {
     console.log(err);
   }
 };
-const cancelOrder = async (id, access_token) => {
+const cancelOrder = async (id, access_token, user_id) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
   try {
-    const response = await axiosJWT.delete(`${baseUrl}/order/cancel/${id}`, {
-      headers: {
-        token: `Bearer ${access_token}`,
+    const response = await axiosJWT.put(
+      `${baseUrl}/order/cancel/${id}`,
+      { user_id },
+      {
+        headers: {
+          token: `Bearer ${access_token}`,
+        },
       },
-    });
+    );
     return response.data;
   } catch (err) {
     console.log(err);

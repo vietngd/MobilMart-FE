@@ -42,9 +42,12 @@ function App() {
 
       const currentTime = new Date();
 
-      if (decoded?.exp < currentTime.getTime() / 1000) {
+      if (
+        decoded &&
+        decoded.exp &&
+        decoded.exp < currentTime.getTime() / 1000
+      ) {
         const data = await UserServices.refreshToken();
-
         localStorage.setItem(
           "access_token",
           JSON.stringify(data?.access_token),

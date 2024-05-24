@@ -51,12 +51,12 @@ const AdminPage = () => {
     <>
       <HeaderComponent isHidenSearch isHidenCart />
       <div className="flex ">
-        <div className="w-[256px]">
+        <div className="w-[240px]">
           <Menu
             mode="inline"
             defaultSelectedKeys={["dashboard"]}
             style={{
-              width: 256,
+              width: 240,
               height: "100vh",
               paddingTop: "70px",
               position: "fixed",

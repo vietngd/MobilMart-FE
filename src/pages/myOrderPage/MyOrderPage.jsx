@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import * as OrderServices from "../../services/orderServices";
 import { useQuery } from "@tanstack/react-query";
-import { convertToMonney } from "../../ultils";
+import { convertDateTime, convertToMonney } from "../../ultils";
 import noOrder from "../../assets/images/no-order.jpg";
 import * as message from "../../components/Message/MessageComponent";
 import ModalComponent from "../../components/Modal/ModalComponent";
@@ -27,8 +27,8 @@ const MyOrderPage = () => {
     retryDelay: 1000,
   });
 
-  const cancelOrder = async (id, access_token) => {
-    const res = await OrderServices.cancelOrder(id, access_token);
+  const cancelOrder = async (id, access_token, user_id) => {
+    const res = await OrderServices.cancelOrder(id, access_token, user_id);
     if (res && res.status === "OK") {
       message.success("Yêu cầu hủy đã được ghi nhận");
       setIsModalCancel(false);
@@ -41,7 +41,7 @@ const MyOrderPage = () => {
 
   const handleCancelOrder = () => {
     if (user && user?.access_token && idCancel) {
-      cancelOrder(idCancel, user?.access_token);
+      cancelOrder(idCancel, user?.access_token, user?.id);
     }
   };
 
@@ -54,7 +54,10 @@ const MyOrderPage = () => {
             return (
               <div className="mt-5 rounded bg-white p-2" key={order?.order_id}>
                 <div className="mb-3 flex justify-between text-orange-600">
-                  <span>Mã đơn hàng : {order?.order_id}</span>
+                  <span>
+                    Mã đơn hàng : {order?.order_id} / {" Ngày đặt : "}
+                    {convertDateTime(order?.created_at).day}
+                  </span>
                   <span>
                     {order?.order_status_payment
                       ? "ĐÃ THANH TOÁN"
@@ -135,7 +138,7 @@ const MyOrderPage = () => {
                   !order.order_status_transport ? (
                     !order.order_status_cancel ? (
                       <button
-                        className="rounded border px-5 py-2"
+                        className="rounded border bg-green-400 px-5 py-2 text-white"
                         onClick={() => {
                           setIdCancel(order.order_id);
                           setIsModalCancel(true);
@@ -144,7 +147,9 @@ const MyOrderPage = () => {
                         Hủy đơn hàng
                       </button>
                     ) : (
-                      <span>Yêu cầu hủy đã ghi nhận</span>
+                      <span className="rounded-md bg-blue px-2 text-white">
+                        Yêu cầu hủy đã ghi nhận
+                      </span>
                     )
                   ) : (
                     <></>

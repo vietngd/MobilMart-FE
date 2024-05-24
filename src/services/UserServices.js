@@ -122,6 +122,48 @@ const deleteUser = async (id, access_token) => {
     console.log(err);
   }
 };
+const forgotPassword = async (email) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axios.post(`${baseUrl}/user/forgot-password`, {
+      email,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+const verifyCode = async (code, token) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axios.post(
+      `${baseUrl}/user/verify-forgot-password`,
+      {
+        code,
+      },
+      {
+        headers: {
+          token: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+const updatePassWord = async (email, newPassword) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axios.put(`${baseUrl}/user/update-password`, {
+      email,
+      newPassword,
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 export {
   loginUser,
   createUser,
@@ -132,4 +174,7 @@ export {
   updateUser,
   getAllUser,
   deleteUser,
+  forgotPassword,
+  verifyCode,
+  updatePassWord,
 };

@@ -21,6 +21,7 @@ const PaymentInfo = () => {
   const [selectedDistrict, setSelectedDistrict] = useState("");
   const [selectedWard, setSelectedWard] = useState("");
   const [note, setNote] = useState();
+  const [addressOption, setAddressOption] = useState("1");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -94,10 +95,16 @@ const PaymentInfo = () => {
   }, []);
 
   const handlNextPayment = () => {
-    if (selectedProvince && selectedDistrict && selectedWard) {
+    if (
+      addressOption === "1" ||
+      (selectedProvince && selectedDistrict && selectedWard)
+    ) {
       dispatch(
         addOrderInfo({
-          address: `${selectedProvince} - ${selectedDistrict} - ${selectedWard}`,
+          address:
+            addressOption === "1"
+              ? user?.address
+              : `${selectedProvince} - ${selectedDistrict} - ${selectedWard}`,
           note: note,
           items: orders?.orderItems
             .find((item) => item.user_id === user?.id)
@@ -109,6 +116,10 @@ const PaymentInfo = () => {
       );
       navigate("/cart/payment");
     }
+  };
+
+  const handleOnchangeAddressOption = (e) => {
+    setAddressOption(e.target.value);
   };
   return (
     <div className="flex min-h-screen justify-center rounded-md bg-cart_bg p-2 pb-40">
@@ -183,77 +194,94 @@ const PaymentInfo = () => {
             <h1>THÔNG TIN NHẬN HÀNG</h1>
             <div className="mt-[15px] rounded-[10px] border-[0.8px] border-[#919eab3d] bg-white p-4">
               <div className="flex items-center">
-                <div className="mr-1 flex h-4 w-4 items-center justify-center rounded-full border border-red-600">
-                  <div className="h-2 w-2 rounded-full bg-red-600"></div>
+                <input
+                  type="radio"
+                  className="mr-2"
+                  name="address"
+                  defaultChecked
+                  onChange={handleOnchangeAddressOption}
+                  value="1"
+                />
+                Địa chỉ : {user?.address}
+              </div>
+              <div className="mt-5 flex items-center ">
+                <input
+                  type="radio"
+                  className="mr-2"
+                  name="address"
+                  onChange={handleOnchangeAddressOption}
+                  value="2"
+                />
+                Địa chỉ mới
+              </div>
+              {addressOption == 2 && (
+                <div className=" mt-5 flex gap-x-2">
+                  {/* Chọn địa chỉ */}
+                  <select
+                    className="flex-1 rounded border py-3 outline-none"
+                    onChange={handleProvinceChange}
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Chọn thành phố
+                    </option>
+                    {province?.map((item) => {
+                      return (
+                        <option
+                          value={item.province_id}
+                          key={item.province_id}
+                          className="py-2 hover:bg-gray-200"
+                          name={item.province_name}
+                        >
+                          {item.province_name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <select
+                    className="flex-1 rounded border py-3 outline-none"
+                    onChange={handleDistrictChange}
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Chọn tỉnh thành
+                    </option>
+                    {district &&
+                      district?.map((item) => {
+                        return (
+                          <option
+                            value={item.district_id}
+                            key={item.district_id}
+                            className="py-2 hover:bg-gray-200"
+                          >
+                            {item.district_name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                  <select
+                    className="flex-1 rounded border py-3 outline-none"
+                    onChange={handleWardChange}
+                    defaultValue=""
+                  >
+                    <option value="" disabled>
+                      Chọn huyện
+                    </option>
+                    {ward &&
+                      ward?.map((item) => {
+                        return (
+                          <option
+                            value={item.ward_id}
+                            key={item.ward_id}
+                            className="py-2 hover:bg-gray-200"
+                          >
+                            {item.ward_name}
+                          </option>
+                        );
+                      })}
+                  </select>
                 </div>
-                Giao hàng tận nơi
-              </div>
-              <div className=" mt-5 flex gap-x-2">
-                {/* Chọn địa chỉ */}
-                <select
-                  className="flex-1 rounded border py-3 outline-none"
-                  onChange={handleProvinceChange}
-                  defaultValue=""
-                >
-                  <option value="" disabled>
-                    Chọn thành phố
-                  </option>
-                  {province?.map((item) => {
-                    return (
-                      <option
-                        value={item.province_id}
-                        key={item.province_id}
-                        className="py-2 hover:bg-gray-200"
-                        name={item.province_name}
-                      >
-                        {item.province_name}
-                      </option>
-                    );
-                  })}
-                </select>
-                <select
-                  className="flex-1 rounded border py-3 outline-none"
-                  onChange={handleDistrictChange}
-                  defaultValue=""
-                >
-                  <option value="" disabled>
-                    Chọn tỉnh thành
-                  </option>
-                  {district &&
-                    district?.map((item) => {
-                      return (
-                        <option
-                          value={item.district_id}
-                          key={item.district_id}
-                          className="py-2 hover:bg-gray-200"
-                        >
-                          {item.district_name}
-                        </option>
-                      );
-                    })}
-                </select>
-                <select
-                  className="flex-1 rounded border py-3 outline-none"
-                  onChange={handleWardChange}
-                  defaultValue=""
-                >
-                  <option value="" disabled>
-                    Chọn huyện
-                  </option>
-                  {ward &&
-                    ward?.map((item) => {
-                      return (
-                        <option
-                          value={item.ward_id}
-                          key={item.ward_id}
-                          className="py-2 hover:bg-gray-200"
-                        >
-                          {item.ward_name}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
+              )}
 
               <div className="input-group">
                 <input

@@ -83,7 +83,7 @@ export function calculateDailySale(apiData) {
   // Lấy ngày hiện tại và 15 ngày trước đó
   const now = new Date();
   const pastDate = new Date();
-  pastDate.setDate(now.getDate() - 15);
+  pastDate.setDate(now.getDate() - 30);
 
   apiData.forEach((order) => {
     const orderDate = new Date(order.created_at);
@@ -104,5 +104,26 @@ export function calculateDailySale(apiData) {
     sale: dailySale[date],
   }));
 
-  return result;
+  return result.reverse();
+}
+
+// Tính tỉ lệ đánh giá
+export function calculateAverageRating(ratingCounts) {
+  let totalRatings = 0;
+  let totalStars = 0;
+
+  for (let star in ratingCounts) {
+    let count = ratingCounts[star];
+    totalRatings += count;
+    totalStars += star * count;
+  }
+
+  if (totalRatings === 0) {
+    return 0; // Nếu không có đánh giá nào thì trả về 0
+  }
+
+  let averageRating = totalStars / totalRatings;
+  return Number.isInteger(averageRating)
+    ? averageRating
+    : averageRating.toFixed(1);
 }

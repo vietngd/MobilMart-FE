@@ -5,9 +5,11 @@ const InputFormComponent = ({
   valueInput,
   pattern = null,
   handleOnchange,
+  ...rest
 }) => {
   return (
     <input
+      {...rest}
       id={id}
       name={name}
       type={type}
