@@ -64,7 +64,7 @@ const MyOrderPage = () => {
                       : "CHỜ THANH TOÁN"}
                   </span>
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="items-center justify-between lg:flex">
                   <div>
                     {/* Danh sách sản phẩm */}
                     {JSON.parse(order.products).map((product, index) => {
@@ -138,7 +138,7 @@ const MyOrderPage = () => {
                   !order.order_status_transport ? (
                     !order.order_status_cancel ? (
                       <button
-                        className="rounded border bg-green-400 px-5 py-2 text-white"
+                        className="rounded border bg-green-400 px-5   text-white sm:py-2"
                         onClick={() => {
                           setIdCancel(order.order_id);
                           setIsModalCancel(true);

@@ -6,6 +6,7 @@ import { convertDateTime, convertToMonney } from "../../../../ultils.js";
 import AdminOrderDetail from "./AdminOrderDetail.jsx";
 import { Popover } from "antd";
 import Pagination from "../../../../components/Pagination/Pagination.jsx";
+import useDebounce from "../../../../hooks/useDebounce.js";
 
 const AdminOrder = () => {
   const user = useSelector((state) => state.user);
@@ -15,6 +16,7 @@ const AdminOrder = () => {
   const [orderId, setOrderId] = useState("");
   const [visiblePopover, setVisiblePopover] = useState();
   const [pageNumber, setPageNumber] = useState(1);
+  const [order_id_search, setOrder_id_search] = useState("");
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -22,7 +24,8 @@ const AdminOrder = () => {
       const res = await OrderServices.getAllOrder(
         user?.access_token,
         pageNumber,
-        10,
+        8,
+        order_id_search,
       );
 
       setOrders(res);
@@ -32,10 +35,10 @@ const AdminOrder = () => {
       setLoading(false);
     }
   };
-
+  const id_search = useDebounce(order_id_search, 500);
   useEffect(() => {
     fetchOrders();
-  }, [pageNumber]); // Sử dụng updateTransportStatus làm dependency
+  }, [pageNumber, id_search]); // Sử dụng updateTransportStatus làm dependency
 
   const handleDetailOrder = (orderId) => {
     setOrderId(orderId);
@@ -105,6 +108,15 @@ const AdminOrder = () => {
       <h1 className="mb-4 text-2xl font-bold">
         {isOrderDetail ? "Chi tiết đơn hàng" : "Quản lý đơn hàng"}
       </h1>
+      <div className="mb-3">
+        <input
+          type="text"
+          placeholder="Nhập mã đơn hàng"
+          className="w-60 rounded border border-blue px-2 py-1 outline-red-300"
+          value={order_id_search}
+          onChange={(e) => setOrder_id_search(e.target.value)}
+        />
+      </div>
       {!isOrderDetail ? (
         <div className="overflow-x-auto">
           <Loading isLoading={loading}>

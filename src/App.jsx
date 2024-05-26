@@ -48,10 +48,12 @@ function App() {
         decoded.exp < currentTime.getTime() / 1000
       ) {
         const data = await UserServices.refreshToken();
-        localStorage.setItem(
-          "access_token",
-          JSON.stringify(data?.access_token),
-        );
+        if (data.accessToken) {
+          localStorage.setItem(
+            "access_token",
+            JSON.stringify(data.access_token),
+          );
+        }
 
         config.headers["token"] = `Bearer ${data?.access_token}`;
       }
@@ -63,6 +65,7 @@ function App() {
       return Promise.reject(error);
     },
   );
+
   const handleGetDetailUser = async (id, token) => {
     const res = await UserServices.getDetailUser(id, token);
     dispatch(updateUser({ ...res?.data, access_token: token }));

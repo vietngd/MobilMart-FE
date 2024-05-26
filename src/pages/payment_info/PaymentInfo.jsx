@@ -163,10 +163,10 @@ const PaymentInfo = () => {
                       <div className="pr-3">
                         <div className="flex justify-between">
                           <div>
-                            <span className="mr-2 text-red-600">
+                            <span className="mr-2 text-xs text-red-600 md:text-base">
                               {convertToMonney(item?.sale)}
                             </span>
-                            <span className="text-sm line-through">
+                            <span className="text-xs line-through md:text-sm">
                               {convertToMonney(item?.price)}
                             </span>
                           </div>
@@ -215,10 +215,10 @@ const PaymentInfo = () => {
                 Địa chỉ mới
               </div>
               {addressOption == 2 && (
-                <div className=" mt-5 flex gap-x-2">
+                <div className="mt-5 grid gap-x-2 lg:flex">
                   {/* Chọn địa chỉ */}
                   <select
-                    className="flex-1 rounded border py-3 outline-none"
+                    className="mb-2 flex-1 rounded border py-3 outline-none"
                     onChange={handleProvinceChange}
                     defaultValue=""
                   >
@@ -239,7 +239,7 @@ const PaymentInfo = () => {
                     })}
                   </select>
                   <select
-                    className="flex-1 rounded border py-3 outline-none"
+                    className="mb-2 flex-1 rounded border py-3 outline-none"
                     onChange={handleDistrictChange}
                     defaultValue=""
                   >
@@ -260,7 +260,7 @@ const PaymentInfo = () => {
                       })}
                   </select>
                   <select
-                    className="flex-1 rounded border py-3 outline-none"
+                    className="mb-2 flex-1 rounded border py-3 outline-none"
                     onChange={handleWardChange}
                     defaultValue=""
                   >
@@ -295,7 +295,7 @@ const PaymentInfo = () => {
           </div>
         </div>
       </div>
-      <div className="shawdow_custom fixed bottom-0 w-[700px] rounded-md bg-white p-4">
+      <div className="shawdow_custom fixed bottom-0 w-[95%] rounded-md bg-white p-4 lg:w-[700px]">
         <div className="flex justify-between">
           <span>Tổng tiền tạm tính:</span>
           <span className="text-red-600">{convertToMonney(totalMonney)}</span>

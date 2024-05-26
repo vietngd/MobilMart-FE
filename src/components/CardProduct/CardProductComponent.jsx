@@ -33,7 +33,7 @@ const CardProductComponent = (props) => {
           <div className="mb-5 mt-10">
             <CardProductHeader title={name} />
           </div>
-          <div className="grid grid-cols-5 gap-x-3">
+          <div className="sm: grid grid-cols-2 gap-x-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {data?.Products?.map((item, index) => {
               return <Card key={index} card={item} />;
             })}

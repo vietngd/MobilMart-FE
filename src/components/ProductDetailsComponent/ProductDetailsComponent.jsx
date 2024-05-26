@@ -193,26 +193,26 @@ const ProductDetailsComponent = ({ idProduct }) => {
         <Breadcrumb paths={paths} categoryName={categoryName} />
 
         <div className="mt-5 grid grid-cols-9 gap-x-2">
-          <div className="col-span-3">
+          <div className="col-span-9 md:col-span-3">
             <ImgShowComponent imgs={product?.data[0]?.images.split(",")} />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-9 mb-2 md:col-span-4">
             <InfoProductComponent
               product={product?.data[0]}
               total_comments={commentsFetch?.pagination?.totalCount}
               rating_counts={commentsFetch?.ratingCounts}
             />
           </div>
-          <div className="col-span-2">
+          <div className="col-span-9 md:col-span-2">
             <WarrantyComponent />
           </div>
         </div>
 
         {/* Đánh giá */}
         <div className=" mt-10 grid grid-cols-7 gap-x-1">
-          <div className="col-span-5">
+          <div className="col-span-9 md:col-span-5">
             <div className="mb-3 grid grid-cols-4">
-              <div className="col-span-1 grid gap-y-3 border py-10 text-center">
+              <div className="col-span-4 grid gap-y-3 border py-2 text-center md:col-span-1 md:py-10">
                 <p className="text-xl">{`${averageRating}/5`}</p>
                 <p className="flex justify-center">
                   <span className="mr-2 flex items-center text-primary">
@@ -247,12 +247,12 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   {commentsFetch?.pagination?.totalCount} đánh giá và hỏi đáp
                 </p>
               </div>
-              <div className="col-span-2 flex flex-col justify-evenly border p-4">
+              <div className="col-span-4 flex flex-col justify-evenly border p-4 md:col-span-2">
                 {[...Array(5).keys()].reverse().map((index) => {
                   return (
                     <p className="flex items-center gap-x-2" key={index}>
                       <span>{index + 1} Sao</span>
-                      <span className="relative h-2 min-w-[350px] overflow-hidden rounded-md bg-[#f5f5f5]">
+                      <span className="relative m-auto h-2 min-w-[70%] overflow-hidden rounded-md bg-[#f5f5f5]">
                         <span
                           style={{
                             width: `${
@@ -272,11 +272,11 @@ const ProductDetailsComponent = ({ idProduct }) => {
                   );
                 })}
               </div>
-              <div className="col-span-1 flex  items-center justify-center border text-center">
+              <div className="col-span-4  flex  items-center justify-center border text-center md:col-span-1">
                 <div>
                   <p>Bạn có vấn đề cần tư vấn</p>
                   <button
-                    className=" rounded bg-primary px-5 py-2 text-white"
+                    className=" mb-3 rounded bg-primary px-5 py-2 text-white"
                     onClick={() => {
                       if (isShowComment) {
                         setComment("");
@@ -515,7 +515,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
               </div>
             )}
           </div>
-          <div className="col-span-2 rounded-md ">
+          <div className="col-span-9 rounded-md md:col-span-2 ">
             <div className=" rounded-md border p-2">
               <h3 className="font-semibold">Thông số kĩ thuật</h3>
               <ul className="boder mt-2 overflow-hidden rounded-md">

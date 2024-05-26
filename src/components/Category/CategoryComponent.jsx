@@ -29,26 +29,28 @@ const CategoryComponent = () => {
   const categories = useSelector((state) => state.categories);
 
   return (
-    <ul className="shawdow-custom mb-2 flex overflow-hidden rounded-xl">
-      <CategoryItem
-        name="Điện thoại"
-        Icon={IoPhonePortraitOutline}
-        isActive={true}
-      />
-      {categories &&
-        categories.map((item, index) => (
-          <CategoryItem
-            name={item.name}
-            Icon={Icons[index]?.Icon || IoPhonePortraitOutline}
-            key={index}
-            id={item.id}
-          />
-        ))}
+    <>
+      <ul className="shawdow-custom mb-2 hidden overflow-hidden rounded-xl sm:flex">
+        <CategoryItem
+          name="Điện thoại"
+          Icon={IoPhonePortraitOutline}
+          isActive={true}
+        />
+        {categories &&
+          categories.map((item, index) => (
+            <CategoryItem
+              name={item.name}
+              Icon={Icons[index]?.Icon || IoPhonePortraitOutline}
+              key={index}
+              id={item.id}
+            />
+          ))}
 
-      <CategoryItem name="Bảo hành" Icon={AiFillAppstore} />
-      <CategoryItem name="Liên hệ" Icon={GiVibratingSmartphone} />
-      <CategoryItem name="Thu cũ" Icon={FaRegMoneyBill1} />
-    </ul>
+        <CategoryItem name="Bảo hành" Icon={AiFillAppstore} />
+        <CategoryItem name="Liên hệ" Icon={GiVibratingSmartphone} />
+        <CategoryItem name="Thu cũ" Icon={FaRegMoneyBill1} />
+      </ul>
+    </>
   );
 };
 export default CategoryComponent;

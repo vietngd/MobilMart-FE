@@ -96,8 +96,8 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
     </>
   );
   return (
-    <div className="fixed  left-0 right-0 z-50 max-w-full bg-primary">
-      <header className="m-auto h-header_Height max-w-screen-xl  gap-x-1">
+    <div className="fixed left-0 right-0 z-50 max-w-full bg-primary">
+      <header className="m-auto h-header_Height max-w-[95%] gap-x-1  md:max-w-screen-xl">
         <div
           className={
             !isHidenSearch
@@ -114,7 +114,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
               alt="logo"
               className="h-[65px] cursor-pointer brightness-0 invert"
             />
-            MOBILEMART
+            <span className="hidden md:inline">MOBILEMART</span>
           </Link>
 
           {!isHidenSearch && (
@@ -132,7 +132,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
               {/* Search Result */}
 
               {isSearchText && (
-                <div className="absolute left-1/2  top-[110%] flex w-[429px] -translate-x-1/2 items-center overflow-hidden rounded-md bg-white">
+                <div className="absolute left-1/2  top-[110%] flex w-[280px] -translate-x-1/2 items-center overflow-hidden rounded-md bg-white md:w-[429px]">
                   <ul className="w-full ">
                     {products?.slice(0, 10).map((item, index) => {
                       return (
@@ -144,7 +144,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
                           <img
                             src={item?.images.split(",")[0]}
                             alt="img"
-                            className="mr-2 w-14 object-cover"
+                            className="mr-2 w-12 object-cover md:w-14"
                           ></img>
                           <div className="flex-1">
                             <p className="font-thin text-[#505050] ">
@@ -196,19 +196,21 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
               {user?.access_token ? (
                 <Popover content={content} trigger="hover">
                   <button
-                    className="btn ml-2 flex flex-col justify-center rounded-lg bg-[#ffffff33]"
+                    className="btn ml-2 flex flex-col justify-center rounded-lg md:bg-[#ffffff33]"
                     onClick={handleNavigateLogin}
                     disabled
                   >
                     {userAvatar ? (
                       <img
                         src={userAvatar}
-                        className="h-5 w-5 rounded-full object-cover"
+                        className="h-8 w-8 rounded-full object-cover md:h-5 md:w-5"
                       ></img>
                     ) : (
                       <FaRegUserCircle size={"1.125rem"} />
                     )}
-                    {userName || user?.email || "User"}
+                    <span className="hidden sm:inline">
+                      {userName || user?.email || "User"}
+                    </span>
                   </button>
                 </Popover>
               ) : (
@@ -216,7 +218,9 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
                   className="btn ml-2 flex flex-col justify-center rounded-lg bg-[#ffffff33]"
                   onClick={handleNavigateLogin}
                 >
-                  <FaRegUserCircle size={"1.125rem"} />
+                  <span className="hidden sm:inline">
+                    <FaRegUserCircle size={"1.125rem"} />
+                  </span>
                   Đăng nhập
                 </button>
               )}

@@ -37,11 +37,12 @@ const getOrderByUser = async (access_token, user_id) => {
   }
 };
 
-const getAllOrder = async (access_token, page, pageSize) => {
+const getAllOrder = async (access_token, page, pageSize, order_id) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
   const params = {
     page,
     pageSize: pageSize,
+    order_id,
   };
   try {
     const response = await axiosJWT.get(`${baseUrl}/order/getAllOrder`, {

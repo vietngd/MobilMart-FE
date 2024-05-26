@@ -10,7 +10,7 @@ const Card = ({ card }) => {
 
   return (
     <Link to={`/product/${card.id}`}>
-      <div className="card-product mb-4">
+      <div className="mb-4 flex h-80 cursor-pointer flex-col items-center overflow-hidden rounded-xl shadow hover:shadow-md md:min-h-64">
         <div className="relative flex justify-center">
           <img
             src={imgs[0]}
@@ -23,12 +23,12 @@ const Card = ({ card }) => {
             Giảm {Math.round(discountPercentage)} %
           </span>
         </div>
-        <div className="cart_body grid gap-y-3 px-3 py-3">
-          <div className="title h-16 font-bold hover:text-primary">
+        <div className="grid gap-y-3 p-1 md:p-3">
+          <div className="min-h-[72px] font-bold hover:text-primary">
             {card.name}
           </div>
           <div className="price">
-            <span className="new_price mr-6 text-sm font-semibold text-red-700">
+            <span className="new_price mr-3 text-sm font-semibold text-red-700">
               {convertToMonney(card.sale)}
             </span>
             <span className="old_price text-xs font-thin text-[#D3CED2] line-through">
@@ -36,7 +36,7 @@ const Card = ({ card }) => {
             </span>
           </div>
           <div className="flex">
-            <span className="mr-4 flex items-center">
+            <span className="mr-1 flex items-center">
               {[...Array(5)].map((star, index) => {
                 const ratingValue = index + 1;
                 const isHalfStar = card.rating - index >= 0.5;

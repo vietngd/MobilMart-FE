@@ -154,8 +154,8 @@ const CartPage = () => {
       {orders?.orderItems.find((item) => item.user_id === user?.id)?.products
         ?.length > 0 ? (
         <div className="h-screen rounded-md bg-cart_bg px-2">
-          <div className="m-auto grid max-w-screen-xl grid-cols-4 gap-x-3">
-            <div className="relative col-span-3">
+          <div className="m-auto grid grid-cols-4 gap-x-3 xl:max-w-screen-xl">
+            <div className="relative col-span-4 lg:col-span-3">
               <table className="w-full border-separate border-spacing-y-1 ">
                 <thead className=" bg-white">
                   <tr>
@@ -172,18 +172,22 @@ const CartPage = () => {
                         }
                       />
                       <label htmlFor="checkAll" className="cursor-pointer">
-                        Tất cả sản phẩm ({" "}
+                        Tất cả (
                         {
                           orders?.orderItems.find(
                             (item) => item.user_id === user?.id,
                           )?.products.length
-                        }{" "}
+                        }
                         sản phẩm)
                       </label>
                     </th>
-                    <th className="py-2 font-normal">Số lượng</th>
+                    <th className="hidden py-2 font-normal md:table-cell">
+                      Số lượng
+                    </th>
 
-                    <th className="py-2 font-normal">Tổng tiền</th>
+                    <th className=" hidden py-2 font-normal md:table-cell">
+                      Tổng tiền
+                    </th>
                     <th
                       className="cursor-pointer rounded-md p-2 font-normal hover:text-red-600 hover:underline"
                       onClick={handleRemoveALl}
@@ -201,7 +205,7 @@ const CartPage = () => {
                           key={item.product_id}
                           className="border-b-[1px] bg-white"
                         >
-                          <td className="flex items-center gap-x-2 rounded-md p-2">
+                          <td className="flex items-center rounded-md p-2 md:gap-x-2">
                             <input
                               type="checkbox"
                               onChange={onchangeItem}
@@ -216,19 +220,19 @@ const CartPage = () => {
                               />
                               <div className="flex flex-col justify-around">
                                 <p>{item.name}</p>
-                                <p>
+                                <p className="text-xs md:text-base">
                                   <span className="mr-2 text-red-600">
                                     {convertToMonney(item?.sale)}
                                   </span>
-                                  <span className="text-sm line-through">
+                                  <span className="text-xs line-through md:text-sm">
                                     {convertToMonney(item?.price)}
                                   </span>
                                 </p>
                               </div>
                             </div>
                           </td>
-                          <td className="min-w-40 text-center">
-                            <div className="flex items-center justify-center gap-x-6">
+                          <td className="hidden min-w-40 text-center md:table-cell">
+                            <div className="flex items-center justify-center gap-x-1 md:gap-x-6">
                               <button
                                 className="h-8 w-8 rounded border"
                                 onClick={() =>
@@ -254,13 +258,13 @@ const CartPage = () => {
                               </button>
                             </div>
                           </td>
-                          <td className="min-w-32 text-center text-red-600">
+                          <td className="hidden min-w-32 text-center text-red-600 md:table-cell">
                             {convertToMonney(item?.sale * item.quantity)}
                           </td>
 
                           <td className="rounded-md p-2">
                             <span
-                              className="flex cursor-pointer justify-center hover:text-red-600"
+                              className="mb-2 flex cursor-pointer justify-center hover:text-red-600"
                               onClick={() =>
                                 dispatch(
                                   removeOrder({
@@ -272,6 +276,31 @@ const CartPage = () => {
                             >
                               <FaTrashCan size={"1.3rem"} />
                             </span>
+                            <div className="flex items-center justify-center gap-x-1 md:hidden md:gap-x-6">
+                              <button
+                                className="h-8 w-8 rounded border"
+                                onClick={() =>
+                                  handleQuantityProduct(
+                                    "decrease",
+                                    item.product_id,
+                                  )
+                                }
+                              >
+                                -
+                              </button>
+                              <span>{item.quantity}</span>
+                              <button
+                                className="h-8 w-8 rounded border"
+                                onClick={() =>
+                                  handleQuantityProduct(
+                                    "increase",
+                                    item.product_id,
+                                  )
+                                }
+                              >
+                                +
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       );
@@ -279,7 +308,7 @@ const CartPage = () => {
                 </tbody>
               </table>
             </div>
-            <div className="col-span-1 py-2">
+            <div className="col-span-4 py-2 lg:col-span-1">
               <div className=" rounded-md bg-white p-4">
                 <div className=" flex flex-col gap-y-5">
                   <p className="flex justify-between">

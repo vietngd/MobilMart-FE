@@ -132,6 +132,7 @@ const Payment = () => {
             <div className="mt-[15px] flex  justify-between rounded-[10px] border-[0.8px] border-[#919eab3d] bg-white p-4">
               <div>
                 <input
+                  id="Payment-offline"
                   type="radio"
                   className="mr-2"
                   name="method"
@@ -139,17 +140,22 @@ const Payment = () => {
                   defaultChecked
                   onChange={handleSelectMethodPayment}
                 />
-                Thanh toán khi nhận hàng
+                <label htmlFor="Payment-offline" className="cursor-pointer">
+                  Thanh toán khi nhận hàng
+                </label>
               </div>
               <div>
                 <input
+                  id="Payment-online"
                   type="radio"
                   className="mr-2"
                   name="method"
                   value="online"
                   onChange={handleSelectMethodPayment}
                 />
-                Thanh toán bằng VnPay
+                <label htmlFor="Payment-online" className="cursor-pointer">
+                  Thanh toán bằng VnPay
+                </label>
               </div>
             </div>
           </div>
@@ -174,7 +180,7 @@ const Payment = () => {
                 </div>
                 <div className="flex justify-between py-2">
                   <span>Địa chỉ nhận hàng</span>
-                  <span>{orders?.address}</span>
+                  <span className="text-end">{orders?.address}</span>
                 </div>
                 <div className="flex justify-between py-2">
                   <span>Ghi chú</span>
@@ -185,7 +191,7 @@ const Payment = () => {
           </div>
         </div>
       </div>
-      <div className="shawdow_custom fixed bottom-0 w-[700px] rounded-md bg-white p-4">
+      <div className="shawdow_custom fixed bottom-0 w-[95%] rounded-md bg-white p-4 lg:w-[700px]">
         <div className="flex justify-between">
           <span>Tổng tiền tạm tính:</span>{" "}
           <span className="text-red-600">

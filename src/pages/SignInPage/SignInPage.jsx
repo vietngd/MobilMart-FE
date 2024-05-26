@@ -112,7 +112,9 @@ const SignInPage = () => {
         navigate("/");
       }
 
-      localStorage.setItem("access_token", JSON.stringify(data?.access_token));
+      if (data.accessToken) {
+        localStorage.setItem("access_token", JSON.stringify(data.access_token));
+      }
 
       if (data?.access_token) {
         const decoded = jwtDecode(data?.access_token);
@@ -142,7 +144,7 @@ const SignInPage = () => {
     setMessage("");
     setCode("");
   };
-  console.log(loginform);
+
   return (
     <>
       <Link to="/">
@@ -152,8 +154,8 @@ const SignInPage = () => {
       </Link>
       <div className="m-auto max-w-screen-xl">
         <div className="flex h-screen items-center justify-center">
-          <div className="grid w-3/5 grid-cols-2 overflow-hidden rounded-3xl border  shadow-md">
-            <div className="px-9 py-5">
+          <div className="grid w-4/5 grid-cols-2 overflow-hidden rounded-3xl border shadow-md md:w-3/5">
+            <div className="col-span-2 px-9 py-5 lg:col-span-1">
               <div className="flex min-h-full flex-1 flex-col justify-center px-6  lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                   <img className="mx-auto h-10 w-auto" src={logo} />
@@ -345,7 +347,7 @@ const SignInPage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-col items-center justify-center rounded-l-[100px] bg-primary p-5 text-white">
+            <div className="hidden flex-col items-center justify-center rounded-l-[100px] bg-primary p-5 text-white lg:flex">
               <p className="mb-4 text-2xl font-bold">Xin chào!</p>
               <p className="mb-4 text-center">
                 Cùng MobileMart mua sắm thỏa sức đam mê ^.^
