@@ -52,7 +52,7 @@ const productPage = () => {
           </Popover>
         </div>
 
-        <div className="ld:grid-cols-5 mt-4 grid grid-cols-2 gap-x-3 md:grid-cols-3">
+        <div className="mt-4 grid grid-cols-2 gap-x-3 md:grid-cols-3 lg:grid-cols-5">
           {products?.map((product, index) => {
             return <Card key={index} card={product} />;
           })}

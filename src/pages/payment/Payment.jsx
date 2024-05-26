@@ -33,7 +33,7 @@ const Payment = () => {
 
   const paymentOnline = async () => {
     const res = await axios.post(
-      "http://localhost:8080/api/vnpay/create_payment_url",
+      `${import.meta.env.VITE_REACT_APP_API_URL}/vnpay/create_payment_url`,
       {
         amount: orders?.totalMonney,
         bankCode: "",

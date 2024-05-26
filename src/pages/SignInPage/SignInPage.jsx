@@ -112,7 +112,7 @@ const SignInPage = () => {
         navigate("/");
       }
 
-      if (data.accessToken) {
+      if (data.access_token) {
         localStorage.setItem("access_token", JSON.stringify(data.access_token));
       }
 
