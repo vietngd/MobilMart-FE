@@ -47,10 +47,13 @@ export const userSlice = createSlice({
       state.access_token = "";
       state.isAdmin = false;
     },
+    updateAccessToken: (state, action) => {
+      state.access_token = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { updateUser, resetUser } = userSlice.actions;
+export const { updateUser, resetUser, updateAccessToken } = userSlice.actions;
 
 export default userSlice.reducer;

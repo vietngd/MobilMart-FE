@@ -224,7 +224,7 @@ const AdminOrder = () => {
             </table>
           </Loading>
           {/* Phân trang*/}
-          {orders?.pagination?.totalPages > 1 && (
+          {!order_id_search && orders?.pagination?.totalPages > 1 && (
             <div className="flex justify-center">
               <Pagination
                 totalPage={orders?.pagination?.totalPages}

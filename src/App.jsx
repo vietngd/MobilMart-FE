@@ -7,7 +7,7 @@ import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import * as UserServices from "./services/userServices.js";
 import * as CategoryServices from "./services/categoryServices.js";
-import { updateUser } from "./redux/slides/userSlice.js";
+import { updateAccessToken, updateUser } from "./redux/slides/userSlice.js";
 import { updateCategory } from "./redux/slides/categorySlice.js";
 import Loading from "./components/Loading/LoadingComponent.jsx";
 
@@ -48,14 +48,14 @@ function App() {
         decoded.exp < currentTime.getTime() / 1000
       ) {
         const data = await UserServices.refreshToken();
-        if (data.accessToken) {
+        if (data.access_token) {
           localStorage.setItem(
             "access_token",
             JSON.stringify(data.access_token),
           );
+          dispatch(updateAccessToken(data.access_token));
+          config.headers["token"] = `Bearer ${data.access_token}`;
         }
-
-        config.headers["token"] = `Bearer ${data?.access_token}`;
       }
 
       return config;
