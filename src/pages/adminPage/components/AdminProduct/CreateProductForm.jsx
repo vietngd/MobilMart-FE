@@ -3,6 +3,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getBase64 } from "../../../../ultils";
+import * as message from "../../../../components/Message/MessageComponent";
 
 const CreateProductForm = ({
   isModalCreateProduct,
@@ -91,7 +92,11 @@ const CreateProductForm = ({
 
   // Truyền thông tin sản phẩm lên component cha
   const onFinish = () => {
-    handleNextModal(stateProduct);
+    if (fileList.length > 0) {
+      handleNextModal(stateProduct);
+    } else {
+      message.error("Vui lòng chọn ảnh");
+    }
   };
 
   return (
@@ -152,6 +157,7 @@ const CreateProductForm = ({
             onChange={handleOnchange}
             name="price"
             required
+            type="number"
             value={stateProduct.price}
           />
         </Form.Item>
@@ -161,6 +167,7 @@ const CreateProductForm = ({
             onChange={handleOnchange}
             name="sale"
             required
+            type="number"
             value={stateProduct.sale}
           />
         </Form.Item>
@@ -170,6 +177,7 @@ const CreateProductForm = ({
             onChange={handleOnchange}
             name="quantity"
             required
+            type="number"
             value={stateProduct.quantity}
           />
         </Form.Item>

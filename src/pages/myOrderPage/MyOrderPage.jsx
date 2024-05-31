@@ -10,18 +10,27 @@ import { useState } from "react";
 const MyOrderPage = () => {
   const user = useSelector((state) => state.user);
   const [isModalCancel, setIsModalCancel] = useState(false);
+  const [isModalReceived, setIsModalReceived] = useState(false);
   const [idCancel, setIdCancel] = useState("");
+  const [isReceived, setisReceived] = useState(false);
 
   // Fetch orders function
   const fetchOrders = async () => {
-    const access_token = user?.access_token;
-    const user_id = user?.id;
-    const res = await OrderServices.getOrderByUser(access_token, user_id);
-    return res;
+    if (user && user?.access_token) {
+      const access_token = user?.access_token;
+      const user_id = user?.id;
+      const res = await OrderServices.getOrderByUser(
+        access_token,
+        user_id,
+        isReceived,
+      );
+      return res;
+    }
+    return [];
   };
 
   const { data, refetch } = useQuery({
-    queryKey: ["order", user],
+    queryKey: ["order", user, isReceived],
     queryFn: fetchOrders,
     retry: 3,
     retryDelay: 1000,
@@ -38,10 +47,27 @@ const MyOrderPage = () => {
       setIsModalCancel(false);
     }
   };
+  const updateIsReceived = async (id, access_token, user_id) => {
+    const res = await OrderServices.updateIsReceived(id, access_token, user_id);
+    if (res && res.status === "OK") {
+      message.success("Cảm ơn bạn đã mua hàng ^_^");
+      setIsModalReceived(false);
+      setisReceived(true);
+      refetch();
+    } else if (res && res.status !== "OK") {
+      message.error("Có lỗi thử lại sau!");
+      setIsModalReceived(false);
+    }
+  };
 
   const handleCancelOrder = () => {
     if (user && user?.access_token && idCancel) {
       cancelOrder(idCancel, user?.access_token, user?.id);
+    }
+  };
+  const handleUpdateIsReceived = () => {
+    if (user && user?.access_token && idCancel) {
+      updateIsReceived(idCancel, user?.access_token, user?.id);
     }
   };
 
@@ -49,6 +75,18 @@ const MyOrderPage = () => {
     <div className="min-h-screen bg-cart_bg">
       <div className="m-auto max-w-screen-xl pb-3 pt-3">
         <h1 className="mt-3 text-center text-xl">THÔNG TIN ĐƠN HÀNG</h1>
+        <span
+          className={`mr-3 cursor-pointer rounded border ${!isReceived && "bg-primary text-white"}  px-5 py-3`}
+          onClick={() => setisReceived(false)}
+        >
+          Đang xử lý
+        </span>
+        <span
+          className={`cursor-pointer rounded  border px-5  py-3 ${isReceived && "bg-primary text-white"}`}
+          onClick={() => setisReceived(true)}
+        >
+          Đơn đã mua
+        </span>
         {data && data?.data?.length > 0 ? (
           data?.data?.map((order) => {
             return (
@@ -59,7 +97,7 @@ const MyOrderPage = () => {
                     {convertDateTime(order?.created_at).day}
                   </span>
                   <span>
-                    {order?.order_status_payment
+                    {order?.order_status_payment || order?.is_received
                       ? "ĐÃ THANH TOÁN"
                       : "CHỜ THANH TOÁN"}
                   </span>
@@ -115,9 +153,13 @@ const MyOrderPage = () => {
                       <span className="text-orange-600">
                         Người bán đang chuẩn bị hàng
                       </span>
-                    ) : (
+                    ) : !order?.is_received ? (
                       <span className="text-green-500">
                         Đơn hàng đã giao cho đơn vị vận chuyển
+                      </span>
+                    ) : (
+                      <span className="text-green-500">
+                        Đã giao hàng thành công
                       </span>
                     )}
                   </span>
@@ -134,11 +176,11 @@ const MyOrderPage = () => {
                     )}
                   </span>
 
-                  {!order.order_status_payment &&
-                  !order.order_status_transport ? (
-                    !order.order_status_cancel ? (
+                  {!order?.order_status_payment &&
+                  !order?.order_status_transport ? (
+                    !order?.order_status_cancel ? (
                       <button
-                        className="rounded border bg-green-400 px-5   text-white sm:py-2"
+                        className="rounded border bg-red-400 px-5   text-white sm:py-2"
                         onClick={() => {
                           setIdCancel(order.order_id);
                           setIsModalCancel(true);
@@ -152,7 +194,19 @@ const MyOrderPage = () => {
                       </span>
                     )
                   ) : (
-                    <></>
+                    <>
+                      {!order?.is_received && (
+                        <button
+                          className="rounded border bg-green-400 px-5   text-white sm:py-2"
+                          onClick={() => {
+                            setIdCancel(order.order_id);
+                            setIsModalReceived(true);
+                          }}
+                        >
+                          Đã nhận hàng
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
@@ -166,13 +220,22 @@ const MyOrderPage = () => {
       </div>
 
       <ModalComponent
-        title="Xóa đơn hàng"
+        title="Hủy đơn hàng"
         open={isModalCancel}
         onCancel={() => setIsModalCancel(false)}
         onOk={handleCancelOrder}
         okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
       >
         <div>Bạn có chắc xóa đơn hàng này không?</div>
+      </ModalComponent>
+      <ModalComponent
+        title="Xác nhận đơn hàng"
+        open={isModalReceived}
+        onCancel={() => setIsModalReceived(false)}
+        onOk={handleUpdateIsReceived}
+        okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
+      >
+        <div>Bạn có chắc đã nhận hàng không?</div>
       </ModalComponent>
     </div>
   );

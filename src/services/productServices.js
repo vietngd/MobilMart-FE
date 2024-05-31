@@ -1,9 +1,9 @@
 import axios from "axios";
 import { axiosJWT } from "./userServices";
 
-const getAllProduct = async (productName) => {
+const getAllProduct = async (productName, page, pageSize) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
-  let params = { page: 1, pageSize: 20 };
+  let params = { page, pageSize };
   if (productName) {
     params.productName = productName;
   }

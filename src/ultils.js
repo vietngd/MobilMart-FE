@@ -85,19 +85,21 @@ export function calculateDailySale(apiData) {
   const pastDate = new Date();
   pastDate.setDate(now.getDate() - 30);
 
-  apiData.forEach((order) => {
-    const orderDate = new Date(order.created_at);
+  if (apiData) {
+    apiData.forEach((order) => {
+      const orderDate = new Date(order.created_at);
 
-    // Chỉ lấy dữ liệu của ngày hiện tại và 15 ngày trước đó
-    if (orderDate >= pastDate && orderDate <= now) {
-      const date = convertDateTime(order.created_at).day;
-      if (dailySale[date]) {
-        dailySale[date] += order.total_money;
-      } else {
-        dailySale[date] = order.total_money;
+      // Chỉ lấy dữ liệu của ngày hiện tại và 15 ngày trước đó
+      if (orderDate >= pastDate && orderDate <= now) {
+        const date = convertDateTime(order.created_at).day;
+        if (dailySale[date]) {
+          dailySale[date] += order.total_money;
+        } else {
+          dailySale[date] = order.total_money;
+        }
       }
-    }
-  });
+    });
+  }
 
   const result = Object.keys(dailySale).map((date) => ({
     name: `${date}`,

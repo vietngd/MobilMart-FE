@@ -17,8 +17,8 @@ export const userSlice = createSlice({
   reducers: {
     updateUser: (state, action) => {
       const {
-        id,
-        email,
+        id = "",
+        email = "",
         name = "",
         phone = "",
         address = "",
@@ -26,7 +26,7 @@ export const userSlice = createSlice({
         isAdmin = false,
       } = action.payload[0];
 
-      const { access_token } = action.payload;
+      const { access_token = "" } = action.payload;
 
       state.id = id;
       state.email = email;

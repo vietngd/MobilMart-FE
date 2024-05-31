@@ -54,7 +54,7 @@ function AdminDashboard() {
     const res = await OrderServices.getAllOrder(access_token);
 
     setOrders(res?.data);
-    const sale = res?.data.reduce((total, order) => {
+    const sale = res?.data?.reduce((total, order) => {
       return total + order.total_money;
     }, 0);
     setSales(sale);

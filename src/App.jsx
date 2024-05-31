@@ -39,7 +39,6 @@ function App() {
   UserServices.axiosJWT.interceptors.request.use(
     async (config) => {
       const { decoded } = handleDecoded();
-
       const currentTime = new Date();
 
       if (
@@ -49,12 +48,12 @@ function App() {
       ) {
         const data = await UserServices.refreshToken();
         if (data.access_token) {
+          config.headers["token"] = `Bearer ${data.access_token}`;
           localStorage.setItem(
             "access_token",
             JSON.stringify(data.access_token),
           );
           dispatch(updateAccessToken(data.access_token));
-          config.headers["token"] = `Bearer ${data.access_token}`;
         }
       }
 

@@ -6,6 +6,9 @@ import { updateUser } from "../../redux/slides/userSlice.js";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Upload } from "antd";
 import { getBase64 } from "../../ultils.js";
+import ModalComponent from "../../components/Modal/ModalComponent.jsx";
+import AddressSelection from "../../components/AddressSelection/AddressSelection.jsx";
+import * as Message from "../../components/Message/MessageComponent";
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.user);
@@ -14,7 +17,11 @@ const ProfilePage = () => {
   const [avatar, setAvatar] = useState(user.avatar);
   const [address, setAddress] = useState(user.address);
   const [phone, setPhone] = useState(user.phone);
-  const [message, setMessage] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [province, setProvince] = useState();
+  const [district, setDistrict] = useState();
+  const [ward, setWard] = useState();
 
   const mutation = useMutationHook(async ({ access_token, ...rest }) => {
     const res = await UserServices.updateUser(rest, access_token);
@@ -42,19 +49,40 @@ const ProfilePage = () => {
   };
 
   const handleUpdateUser = async () => {
-    const data = {
-      id: user?.id,
-      name: name !== null ? name : " ",
-      avatar: avatar !== null ? avatar : " ",
-      address: address !== null ? address : " ",
-      phone: phone !== null ? phone : " ",
-    };
+    if (!name) {
+      Message.error("Vui lòng nhập tên!");
+    } else if (!phone) {
+      Message.error("Vui lòng nhập số điện thoại!");
+    } else if (!user?.address && (!province || !district || !ward)) {
+      Message.error("Vui lòng chọn địa chỉ để tiếp tục!");
+    } else {
+      const regexPhoneNumber = /(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/;
+      if (!regexPhoneNumber.test(phone)) {
+        Message.error("Vui lòng nhập đúng số điện thoại!");
+      } else {
+        const data = {
+          id: user?.id,
+          name: name,
+          avatar: avatar || " ",
+          address:
+            province && district && ward
+              ? `${province}- ${district} - ${ward}`
+              : user?.address,
+          phone: phone,
+        };
 
-    const res = await mutation.mutateAsync({
-      ...data,
-      access_token: user?.access_token,
-    });
-    setMessage(res?.message);
+        const res = await mutation.mutateAsync({
+          ...data,
+          access_token: user?.access_token,
+        });
+        if (res.status === "OK") {
+          setProvince("");
+          setDistrict("");
+          setWard("");
+        }
+        Message.success(res?.message);
+      }
+    }
   };
 
   const handleUploadAvatar = async ({ fileList }) => {
@@ -65,6 +93,16 @@ const ProfilePage = () => {
       }
       setAvatar(file.preview);
     }
+  };
+  const getProvice = (province) => {
+    setProvince(province);
+  };
+  const getDistrict = (district) => {
+    setDistrict(district);
+  };
+
+  const getWard = (ward) => {
+    setWard(ward);
   };
 
   return (
@@ -117,19 +155,26 @@ const ProfilePage = () => {
             </Upload>
           </li>
           <li className="mb-8 flex items-center">
-            <span className="mr-4 block min-w-24">Địa chỉ</span>
-            <div className="flexitems-center h-full flex-1 justify-center">
-              <div className=" h-full">
-                <input
-                  type="text"
-                  id="username"
-                  className="peer h-full w-full border-b py-1 transition-colors focus:border-b-2 focus:border-red-400 focus:outline-none"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  autoComplete="off"
-                />
-              </div>
-            </div>
+            <span className="mr-4 block min-w-24 ">Địa chỉ</span>
+
+            {address ? (
+              <span className="flex w-full items-center justify-between">
+                <span>{address}</span>
+                <button
+                  className="ml-2 rounded-md border border-primary px-2 py-1 hover:border-red-500"
+                  onClick={() => setIsModalOpen(true)}
+                >
+                  Sửa
+                </button>
+              </span>
+            ) : (
+              <button
+                className="rounded-md border px-2 py-1 hover:border-red-500"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Cập nhật
+              </button>
+            )}
           </li>
           <li className="mb-8 flex items-center">
             <span className="mr-4 block min-w-24">Số điện thoại</span>
@@ -147,9 +192,7 @@ const ProfilePage = () => {
             </div>
           </li>
         </ul>
-        <span className="absolute bottom-4 right-6 text-primary">
-          {message}
-        </span>
+
         <button
           className="btn h-10 w-24 text-center"
           onClick={handleUpdateUser}
@@ -157,6 +200,20 @@ const ProfilePage = () => {
           Cập nhật
         </button>
       </div>
+      <ModalComponent
+        title="Chọn địa chỉ"
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        onOk={() => setIsModalOpen(false)}
+        okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
+        width={"700px"}
+      >
+        <AddressSelection
+          getProvice={getProvice}
+          getDistrict={getDistrict}
+          getWard={getWard}
+        />
+      </ModalComponent>
     </div>
   );
 };

@@ -5,6 +5,7 @@ import { useMutationHook } from "../../../../hooks/userMutationHook";
 import * as ProductServices from "../../../../services/productServices.js";
 import { useSelector } from "react-redux";
 import Loading from "../../../../components/Loading/LoadingComponent.jsx";
+import * as message from "../../../../components/Message/MessageComponent.jsx";
 
 const ConfigProductForm = ({
   isModalConfig,
@@ -72,6 +73,8 @@ const ConfigProductForm = ({
         operating_system: "",
         screen_resolution: "",
       });
+    } else {
+      message.error("Cõ lỗi thử lại sau!");
     }
   }, [isSuccess, isError]);
   const Cancel = () => {

@@ -15,10 +15,9 @@ const createOrder = async (access_token, data) => {
   }
 };
 
-const getOrderByUser = async (access_token, user_id) => {
+const getOrderByUser = async (access_token, user_id, is_received) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
-  const params = { user_id };
-
+  const params = { user_id, is_received };
   try {
     const response = await axiosJWT.get(
       `${baseUrl}/order/getOrderByUser`,
@@ -59,6 +58,8 @@ const getAllOrder = async (access_token, page, pageSize, order_id) => {
 
 const getDetailOrder = async (access_token, order_id) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+
+  console.log("Token get all order : ", access_token);
 
   try {
     const response = await axiosJWT.get(
@@ -141,6 +142,24 @@ const cancelOrder = async (id, access_token, user_id) => {
   }
 };
 
+const updateIsReceived = async (id, access_token, user_id) => {
+  const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
+  try {
+    const response = await axiosJWT.put(
+      `${baseUrl}/order/update-is-received/${id}`,
+      { user_id },
+      {
+        headers: {
+          token: `Bearer ${access_token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export {
   createOrder,
   getOrderByUser,
@@ -150,4 +169,5 @@ export {
   deleteOrder,
   statisticalOrder,
   cancelOrder,
+  updateIsReceived,
 };

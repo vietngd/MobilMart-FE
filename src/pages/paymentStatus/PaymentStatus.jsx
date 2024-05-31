@@ -30,7 +30,6 @@ const PaymentStatus = () => {
   });
 
   const handleAddOrder = () => {
-    console.log(user?.totalMonney);
     mutation.mutateAsync({
       access_token: user?.access_token,
       user_id: user?.id,

@@ -47,7 +47,7 @@ const AdminUser = () => {
       render: () => (
         <Space size="middle">
           <button
-            className="border-blue rounded border px-2 py-1"
+            className="rounded border border-blue px-2 py-1"
             onClick={() => setIsModalOpen(true)}
           >
             Sửa quyền
@@ -121,11 +121,7 @@ const AdminUser = () => {
   }, [isSuccessDelete, isErrorDelete]);
   const handleChangeRole = () => {
     const dataUser = {
-      userId: stateUser?.id || " ",
-      name: stateUser?.name || " ",
-      phone: stateUser?.phone || " ",
-      address: stateUser?.address || " ",
-      avatar: stateUser?.avatar || " ",
+      id: stateUser.id || " ",
       isAdmin: stateUser?.isAdmin,
     };
 
@@ -146,7 +142,7 @@ const AdminUser = () => {
     setIsModalOpenDelete(false);
   };
 
-  const handleDeleteProduct = () => {
+  const handleDeleteUser = () => {
     const data = {
       id: stateUser?.id,
       access_token: user?.access_token,
@@ -230,7 +226,7 @@ const AdminUser = () => {
           title="Xóa người dùng"
           open={isModalOpenDelete}
           onCancel={handleCancelDelete}
-          onOk={handleDeleteProduct}
+          onOk={handleDeleteUser}
           okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
         >
           <div>
