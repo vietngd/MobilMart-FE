@@ -34,7 +34,7 @@ const SliderComponent = () => {
               <img
                 src={slider.link}
                 alt="slider"
-                className="w-full rounded-xl"
+                className="max-h-[624px] w-full rounded-xl object-cover"
               ></img>
             </SwiperSlide>
           );

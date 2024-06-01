@@ -88,10 +88,12 @@ const AdminUser = () => {
     });
   };
 
-  const mutation = useMutationHook(async ({ access_token, ...rest }) => {
-    const res = await Userservices.updateUser(rest, access_token);
-    return res;
-  });
+  const mutation = useMutationHook(
+    async ({ access_token, user_id, ...rest }) => {
+      const res = await Userservices.updateUser(rest, access_token, user_id);
+      return res;
+    },
+  );
 
   const mutationDelete = useMutationHook(async (data) => {
     const { id, access_token } = data;
@@ -121,7 +123,7 @@ const AdminUser = () => {
   }, [isSuccessDelete, isErrorDelete]);
   const handleChangeRole = () => {
     const dataUser = {
-      id: stateUser.id || " ",
+      user_id: stateUser.id || " ",
       isAdmin: stateUser?.isAdmin,
     };
 

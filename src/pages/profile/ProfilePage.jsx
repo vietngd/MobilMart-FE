@@ -23,10 +23,12 @@ const ProfilePage = () => {
   const [district, setDistrict] = useState();
   const [ward, setWard] = useState();
 
-  const mutation = useMutationHook(async ({ access_token, ...rest }) => {
-    const res = await UserServices.updateUser(rest, access_token);
-    return res;
-  });
+  const mutation = useMutationHook(
+    async ({ access_token, user_id, ...rest }) => {
+      const res = await UserServices.updateUser(rest, access_token, user_id);
+      return res;
+    },
+  );
   const dispatch = useDispatch();
   const { isSuccess, isError } = mutation;
 
@@ -61,7 +63,6 @@ const ProfilePage = () => {
         Message.error("Vui lòng nhập đúng số điện thoại!");
       } else {
         const data = {
-          id: user?.id,
           name: name,
           avatar: avatar || " ",
           address:
@@ -74,6 +75,7 @@ const ProfilePage = () => {
         const res = await mutation.mutateAsync({
           ...data,
           access_token: user?.access_token,
+          user_id: user?.id,
         });
         if (res.status === "OK") {
           setProvince("");

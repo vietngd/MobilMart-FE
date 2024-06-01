@@ -23,6 +23,7 @@ const ProductActionComponent = ({ product }) => {
               sale: product?.sale,
               price: product?.price,
               quantity: 1,
+              quantity_remaining: product?.quantity,
             },
           ],
         };

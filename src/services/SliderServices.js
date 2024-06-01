@@ -1,12 +1,20 @@
 import axios from "axios";
 import { axiosJWT } from "./userServices";
 
-const CreateSlider = async (sliders) => {
+const CreateSlider = async (sliders, access_token) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
   try {
-    const response = await axiosJWT.post(`${baseUrl}/slider/create`, {
-      sliders: sliders,
-    });
+    const response = await axiosJWT.post(
+      `${baseUrl}/slider/create`,
+      {
+        sliders: sliders,
+      },
+      {
+        headers: {
+          token: `Bearer ${access_token}`,
+        },
+      },
+    );
     return response.data;
   } catch (err) {
     console.log(err);

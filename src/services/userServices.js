@@ -75,12 +75,12 @@ const logoutUser = async () => {
   }
 };
 
-const updateUser = async (data, access_token) => {
+const updateUser = async (data, access_token, user_id) => {
   const baseUrl = import.meta.env.VITE_REACT_APP_API_URL;
-  const { id } = data;
+
   try {
     const response = await axiosJWT.put(
-      `${baseUrl}/user/update/${id}`,
+      `${baseUrl}/user/update/${user_id}`,
       {
         ...data,
       },

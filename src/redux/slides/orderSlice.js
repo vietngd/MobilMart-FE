@@ -73,7 +73,12 @@ export const OrderSlice = createSlice({
           (item) => item.product_id === product_id,
         );
 
-        if (existingProductItem) existingProductItem.quantity += 1; //Redux-toolkit sẽ tự động thấy sự thay đổi và cập nhật lại state vì thế mà không cần sao chép lại state
+        if (
+          existingProductItem &&
+          existingProductItem?.quantity <
+            existingProductItem?.quantity_remaining
+        )
+          existingProductItem.quantity += 1; //Redux-toolkit sẽ tự động thấy sự thay đổi và cập nhật lại state vì thế mà không cần sao chép lại state
       }
     },
     removeOrder: (state, action) => {

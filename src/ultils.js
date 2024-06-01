@@ -111,6 +111,7 @@ export function calculateDailySale(apiData) {
 
 // Tính tỉ lệ đánh giá
 export function calculateAverageRating(ratingCounts) {
+  // ratingCounts là mảng số lượng đánh giá 1->5 sao
   let totalRatings = 0;
   let totalStars = 0;
 

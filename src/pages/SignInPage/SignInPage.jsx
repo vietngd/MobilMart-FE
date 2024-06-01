@@ -51,7 +51,7 @@ const SignInPage = () => {
       password,
     });
 
-    setMessage(data.message);
+    setMessage(data?.message);
   };
   const handleSubmitForgotPassword = async (e) => {
     e.preventDefault();
@@ -213,7 +213,7 @@ const SignInPage = () => {
 
                         <div className="float-right mb-2 mt-2 w-full text-sm">
                           {message && (
-                            <div className="w-full text-start text-red-600">
+                            <div className="w-full text-start text-primary">
                               {message}
                             </div>
                           )}

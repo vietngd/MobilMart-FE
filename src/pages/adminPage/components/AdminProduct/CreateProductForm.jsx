@@ -29,7 +29,8 @@ const CreateProductForm = ({
   const handleOnchange = (e) => {
     setStateProduct({
       ...stateProduct,
-      [e.target.name]: e.target.value || e.target.checked,
+      [e.target.name]:
+        e.target.value < 1 ? 1 : e.target.value || e.target.checked,
     });
   };
 

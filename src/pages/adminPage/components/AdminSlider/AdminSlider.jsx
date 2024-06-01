@@ -22,10 +22,10 @@ const AdminSlider = () => {
     setFileList(fileList);
   };
 
-  const createSlider = async (sliders) => {
+  const createSlider = async (sliders, access_token) => {
     setLoading(true);
     try {
-      const res = await SliderServices.CreateSlider(sliders);
+      const res = await SliderServices.CreateSlider(sliders, access_token);
       if (res && res.status === "OK") {
         setFileList([]);
         setIsOpenCreateSlider(false);
@@ -44,12 +44,17 @@ const AdminSlider = () => {
 
   const hanldeCreateSlider = async () => {
     const sliders = [];
-    await Promise.all(
+    const res = await Promise.all(
       fileList.map(async (item) => {
         sliders.push(await getBase64(item.originFileObj || item));
       }),
     );
-    createSlider(sliders);
+    if (res && user?.access_token && fileList.length > 0) {
+      createSlider(sliders, user?.access_token);
+    }
+    if (fileList.length === 0) {
+      message.error("Vui lòng chọn ảnh!");
+    }
   };
 
   const [sliders, setSliders] = useState([]);

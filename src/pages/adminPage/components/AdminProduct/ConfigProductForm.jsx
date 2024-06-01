@@ -73,7 +73,7 @@ const ConfigProductForm = ({
         operating_system: "",
         screen_resolution: "",
       });
-    } else {
+    } else if (isSuccess && data?.status !== "OK") {
       message.error("Cõ lỗi thử lại sau!");
     }
   }, [isSuccess, isError]);

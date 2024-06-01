@@ -182,7 +182,7 @@ const MyOrderPage = () => {
                       <button
                         className="rounded border bg-red-400 px-5   text-white sm:py-2"
                         onClick={() => {
-                          setIdCancel(order.order_id);
+                          setIdCancel(order?.order_id);
                           setIsModalCancel(true);
                         }}
                       >
@@ -195,7 +195,7 @@ const MyOrderPage = () => {
                     )
                   ) : (
                     <>
-                      {!order?.is_received && (
+                      {!order?.is_received && order?.order_status_transport ? (
                         <button
                           className="rounded border bg-green-400 px-5   text-white sm:py-2"
                           onClick={() => {
@@ -205,6 +205,8 @@ const MyOrderPage = () => {
                         >
                           Đã nhận hàng
                         </button>
+                      ) : (
+                        <></>
                       )}
                     </>
                   )}

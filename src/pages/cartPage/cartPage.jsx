@@ -114,8 +114,8 @@ const CartPage = () => {
     });
   };
 
-  const mutation = useMutationHook(async ({ access_token, ...rest }) => {
-    const res = await UserServices.updateUser(rest, access_token);
+  const mutation = useMutationHook(async ({ access_token, id, ...rest }) => {
+    const res = await UserServices.updateUser(rest, access_token, id);
     return res;
   });
 
@@ -234,25 +234,30 @@ const CartPage = () => {
                           <td className="hidden min-w-40 text-center md:table-cell">
                             <div className="flex items-center justify-center gap-x-1 md:gap-x-6">
                               <button
-                                className="h-8 w-8 rounded border"
-                                onClick={() =>
+                                className="h-8 w-8 rounded border hover:border-primary hover:bg-primary hover:text-white"
+                                onClick={() => {
                                   handleQuantityProduct(
                                     "decrease",
                                     item.product_id,
-                                  )
-                                }
+                                  );
+                                }}
                               >
                                 -
                               </button>
                               <span>{item.quantity}</span>
                               <button
-                                className="h-8 w-8 rounded border"
-                                onClick={() =>
+                                className={`h-8 w-8 rounded border  ${item.quantity === item.quantity_remaining ? "cursor-default" : "hover:border-primary hover:bg-primary hover:text-white"}`}
+                                onClick={() => {
                                   handleQuantityProduct(
                                     "increase",
                                     item.product_id,
-                                  )
-                                }
+                                  );
+                                  if (
+                                    item.quantity === item.quantity_remaining
+                                  ) {
+                                    message.error("Quá số lượng tồn kho!");
+                                  }
+                                }}
                               >
                                 +
                               </button>
