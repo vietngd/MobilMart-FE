@@ -89,7 +89,7 @@ export function calculateDailySale(apiData) {
     apiData.forEach((order) => {
       const orderDate = new Date(order.created_at);
 
-      // Chỉ lấy dữ liệu của ngày hiện tại và 15 ngày trước đó
+      // Chỉ lấy dữ liệu của ngày hiện tại và 30 ngày trước đó
       if (orderDate >= pastDate && orderDate <= now) {
         const date = convertDateTime(order.created_at).day;
         if (dailySale[date]) {

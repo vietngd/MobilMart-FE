@@ -234,7 +234,7 @@ const CartPage = () => {
                           <td className="hidden min-w-40 text-center md:table-cell">
                             <div className="flex items-center justify-center gap-x-1 md:gap-x-6">
                               <button
-                                className="h-8 w-8 rounded border hover:border-primary hover:bg-primary hover:text-white"
+                                className="h-8 w-8 rounded border border-primary hover:bg-primary hover:text-white"
                                 onClick={() => {
                                   handleQuantityProduct(
                                     "decrease",
@@ -246,7 +246,7 @@ const CartPage = () => {
                               </button>
                               <span>{item.quantity}</span>
                               <button
-                                className={`h-8 w-8 rounded border  ${item.quantity === item.quantity_remaining ? "cursor-default" : "hover:border-primary hover:bg-primary hover:text-white"}`}
+                                className={`h-8 w-8 rounded border  ${item.quantity === item.quantity_remaining ? "cursor-default opacity-50" : "border-primary hover:bg-primary hover:text-white"}`}
                                 onClick={() => {
                                   handleQuantityProduct(
                                     "increase",
