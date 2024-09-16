@@ -146,7 +146,7 @@ const AdminCategory = () => {
                 return (
                   <tr className=" hover:bg-gray-100" key={index}>
                     <td className="border px-4 py-2">{index + 1}</td>
-                    <td className="border px-4 py-2 text-center">
+                    <td className="border px-4 py-2 text-center ">
                       {category?.name}
                     </td>
                     <td className="border px-4 py-2 text-center">

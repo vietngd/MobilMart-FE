@@ -1,6 +1,6 @@
 import { Button, Form, Modal, Select, Space } from "antd";
 import { useEffect, useState } from "react";
-import TableComponent from "../../../../components/TableComponent/TableComponent";
+import CustomTable from "../../../../components/common/CustomTable.jsx";
 import * as Userservices from "../../../../services/userServices.js";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
@@ -162,9 +162,10 @@ const AdminUser = () => {
       <h1 className="text-2xl font-bold">Quản lý người dùng</h1>
 
       <div className="mt-4">
-        <TableComponent
-          columms={columns}
-          dataProp={Users?.data}
+
+        <CustomTable
+          dataProp={Users?.data || []}
+          columns={columns}
           isLoading={isLoading}
           onRow={(record) => {
             return {
@@ -172,7 +173,7 @@ const AdminUser = () => {
                 setStateUser({
                   ...record,
                 });
-              }, // click row
+              },
             };
           }}
         />

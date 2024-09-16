@@ -58,6 +58,7 @@ const AdminPage = () => {
             style={{
               width: 240,
               height: "100vh",
+              fontWeight: "bold",
               paddingTop: "70px",
               position: "fixed",
             }}

@@ -12,7 +12,8 @@ import CreateProductForm from "./CreateProductForm.jsx";
 import ConfigProductForm from "./ConfigProductForm.jsx";
 import EditProductForm from "./EditProductForm.jsx";
 import { useSelector } from "react-redux";
-
+import CustomTable from "../../../../components/common/CustomTable.jsx"
+import { IcDelete, IcEdit } from "../../../../components/icons/common.jsx";
 const AdminProduct = () => {
   const user = useSelector((state) => state.user);
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
@@ -206,16 +207,15 @@ const AdminProduct = () => {
       render: () => (
         <Space size="middle">
           <button
-            className="rounded border border-blue px-2 py-1"
             onClick={handleDetailProduct}
-          >
-            Edit
+          >  <IcEdit />
           </button>
+
+
           <button
-            className="rounded border border-red-600 px-2 py-1"
             onClick={() => setIsModalOpenDelete(true)}
           >
-            Delete
+            <IcDelete />
           </button>
         </Space>
       ),
@@ -275,9 +275,9 @@ const AdminProduct = () => {
         Thêm sản phẩm
       </button>
       <div className="mt-4">
-        <TableComponent
-          dataProp={products?.data}
-          columms={columns}
+        <CustomTable
+          dataProp={products?.data || []}  // Ensure dataProp is an array
+          columns={columns}  // Correct prop name: columns, not columms
           isLoading={isLoading}
           onRow={(record) => {
             return {
@@ -287,6 +287,7 @@ const AdminProduct = () => {
             };
           }}
         />
+
       </div>
       {/* Thêm sản phẩm */}
       <CreateProductForm
