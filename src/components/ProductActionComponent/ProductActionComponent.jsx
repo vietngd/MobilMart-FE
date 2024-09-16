@@ -3,12 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { addOrder, increaseQuantity } from "../../redux/slides/orderSlice";
 import * as message from "../../components/Message/MessageComponent";
+
 const ProductActionComponent = ({ product }) => {
-  const user = useSelector((state) => state.user);
-  const orders = useSelector((state) => state.order);
+  const user = useSelector((state) => state?.user);
+  const orders = useSelector((state) => state?.order);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+console.log("user?.id", user?.id);
+
   const handleAddOrder = () => {
     if (!user?.id) {
       navigate("/sign-in", { state: location?.pathname });
@@ -16,13 +19,13 @@ const ProductActionComponent = ({ product }) => {
       // Số lượng sản phẩm trong giỏ hàng
       const quantity_product_order = orders?.orderItems
         .find((item) => item?.user_id === user?.id)
-        .products.find((item) => item?.product_id === product?.id)?.quantity;
+        ?.products.find((item) => item?.product_id === product?.id)?.quantity;
 
       if (product?.quantity > 0) {
         if (
           !orders?.orderItems
             .find((item) => item?.user_id === user?.id)
-            .products.find((item) => item?.product_id === product?.id)
+            ?.products.find((item) => item?.product_id === product?.id)
         ) {
           const orderItem = {
             user_id: user?.id,
@@ -53,16 +56,17 @@ const ProductActionComponent = ({ product }) => {
       }
     }
   };
+
   return (
-    <div className="col-span-1  cursor-pointer p-2">
-      <button className=" flex w-full items-center rounded-md border  bg-red-600 p-2   text-white hover:shadow">
+    <div className="col-span-1 cursor-pointer p-2">
+      <button
+        className="flex w-full items-center rounded-md border bg-red-600 p-2 text-white hover:shadow"
+        onClick={handleAddOrder} // Đặt onClick vào button
+      >
         <p className="mr-2">
           <FaCartArrowDown size={"1.5rem"} />
         </p>
-
-        <span className=" text-lg text-white" onClick={handleAddOrder}>
-          Thêm giỏ hàng
-        </span>
+        <span className="text-lg text-white">Thêm giỏ hàng</span>
       </button>
     </div>
   );

@@ -13,27 +13,14 @@ export const OrderSlice = createSlice({
   initialState,
   reducers: {
     addOrder: (state, action) => {
-      // const orderItem = {
-      //   user_id: user?.id,
-      //   products: [
-      //     {
-      //       product_id: product?.id,
-      //       name: product?.name,
-      //       image: product?.images.split(",")[0],
-      //       sale: product?.sale,
-      //       price: product?.price,
-      //       quantity: 1,
-      //     },
-      //   ],
-      // };
-      // dispatch(addOrder(orderItem));
       const { user_id, products } = action.payload;
       const existingOrderItem = state.orderItems.find(
-        (item) => item.user_id === user_id,
+        (item) => item.user_id === user_id
       );
+
       if (existingOrderItem) {
         const existingProductItem = existingOrderItem.products.find(
-          (item) => item.product_id === products[0].product_id,
+          (item) => item.product_id === products[0].product_id
         );
         if (!existingProductItem) {
           existingOrderItem.products.push(...products);
@@ -45,20 +32,18 @@ export const OrderSlice = createSlice({
       }
     },
     decreaseQuantity: (state, action) => {
-      // Giảm
       const { user_id, product_id } = action.payload;
       let existingOrderItem = state.orderItems.find(
-        (item) => item.user_id === user_id,
+        (item) => item.user_id === user_id
       );
       if (existingOrderItem) {
         const existingProductItem = existingOrderItem.products.find(
-          (item) => item.product_id === product_id,
+          (item) => item.product_id === product_id
         );
-
-        if (existingProductItem) existingProductItem.quantity -= 1; //Redux-toolkit sẽ tự động thấy sự thay đổi và cập nhật lại state vì thế mà không cần sao chép lại state
+        if (existingProductItem) existingProductItem.quantity -= 1;
         if (existingProductItem.quantity === 0) {
           existingOrderItem.products = existingOrderItem.products.filter(
-            (item) => item.product_id !== existingProductItem.product_id,
+            (item) => item.product_id !== existingProductItem.product_id
           );
         }
       }
@@ -66,44 +51,42 @@ export const OrderSlice = createSlice({
     increaseQuantity: (state, action) => {
       const { user_id, product_id } = action.payload;
       let existingOrderItem = state.orderItems.find(
-        (item) => item.user_id === user_id,
+        (item) => item.user_id === user_id
       );
       if (existingOrderItem) {
         const existingProductItem = existingOrderItem.products.find(
-          (item) => item.product_id === product_id,
+          (item) => item.product_id === product_id
         );
-
         if (
           existingProductItem &&
-          existingProductItem?.quantity <
-            existingProductItem?.quantity_remaining
-        )
-          existingProductItem.quantity += 1; //Redux-toolkit sẽ tự động thấy sự thay đổi và cập nhật lại state vì thế mà không cần sao chép lại state
+          existingProductItem?.quantity < existingProductItem?.quantity_remaining
+        ) {
+          existingProductItem.quantity += 1;
+        }
       }
     },
     removeOrder: (state, action) => {
       const { user_id, product_id } = action.payload;
       const existingOrderItem = state.orderItems.find(
-        (item) => item.user_id === user_id,
+        (item) => item.user_id === user_id
       );
 
       if (existingOrderItem) {
         const newProducts = existingOrderItem.products.filter(
-          (item) => item.product_id != product_id,
+          (item) => item.product_id !== product_id
         );
         existingOrderItem.products = newProducts;
       }
     },
     removeAllOrder: (state, action) => {
       const { product_ids, user_id } = action.payload;
-
       const existingOrderItem = state.orderItems.find(
-        (item) => item.user_id === user_id,
+        (item) => item.user_id === user_id
       );
 
       if (existingOrderItem) {
         existingOrderItem.products = existingOrderItem.products.filter(
-          (item) => !product_ids.includes(item.product_id),
+          (item) => !product_ids.includes(item.product_id)
         );
       }
     },
@@ -115,19 +98,18 @@ export const OrderSlice = createSlice({
       state.totalMonney = totalMonney;
     },
     removeOrderInfo: (state, action) => {
-      (state.note = ""), (state.address = "");
+      state.note = "";
+      state.address = "";
       state.totalMonney = 0;
-      const product_ids = state.selectedProduct?.map(
-        (item) => item?.product_id,
-      );
+      const product_ids = state.selectedProduct?.map((item) => item?.product_id);
       const { user_id } = action.payload;
       const existingOrderItem = state.orderItems.find(
-        (item) => item.user_id === user_id,
+        (item) => item.user_id === user_id
       );
 
       if (existingOrderItem) {
         const newOrderItems = existingOrderItem.products.filter(
-          (item) => !product_ids.includes(item.product_id),
+          (item) => !product_ids.includes(item.product_id)
         );
         existingOrderItem.products = newOrderItems;
         state.selectedProduct = [];
