@@ -66,7 +66,7 @@ const AdminPage = () => {
             onClick={handleClick}
           />
         </div>
-        <div className="flex-1 px-2 pt-[70px]">{renderContent(keyContent)}</div>
+        <div className="flex-1 px-6 pt-[70px]">{renderContent(keyContent)}</div>
       </div>
     </>
   );

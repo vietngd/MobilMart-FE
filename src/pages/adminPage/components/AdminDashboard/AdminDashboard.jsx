@@ -112,50 +112,55 @@ function AdminDashboard() {
       </text>
     );
   };
-
+  const renderCustomizedLegend = (value, entry, index) => {
+    return (
+      <span style={{ color: COLORS[index % COLORS.length], fontWeight: 'bold' }}>
+        {value}
+      </span>
+    );
+  };
   return (
     <main className="main-container">
       <div className="main-title">
-        <h3>THỐNG KÊ</h3>
+        <div className="text-[20px] font-semibold">Thống kê</div>
       </div>
-
-      <div className="main-cards text-white">
-        <div className="card min-h-24">
-          <div className="card-inner">
-            <h3>PRODUCTS</h3>
+      <div className="grid grid-cols-4 gap-4 pb-4">
+        <div className="border-gray-400 rounded-lg border-[1px] p-4 mt-3">
+          <div className="flex justify-between">
+            <div className="text-[16px] font-bold">Sản phẩm</div>
             <BsFillArchiveFill className="card_icon" />
           </div>
-          <h1>{products?.length}</h1>
+          <h1 className="text-[16px] font-medium">{products?.length}</h1>
         </div>
-        <div className="card min-h-24">
-          <div className="card-inner">
-            <h3>CATEGORIES</h3>
+        <div className="border-gray-400 rounded-lg border-[1px] p-4">
+          <div>
+            <div className="text-[16px] font-bold">Danh mục</div>
             <BsFillGrid3X3GapFill className="card_icon" />
           </div>
-          <h1>{categories?.length}</h1>
+          <h1 className="text-[16px] font-medium">{categories?.length}</h1>
         </div>
-        <div className="card min-h-24">
-          <div className="card-inner">
-            <h3>CUSTOMERS</h3>
+        <div className="border-gray-400 rounded-lg border-[1px] p-4">
+          <div>
+            <div className="text-[16px] font-bold">Khánh hàng</div>
             <BsPeopleFill className="card_icon" />
           </div>
-          <h1>{users?.length}</h1>
+          <h1 className="text-[16px] font-medium">{users?.length}</h1>
         </div>
-        <div className="card min-h-24">
-          <div className="card-inner">
-            <h3>ORDERS</h3>
+        <div className="border-gray-400 rounded-lg border-[1px] p-4">
+          <div>
+            <div className="text-[16px] font-bold">Đơn hàng</div>
             <FaShoppingCart className="card_icon" />
           </div>
           <h1>{orders?.length}</h1>
         </div>
       </div>
-      <h1>THỐNG KÊ DOANH SỐ</h1>
-      <div className="card mt-3 min-h-24 w-1/3 text-white">
-        <div className="card-inner">
-          <h3>DOANH THU</h3>
+      <div className="text-[20px] font-semibold">Thống kê doanh thu</div>
+      <div className="grid grid-cols-4">
+        <div  className="border-gray-400 rounded-lg border-[1px] p-4 mt-3">
+          <div className="text-[16px] font-bold">Doanh thu</div>
           <FaDollarSign className="card_icon" />
+          <div className="text-[16px] font-medium">{convertToMonney(sales)}</div>
         </div>
-        <h1>{convertToMonney(sales)}</h1>
       </div>
       <div>
         <ResponsiveContainer width="100%" height={400} className="mt-10">
@@ -186,27 +191,34 @@ function AdminDashboard() {
       <h1 className="mt-10">THỐNG KÊ SỐ LƯỢNG BÁN</h1>
       <div>
         <ResponsiveContainer width="100%" height={400} className={"mb-10"}>
-          <PieChart>
-            <Pie
-              data={dataPieChart}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              outerRadius={120}
-              fill="#8884d8"
-              dataKey="value"
-              label={renderCustomizedLabel}
-            >
-              {dataPieChart.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
+   
+    <PieChart width={400} height={400}>
+      <Pie
+        data={dataPieChart}
+        cx="50%"
+        cy="50%"
+        labelLine={false}
+        outerRadius={120}
+        fill="#8884d8"
+        dataKey="value"
+        label={renderCustomizedLabel}
+      >
+        {dataPieChart.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+        ))}
+      </Pie>
+      <Tooltip />
+      <Legend
+        verticalAlign="middle" 
+        align="left"
+        iconType="circle"
+        formatter={renderCustomizedLegend}
+        layout="vertical" 
+      />
+
+    </PieChart>
+
+
         </ResponsiveContainer>
       </div>
     </main>

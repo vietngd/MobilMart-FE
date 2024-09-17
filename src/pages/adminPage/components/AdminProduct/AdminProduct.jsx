@@ -276,8 +276,8 @@ const AdminProduct = () => {
       </button>
       <div className="mt-4">
         <CustomTable
-          dataProp={products?.data || []}  // Ensure dataProp is an array
-          columns={columns}  // Correct prop name: columns, not columms
+          dataProp={products?.data || []}  //
+          columns={columns}  
           isLoading={isLoading}
           onRow={(record) => {
             return {
@@ -290,7 +290,7 @@ const AdminProduct = () => {
 
       </div>
       {/* Thêm sản phẩm */}
-      <CreateProductForm
+        <CreateProductForm
         isModalCreateProduct={isModalCreateProduct}
         onCancel={onCancel}
         handleNextModal={handleNextModal}

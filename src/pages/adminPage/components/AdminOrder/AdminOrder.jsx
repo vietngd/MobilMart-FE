@@ -5,9 +5,11 @@ import Loading from "../../../../components/Loading/LoadingComponent";
 import { convertDateTime, convertToMonney } from "../../../../ultils.js";
 import AdminOrderDetail from "./AdminOrderDetail.jsx";
 import { Popover } from "antd";
-import Pagination from "../../../../components/Pagination/Pagination.jsx";
 import useDebounce from "../../../../hooks/useDebounce.js";
-
+import CustomTable from "../../../../components/common/CustomTable.jsx"
+import { IcEdit, IcView } from "../../../../components/icons/common.jsx";
+import Badge from "../../../../components/common/Badge.jsx";
+import { TextField } from "@mui/material";
 const AdminOrder = () => {
   const user = useSelector((state) => state.user);
   const [orders, setOrders] = useState([]);
@@ -15,7 +17,6 @@ const AdminOrder = () => {
   const [isOrderDetail, setIsOrderDetail] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [visiblePopover, setVisiblePopover] = useState();
-  const [pageNumber, setPageNumber] = useState(1);
   const [order_id_search, setOrder_id_search] = useState("");
 
   const fetchOrders = async () => {
@@ -23,7 +24,6 @@ const AdminOrder = () => {
     try {
       const res = await OrderServices.getAllOrder(
         user?.access_token,
-        pageNumber,
         8,
         order_id_search,
       );
@@ -38,7 +38,7 @@ const AdminOrder = () => {
   const id_search = useDebounce(order_id_search, 500);
   useEffect(() => {
     fetchOrders();
-  }, [pageNumber, id_search]); // Sử dụng updateTransportStatus làm dependency
+  }, [id_search]);
 
   const handleDetailOrder = (orderId) => {
     setOrderId(orderId);
@@ -99,140 +99,127 @@ const AdminOrder = () => {
     setVisiblePopover("");
   };
 
-  const handleGetPageNumber = (pageNumber) => {
-    setPageNumber(pageNumber);
-  };
-
+  const columns = [
+    {
+      title: "Mã Đơn",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Khách hàng",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "SĐT",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Thanh toán",
+      dataIndex: "order_status_payment",
+      key: "order_status_payment",
+      render: (item) => (
+        item?.order_status_payment === 0 ? "Chưa thanh toán" : <span className="text-red-500">Đã thanh toán</span>
+      ),
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "order_status_transport",
+      key: "order_status_transport",
+      render: (item) => {
+        return (
+          <div>
+            {item?.order_status_transport === 1 ? (
+             <Badge type="success" title={"Đã gửi hàng"} isCustom></Badge>
+            ) : (
+              <Badge type="warning" title={"Đang xử lý"} isCustom></Badge>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      title: "Yêu cầu khách hàng",
+      dataIndex: "order_status_cancel",
+      key: "order_status_cancel",
+      render: (item) => (
+        item?.order_status_cancel === 1
+          ?   <Badge type="danger" title={" Hủy"} isCustom></Badge>
+          : <Badge type="success" title={"Không"} isCustom></Badge>
+      ),
+    },
+    {
+      title: "Ngày đặt",
+      dataIndex: "created_at",
+      key: "created_at",
+      render: (item) => convertDateTime(item?.created_at)?.day,
+    },
+    {
+      title: "Tổng tiền",
+      dataIndex: "total_money",
+      key: "total_money",
+      render: (item) => convertToMonney(item?.total_money),
+    },
+    {
+      title: "Hành động",
+      key: "actions",
+      render: (item) => (
+        <>
+          <button
+            className="mr-1 px-2 py-1 text-white"
+            onClick={() => handleDetailOrder(item.id)}
+          >
+          <IcView />
+          </button>
+          <Popover
+            content={content}
+            trigger="click"
+            open={visiblePopover === item.id && item.order_status_transport !== 1}
+          >
+            <button
+              className={`${item.order_status_transport !== 1 ? "cursor-pointer" : "cursor-not-allowed"}`}
+              onClick={() => {
+                setOrderId(item.id);
+                setVisiblePopover(visiblePopover === item.id ? "" : item.id);
+              }}
+              disabled={item.order_status_transport === 1}
+            >
+             <IcEdit />
+            </button>
+          </Popover>
+        </>
+      ),
+    },
+  ];
   return (
     <div>
-      <h1 className="mb-4 text-2xl font-bold">
+      <h1 className="mb-4 text-[24px] font-bold">
         {isOrderDetail ? "Chi tiết đơn hàng" : "Quản lý đơn hàng"}
       </h1>
-      <div className="mb-3">
-        <input
+      <div className="mb-3 grid grid-cols-3">
+        <TextField
           type="text"
           placeholder="Nhập mã đơn hàng"
-          className="w-60 rounded border border-blue px-2 py-1 outline-red-300"
+          size="small"
+          // className="w-60 rounded border border-blue px-2 py-1 outline-red-300"
           value={order_id_search}
           onChange={(e) => setOrder_id_search(e.target.value)}
         />
       </div>
+     
       {!isOrderDetail ? (
-        <div className="overflow-x-auto">
-          <Loading isLoading={loading}>
-            <table className="mb-3 min-w-full border-collapse rounded-lg border bg-white">
-              <thead>
-                <tr>
-                  <th className="border px-4 py-2 text-left">Mã Đơn</th>
-                  <th className="border px-4 py-2 text-left">Khách hàng</th>
-                  <th className="border px-4 py-2 text-left">SĐT</th>
-                  <th className="border px-4 py-2 text-left">Thanh toán</th>
-                  <th className="border px-4 py-2 text-left">Trạng thái</th>
-                  <th className="border px-4 py-2 text-left">
-                    Yêu cầu khách hàng
-                  </th>
-                  <th className="border px-4 py-2 text-left">Ngày đặt</th>
-                  <th className="border px-4 py-2 text-left">Tổng tiền</th>
-                  <th className="border px-4 py-2 text-left">Thao tác</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {orders && orders.data && orders?.data.length > 0 ? (
-                  orders?.data?.map((order, index) => {
-                    return (
-                      <tr className=" hover:bg-gray-100" key={index}>
-                        <td className="border px-4 py-2">{order?.id}</td>
-                        <td className="border px-4 py-2">{order?.name}</td>
-                        <td className="border px-4 py-2">{order?.phone}</td>
-                        <td className="border px-4 py-2">
-                          {order?.order_status_payment === 0 ? (
-                            "Chưa thanh toán"
-                          ) : (
-                            <span className="text-red-500">Đã thanh toán</span>
-                          )}
-                        </td>
-                        <td className="border px-4 py-2 text-center">
-                          {order?.order_status_transport === 1 ? (
-                            <span className="rounded bg-green-500 p-1 text-white">
-                              Đã gửi hàng
-                            </span>
-                          ) : (
-                            <span className="rounded bg-yellow-300 p-1">
-                              Đang xử lý
-                            </span>
-                          )}
-                        </td>
-                        <td className="border px-4 py-2 text-center">
-                          {order?.order_status_cancel === 1 ? (
-                            <span className="rounded bg-red-500 p-1 text-white">
-                              Khách yêu cầu hủy
-                            </span>
-                          ) : (
-                            <span className="rounded bg-green-500 p-1 text-white ">
-                              Không
-                            </span>
-                          )}
-                        </td>
-                        <td className="border px-4 py-2">
-                          {convertDateTime(order?.created_at)?.day}
-                        </td>
-                        <td className="border px-4 py-2">
-                          {convertToMonney(order.total_money)}
-                        </td>
-                        <td className="border px-4 py-2">
-                          <button
-                            className="mr-1 rounded border bg-green-500 px-2 py-1 text-white"
-                            onClick={() => handleDetailOrder(order.id)}
-                          >
-                            Xem
-                          </button>
-                          <Popover
-                            content={content}
-                            trigger="click"
-                            open={
-                              visiblePopover === order.id &&
-                              order?.order_status_transport !== 1
-                            }
-                          >
-                            <button
-                              className={`rounded border px-2 py-1 ${order?.order_status_transport !== 1 ? " bg-red-500 text-white" : "cursor-default"}`}
-                              onClick={() => {
-                                setOrderId(order.id);
-                                if (visiblePopover === order.id) {
-                                  setVisiblePopover("");
-                                } else {
-                                  setVisiblePopover(order.id);
-                                }
-                              }}
-                            >
-                              Cập nhật
-                            </button>
-                          </Popover>
-                        </td>
-                      </tr>
-                    );
-                  })
-                ) : (
-                  <tr>
-                    <td colSpan={8} className="py-3 text-center">
-                      Không có đơn hàng nào
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </Loading>
-          {/* Phân trang*/}
-          {!order_id_search && orders?.pagination?.totalPages > 1 && (
-            <div className="flex justify-center">
-              <Pagination
-                totalPage={orders?.pagination?.totalPages}
-                getPageNumber={handleGetPageNumber}
-              />
-            </div>
-          )}
-        </div>
+        <CustomTable
+          dataProp={orders.data || []}  //
+          columns={columns}  
+          onRow={(item) => {
+            return {
+              onClick: () => {
+                setIdProductDelete(item?.id);
+              },
+            };
+          }}
+        />
       ) : (
         <AdminOrderDetail orderId={orderId} />
       )}

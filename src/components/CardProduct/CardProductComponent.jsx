@@ -33,7 +33,7 @@ const CardProductComponent = (props) => {
           <div className="mb-5 mt-10">
             <CardProductHeader title={name} />
           </div>
-          <div className="sm: grid grid-cols-2 gap-x-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="sm: grid grid-cols-2 gap-x-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 pb-3">
             {data?.Products?.map((item, index) => {
               return <Card key={index} card={item} />;
             })}
@@ -41,7 +41,7 @@ const CardProductComponent = (props) => {
           <button
             className={
               data?.Products.length === data?.pagination.totalCount
-                ? "absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300"
+                ? "absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300 cursor-not-allowed"
                 : "absolute left-1/2 top-full -translate-x-1/2  rounded border border-primary px-4 py-1 font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-white"
             }
             onClick={handleLoadMore}
