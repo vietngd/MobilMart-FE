@@ -8,6 +8,7 @@ import { useMutationHook } from "../../../../hooks/userMutationHook.js";
 import Loading from "../../../../components/Loading/LoadingComponent.jsx";
 import ModalComponent from "../../../../components/Modal/ModalComponent.jsx";
 import * as message from "../../../../components/Message/MessageComponent.jsx";
+import { IcDelete, IcEdit } from "../../../../components/icons/common.jsx";
 
 const AdminUser = () => {
   const user = useSelector((state) => state.user);
@@ -46,17 +47,11 @@ const AdminUser = () => {
       key: "action",
       render: () => (
         <Space size="middle">
-          <button
-            className="rounded border border-blue px-2 py-1"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Sửa quyền
+          <button onClick={() => setIsModalOpen(true)}>
+            <IcEdit />
           </button>
-          <button
-            className="rounded border border-red-600 px-2 py-1"
-            onClick={() => setIsModalOpenDelete(true)}
-          >
-            Delete
+          <button onClick={() => setIsModalOpenDelete(true)}>
+            <IcDelete />
           </button>
         </Space>
       ),
@@ -162,7 +157,6 @@ const AdminUser = () => {
       <h1 className="text-2xl font-bold">Quản lý người dùng</h1>
 
       <div className="mt-4">
-
         <CustomTable
           dataProp={Users?.data || []}
           columns={columns}

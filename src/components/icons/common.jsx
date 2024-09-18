@@ -1,8 +1,14 @@
-import React from 'react';
+import React from "react";
 
 // Icon Edit
-const IcEdit = ({ width = 24, height = 24, color = '#334155' }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 25 24" fill="none">
+const IcEdit = ({ width = 24, height = 24, color = "#334155" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={width}
+    height={height}
+    viewBox="0 0 25 24"
+    fill="none"
+  >
     <path
       d="M11.5 2H9.5C4.5 2 2.5 4 2.5 9V15C2.5 20 4.5 22 9.5 22H15.5C20.5 22 22.5 20 22.5 15V13"
       stroke={color}
@@ -27,8 +33,14 @@ const IcEdit = ({ width = 24, height = 24, color = '#334155' }) => (
 );
 
 // Icon Delete
-const IcDelete = ({ width = 24, height = 24, color = '#334155' }) => (
-  <svg width={width} height={height} viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+const IcDelete = ({ width = 24, height = 24, color = "#334155" }) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox="0 0 25 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
     <path
       d="M21.5 5.97998C18.17 5.64998 14.82 5.47998 11.48 5.47998C9.5 5.47998 7.52 5.57998 5.54 5.77998L3.5 5.97998"
       stroke={color}
@@ -47,35 +59,78 @@ const IcDelete = ({ width = 24, height = 24, color = '#334155' }) => (
       strokeLinecap="round"
       strokeLinejoin="round"
     />
-    <path d="M10.83 16.5H14.16" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M10 12.5H15" stroke={color} strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M10.83 16.5H14.16"
+      stroke={color}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M10 12.5H15"
+      stroke={color}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 );
 
 // Icon Add
-const IcAdd = ({ width = 24, height = 24, color = '#334155' }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width={width} height={height} viewBox="0 0 20 20" fill="none">
+const IcAdd = ({ width = 24, height = 24, color = "#334155" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={width}
+    height={height}
+    viewBox="0 0 20 20"
+    fill="none"
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"
       d="M12.7071 5.29289C13.0976 5.68342 13.0976 6.31658 12.7071 6.70711L9.41421 10L12.7071 13.2929C13.0976 13.6834 13.0976 14.3166 12.7071 14.7071C12.3166 15.0976 11.6834 15.0976 11.2929 14.7071L7.29289 10.7071C6.90237 10.3166 6.90237 9.68342 7.29289 9.29289L11.2929 5.29289C11.6834 4.90237 12.3166 4.90237 12.7071 5.29289Z"
       fill={color}
-      
     />
   </svg>
 );
-const IcView = ({ width = 24, height = 24, color = '#334155' }) => (
-<svg width={width} height={height} viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path
-  d="M16.0799 11.9999C16.0799 13.9799 14.4799 15.5799 12.4999 15.5799C10.5199 15.5799 8.91992 13.9799 8.91992 11.9999C8.91992 10.0199 10.5199 8.41992 12.4999 8.41992C14.4799 8.41992 16.0799 10.0199 16.0799 11.9999Z"
-  stroke={color}
-  strokeLinecap="round"
-/>
-<path
-  d="M12.4998 20.27C16.0298 20.27 19.3198 18.19 21.6098 14.59C22.5098 13.18 22.5098 10.81 21.6098 9.39997C19.3198 5.79997 16.0298 3.71997 12.4998 3.71997C8.96984 3.71997 5.67984 5.79997 3.38984 9.39997C2.48984 10.81 2.48984 13.18 3.38984 14.59C5.67984 18.19 8.96984 20.27 12.4998 20.27Z"
-  stroke={color}
-  strokeLinejoin="round"
-/>
-</svg>
+const IcView = ({ width = 24, height = 24, color = "#334155" }) => (
+  <svg
+    width={width}
+    height={height}
+    viewBox="0 0 25 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M16.0799 11.9999C16.0799 13.9799 14.4799 15.5799 12.4999 15.5799C10.5199 15.5799 8.91992 13.9799 8.91992 11.9999C8.91992 10.0199 10.5199 8.41992 12.4999 8.41992C14.4799 8.41992 16.0799 10.0199 16.0799 11.9999Z"
+      stroke={color}
+      strokeLinecap="round"
+    />
+    <path
+      d="M12.4998 20.27C16.0298 20.27 19.3198 18.19 21.6098 14.59C22.5098 13.18 22.5098 10.81 21.6098 9.39997C19.3198 5.79997 16.0298 3.71997 12.4998 3.71997C8.96984 3.71997 5.67984 5.79997 3.38984 9.39997C2.48984 10.81 2.48984 13.18 3.38984 14.59C5.67984 18.19 8.96984 20.27 12.4998 20.27Z"
+      stroke={color}
+      strokeLinejoin="round"
+    />
+  </svg>
 );
-export { IcEdit, IcDelete, IcAdd, IcView };
+const IconX = ({ width = 24, height = 24, color = "#334155" }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={width}
+    height={height}
+    viewBox="0 0 24 24"
+    fill="none"
+  >
+    <path
+      d="M18.75 5.25L5.25 18.75"
+      stroke={color}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path
+      d="M18.75 18.75L5.25 5.25"
+      stroke={color}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+);
+export { IcEdit, IcDelete, IcAdd, IcView, IconX };

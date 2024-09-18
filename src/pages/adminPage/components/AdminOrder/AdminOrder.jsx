@@ -6,7 +6,7 @@ import { convertDateTime, convertToMonney } from "../../../../ultils.js";
 import AdminOrderDetail from "./AdminOrderDetail.jsx";
 import { Popover } from "antd";
 import useDebounce from "../../../../hooks/useDebounce.js";
-import CustomTable from "../../../../components/common/CustomTable.jsx"
+import CustomTable from "../../../../components/common/CustomTable.jsx";
 import { IcEdit, IcView } from "../../../../components/icons/common.jsx";
 import Badge from "../../../../components/common/Badge.jsx";
 import { TextField } from "@mui/material";
@@ -119,9 +119,12 @@ const AdminOrder = () => {
       title: "Thanh toán",
       dataIndex: "order_status_payment",
       key: "order_status_payment",
-      render: (item) => (
-        item?.order_status_payment === 0 ? "Chưa thanh toán" : <span className="text-red-500">Đã thanh toán</span>
-      ),
+      render: (item) =>
+        item?.order_status_payment === 0 ? (
+          "Chưa thanh toán"
+        ) : (
+          <span className="text-red-500">Đã thanh toán</span>
+        ),
     },
     {
       title: "Trạng thái",
@@ -131,7 +134,7 @@ const AdminOrder = () => {
         return (
           <div>
             {item?.order_status_transport === 1 ? (
-             <Badge type="success" title={"Đã gửi hàng"} isCustom></Badge>
+              <Badge type="success" title={"Đã gửi hàng"} isCustom></Badge>
             ) : (
               <Badge type="warning" title={"Đang xử lý"} isCustom></Badge>
             )}
@@ -143,11 +146,12 @@ const AdminOrder = () => {
       title: "Yêu cầu khách hàng",
       dataIndex: "order_status_cancel",
       key: "order_status_cancel",
-      render: (item) => (
-        item?.order_status_cancel === 1
-          ?   <Badge type="danger" title={" Hủy"} isCustom></Badge>
-          : <Badge type="success" title={"Không"} isCustom></Badge>
-      ),
+      render: (item) =>
+        item?.order_status_cancel === 1 ? (
+          <Badge type="danger" title={" Hủy"} isCustom></Badge>
+        ) : (
+          <Badge type="success" title={"Không"} isCustom></Badge>
+        ),
     },
     {
       title: "Ngày đặt",
@@ -170,12 +174,14 @@ const AdminOrder = () => {
             className="mr-1 px-2 py-1 text-white"
             onClick={() => handleDetailOrder(item.id)}
           >
-          <IcView />
+            <IcView />
           </button>
           <Popover
             content={content}
             trigger="click"
-            open={visiblePopover === item.id && item.order_status_transport !== 1}
+            open={
+              visiblePopover === item.id && item.order_status_transport !== 1
+            }
           >
             <button
               className={`${item.order_status_transport !== 1 ? "cursor-pointer" : "cursor-not-allowed"}`}
@@ -185,7 +191,7 @@ const AdminOrder = () => {
               }}
               disabled={item.order_status_transport === 1}
             >
-             <IcEdit />
+              <IcEdit />
             </button>
           </Popover>
         </>
@@ -207,11 +213,11 @@ const AdminOrder = () => {
           onChange={(e) => setOrder_id_search(e.target.value)}
         />
       </div>
-     
+
       {!isOrderDetail ? (
         <CustomTable
-          dataProp={orders.data || []}  //
-          columns={columns}  
+          dataProp={orders.data || []} //
+          columns={columns}
           onRow={(item) => {
             return {
               onClick: () => {

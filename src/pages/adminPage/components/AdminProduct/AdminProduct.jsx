@@ -12,7 +12,7 @@ import CreateProductForm from "./CreateProductForm.jsx";
 import ConfigProductForm from "./ConfigProductForm.jsx";
 import EditProductForm from "./EditProductForm.jsx";
 import { useSelector } from "react-redux";
-import CustomTable from "../../../../components/common/CustomTable.jsx"
+import CustomTable from "../../../../components/common/CustomTable.jsx";
 import { IcDelete, IcEdit } from "../../../../components/icons/common.jsx";
 const AdminProduct = () => {
   const user = useSelector((state) => state.user);
@@ -206,15 +206,11 @@ const AdminProduct = () => {
       key: "action",
       render: () => (
         <Space size="middle">
-          <button
-            onClick={handleDetailProduct}
-          >  <IcEdit />
+          <button onClick={handleDetailProduct}>
+            <IcEdit />
           </button>
 
-
-          <button
-            onClick={() => setIsModalOpenDelete(true)}
-          >
+          <button onClick={() => setIsModalOpenDelete(true)}>
             <IcDelete />
           </button>
         </Space>
@@ -276,8 +272,8 @@ const AdminProduct = () => {
       </button>
       <div className="mt-4">
         <CustomTable
-          dataProp={products?.data || []}  //
-          columns={columns}  
+          dataProp={products?.data || []} //
+          columns={columns}
           isLoading={isLoading}
           onRow={(record) => {
             return {
@@ -287,10 +283,9 @@ const AdminProduct = () => {
             };
           }}
         />
-
       </div>
       {/* Thêm sản phẩm */}
-        <CreateProductForm
+      <CreateProductForm
         isModalCreateProduct={isModalCreateProduct}
         onCancel={onCancel}
         handleNextModal={handleNextModal}

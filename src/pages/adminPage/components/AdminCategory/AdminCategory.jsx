@@ -4,19 +4,25 @@ import Loading from "../../../../components/Loading/LoadingComponent";
 import ModalComponent from "../../../../components/Modal/ModalComponent";
 import { useSelector } from "react-redux";
 import * as message from "../../../../components/Message/MessageComponent";
-
+import CustomTable from "../../../../components/common/CustomTable.jsx";
+import { Space } from "antd";
+import React from "react";
+import { IcDelete, IcEdit } from "../../../../components/icons/common.jsx";
+import { Button, TextField, Typography } from "@mui/material";
+import BasicDialog from "../../../../components/Modal/BasicDialog.jsx";
+import { FormProvider } from "antd/es/form/context.js";
+import BasicDialogContent from "../../../../components/Modal/BasicDialogContent.jsx";
+import BasicDialogActions from "../../../../components/Modal/BasicDialogAction.jsx";
+import { Controller, useForm, useFormContext } from "react-hook-form";
 const AdminCategory = () => {
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  const [loadingCreate, setLoadingCreate] = useState(false);
-  const [loadingDelete, setLoadingDelete] = useState(false);
-  const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [categories, setCategories] = useState([]);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
-  const [isModalOpenCreate, setIsModalOpenCreate] = useState(false);
-  const [isModalOpenUpdate, setIsModalOpenUpdate] = useState(false);
-  const [newCategory, setNewCategory] = useState("");
   const [idCategory, setIdCategory] = useState("");
+  const { control, handleSubmit, reset, setValue } = useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const fetchCategory = async () => {
     setLoading(true);
     try {
@@ -34,7 +40,7 @@ const AdminCategory = () => {
   }, []);
 
   const createCategory = async (newCategory, access_token) => {
-    setLoadingCreate(true);
+    setLoading(true);
     try {
       const res = await CategoryServices.createCategory(
         newCategory,
@@ -42,24 +48,20 @@ const AdminCategory = () => {
       );
       if (res && res.status && res.status === "OK") {
         message.success("Thêm dạnh mục mới thành công");
-        setIsModalOpenCreate(false);
         fetchCategory();
-        setNewCategory("");
       } else if (res && res.status && res.status === "exists") {
         message.error(res.message);
-        setNewCategory("");
       } else {
         message.error("Có lỗi xảy ra, thử lại sau.");
-        setNewCategory("");
       }
     } catch (error) {
       console.error("Error create category:", error);
     } finally {
-      setLoadingCreate(false);
+      setLoading(false);
     }
   };
   const deleteCategory = async (id, access_token) => {
-    setLoadingDelete(true);
+    setLoading(true);
     try {
       const res = await CategoryServices.deleteCategory(id, access_token);
       if (res && res.status && res.status === "OK") {
@@ -75,33 +77,25 @@ const AdminCategory = () => {
     } catch (error) {
       console.error("Error create category:", error);
     } finally {
-      setLoadingDelete(false);
+      setLoading(false);
     }
   };
   const updateCategory = async (id, access_token, name) => {
-    setLoadingUpdate(true);
+    setLoading(true);
     try {
       const res = await CategoryServices.updateCategory(id, access_token, name);
       if (res && res.status && res.status === "OK") {
         message.success("Cập nhật danh mục thành công");
-        setIsModalOpenUpdate(false);
         fetchCategory();
         setIdCategory("");
-        setNewCategory("");
       } else {
         message.error("Cập nhật thất bại.");
-        setIsModalOpenUpdate(false);
         setIdCategory("");
       }
     } catch (error) {
       console.error("Error update category:", error);
     } finally {
-      setLoadingUpdate(false);
-    }
-  };
-  const handleCreateCategory = () => {
-    if (user && user.access_token && newCategory) {
-      createCategory(newCategory, user.access_token);
+      setLoading(false);
     }
   };
 
@@ -111,72 +105,94 @@ const AdminCategory = () => {
     }
   };
 
-  const handleUpdateCategory = () => {
-    if (user && user.access_token && idCategory && newCategory) {
-      updateCategory(idCategory, user.access_token, newCategory);
-    } else {
-      message.error("Vui lòng nhập tên danh mục");
-    }
+  const columns = [
+    {
+      title: "Mã danh mục",
+      dataIndex: "id",
+      key: "id",
+    },
+
+    {
+      title: "Tên danh mục",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Hành động",
+      dataIndex: "actions",
+      key: "actions",
+      render: (item, idx) => {
+        return (
+          <Space size="middle">
+            <button
+              onClick={() => {
+                setIdCategory(item);
+                setIsModalOpen(true);
+              }}
+            >
+              <IcEdit />
+            </button>
+            <button
+              onClick={() => {
+                setIsModalOpenDelete(true);
+                setIdCategory(item.id);
+              }}
+            >
+              <IcDelete />
+            </button>
+          </Space>
+        );
+      },
+    },
+  ];
+
+  const onClose = () => {
+    setIsModalOpen(false);
+    setIdCategory(null);
+    reset();
   };
+
+  const onSubmit = (data) => {
+    if (user && user.access_token) {
+      if (idCategory) {
+        updateCategory(idCategory.id, user.access_token, data.name);
+      } else {
+        createCategory(data.name, user.access_token);
+      }
+    } else {
+      message.error("Vui lòng đăng nhập");
+    }
+    setIsModalOpen(false);
+  };
+
+  useEffect(() => {
+    if (idCategory) {
+      setValue("name", idCategory.name);
+    } else {
+      reset();
+    }
+  }, [idCategory, setValue, reset]);
   return (
     <div>
       <h1 className="mb-4 text-2xl font-bold">Quản lý danh mục</h1>
-      <button
-        className="btn mt-4 bg-[#1677FF] px-5"
-        onClick={() => {
-          setIsModalOpenCreate(true);
-        }}
-      >
-        Thêm danh mục
-      </button>
-      <Loading isLoading={loading}>
-        <table className="mt-3 min-w-full border-collapse rounded-lg border bg-white ">
-          <thead>
-            <tr>
-              <th className="border px-4 py-2 text-left">#</th>
-              <th className="border px-4 py-2 text-center">Tên dạnh mục</th>
-              <th className="border px-4 py-2 text-center">Thao tác</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {categories &&
-              categories.length > 0 &&
-              categories?.map((category, index) => {
-                return (
-                  <tr className=" hover:bg-gray-100" key={index}>
-                    <td className="border px-4 py-2">{index + 1}</td>
-                    <td className="border px-4 py-2 text-center ">
-                      {category?.name}
-                    </td>
-                    <td className="border px-4 py-2 text-center">
-                      <button
-                        className="mr-2 rounded border bg-green-500 px-2 py-1 text-white"
-                        onClick={() => {
-                          setIdCategory(category.id);
-                          setNewCategory(category.name);
-                          setIsModalOpenUpdate(true);
-                        }}
-                      >
-                        Sửa
-                      </button>
-                      <button
-                        className="rounded border bg-red-500 px-2 py-1 text-white"
-                        onClick={() => {
-                          setIdCategory(category.id);
-                          setNewCategory(category.name);
-                          setIsModalOpenDelete(true);
-                        }}
-                      >
-                        Xóa
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
-      </Loading>
+      <div className="flex items-end justify-end">
+        <Button
+          onClick={() => {
+            setIdCategory(null);
+            setIsModalOpen(true);
+          }}
+          O
+          variant="contained"
+        >
+          Thêm danh mục
+        </Button>
+      </div>
+      <div className="pt-5">
+        <CustomTable
+          dataProp={categories || []} //
+          columns={columns}
+        />
+      </div>
 
       <ModalComponent
         title="Xóa danh mục"
@@ -185,12 +201,12 @@ const AdminCategory = () => {
         onOk={handleDeleteCategory}
         okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
       >
-        <Loading isLoading={loadingDelete}>
+        <Loading isLoading={loading}>
           <div>Bạn có chắc xóa danh mục này không?</div>
         </Loading>
       </ModalComponent>
 
-      <ModalComponent
+      {/* <ModalComponent
         title="Thêm danh mục mới"
         open={isModalOpenCreate}
         onCancel={() => setIsModalOpenCreate(false)}
@@ -207,26 +223,44 @@ const AdminCategory = () => {
             />
           </div>
         </Loading>
-      </ModalComponent>
+      </ModalComponent> */}
 
-      <ModalComponent
-        title="Sửa tên danh mục"
-        open={isModalOpenUpdate}
-        onCancel={() => setIsModalOpenUpdate(false)}
-        onOk={handleUpdateCategory}
-        okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
-      >
-        <Loading isLoading={loadingUpdate}>
-          <div>
-            <input
-              type="text"
-              className="w-full rounded border p-2 outline-none"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-            />
-          </div>
-        </Loading>
-      </ModalComponent>
+      {isModalOpen && (
+        <BasicDialog
+          maxWidth="md"
+          showCloseIcon
+          open={isModalOpen}
+          title={idCategory?.id ? "Chỉnh sửa danh mục" : "Thêm mới danh mục"}
+          onClose={onClose}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <BasicDialogContent className="space-y-3">
+              <Controller
+                name="name"
+                control={control}
+                rules={{ required: "Tên danh mục là bắt buộc" }}
+                render={({ field, fieldState: { error } }) => (
+                  <TextField
+                    {...field}
+                    label="Tên danh mục"
+                    error={!!error}
+                    helperText={error?.message}
+                    fullWidth
+                  />
+                )}
+              />
+            </BasicDialogContent>
+            <BasicDialogActions sx={{ justifyContent: "end" }}>
+              <Button variant="outlined" onClick={onClose}>
+                Hủy
+              </Button>
+              <Button type="submit" variant="contained">
+                Xác nhận
+              </Button>
+            </BasicDialogActions>
+          </form>
+        </BasicDialog>
+      )}
     </div>
   );
 };

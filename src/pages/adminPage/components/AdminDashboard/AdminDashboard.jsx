@@ -5,6 +5,7 @@ import {
   BsPeopleFill,
 } from "react-icons/bs";
 import { FaShoppingCart, FaDollarSign } from "react-icons/fa";
+import CustomTable from "../../../../components/common/CustomTable.jsx";
 import {
   PieChart,
   Pie,
@@ -37,6 +38,7 @@ function AdminDashboard() {
   const [sales, setSales] = useState(0);
   const [dataChartLine, setDataChartLine] = useState([]);
   const [dataPieChart, setDataPieChart] = useState([]);
+  console.log("dataPieChart", dataPieChart);
 
   const fetchProducts = async () => {
     const res = await ProductServices.getAllProduct();
@@ -112,66 +114,90 @@ function AdminDashboard() {
       </text>
     );
   };
-  const renderCustomizedLegend = (value, entry, index) => {
-    return (
-      <span style={{ color: COLORS[index % COLORS.length], fontWeight: 'bold' }}>
-        {value}
-      </span>
-    );
-  };
+  const columns = [
+    {
+      title: "Tên hãng",
+      dataIndex: "name",
+      key: "name",
+      width: "70%",
+      align: "left",
+    },
+    {
+      title: "Số lượng đã bán",
+      dataIndex: "value",
+      key: "value",
+      width: "30%",
+      align: "right",
+    },
+  ];
   return (
     <main className="main-container">
-      <div className="main-title">
+      <div className="pb-4">
         <div className="text-[20px] font-semibold">Thống kê</div>
       </div>
       <div className="grid grid-cols-4 gap-4 pb-4">
-        <div className="border-gray-400 rounded-lg border-[1px] p-4 mt-3">
+        <div className="rounded-lg border-[1px] border-gray-400 p-4">
           <div className="flex justify-between">
             <div className="text-[16px] font-bold">Sản phẩm</div>
-            <BsFillArchiveFill className="card_icon" />
+            <div className="flex items-center justify-center">
+              <BsFillArchiveFill className="card_icon" />
+            </div>
           </div>
           <h1 className="text-[16px] font-medium">{products?.length}</h1>
         </div>
-        <div className="border-gray-400 rounded-lg border-[1px] p-4">
-          <div>
+        <div className="rounded-lg border-[1px] border-gray-400 p-4">
+          <div className="flex justify-between">
             <div className="text-[16px] font-bold">Danh mục</div>
-            <BsFillGrid3X3GapFill className="card_icon" />
+            <div className="flex items-center justify-center">
+              {" "}
+              <BsFillGrid3X3GapFill className="card_icon" />{" "}
+            </div>
           </div>
           <h1 className="text-[16px] font-medium">{categories?.length}</h1>
         </div>
-        <div className="border-gray-400 rounded-lg border-[1px] p-4">
-          <div>
+        <div className="rounded-lg border-[1px] border-gray-400 p-4">
+          <div className="flex justify-between">
             <div className="text-[16px] font-bold">Khánh hàng</div>
-            <BsPeopleFill className="card_icon" />
+            <div className="flex items-center justify-center">
+              {" "}
+              <BsPeopleFill className="card_icon" />{" "}
+            </div>
           </div>
           <h1 className="text-[16px] font-medium">{users?.length}</h1>
         </div>
-        <div className="border-gray-400 rounded-lg border-[1px] p-4">
-          <div>
+        <div className="rounded-lg border-[1px] border-gray-400 p-4">
+          <div className="flex justify-between">
             <div className="text-[16px] font-bold">Đơn hàng</div>
-            <FaShoppingCart className="card_icon" />
+            <div className="flex items-center justify-center">
+              <FaShoppingCart className="card_icon" />
+            </div>
           </div>
           <h1>{orders?.length}</h1>
         </div>
       </div>
       <div className="text-[20px] font-semibold">Thống kê doanh thu</div>
       <div className="grid grid-cols-4">
-        <div  className="border-gray-400 rounded-lg border-[1px] p-4 mt-3">
-          <div className="text-[16px] font-bold">Doanh thu</div>
-          <FaDollarSign className="card_icon" />
-          <div className="text-[16px] font-medium">{convertToMonney(sales)}</div>
+        <div className="mt-3 rounded-lg border-[1px] border-gray-400 p-4">
+          <div className="flex justify-between">
+            <div className="text-[16px] font-bold">Doanh thu</div>
+            <FaDollarSign className="card_icon" />
+          </div>
+          <div className="text-[16px] font-medium">
+            {convertToMonney(sales)}
+          </div>
         </div>
       </div>
+
       <div>
-        <ResponsiveContainer width="100%" height={400} className="mt-10">
+        <ResponsiveContainer height={400} className="mt-10">
           <LineChart
-            width={500}
+            width={400}
             height={300}
             data={dataChartLine}
             margin={{
               top: 5,
-              right: 30,
-              left: 20,
+              right: 50,
+              left: 50,
               bottom: 5,
             }}
           >
@@ -183,43 +209,47 @@ function AdminDashboard() {
               type="monotone"
               dataKey="sale"
               stroke="#EE4E4E"
-              activeDot={{ r: 8 }}
+              activeDot={{ r: 9 }}
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <h1 className="mt-10">THỐNG KÊ SỐ LƯỢNG BÁN</h1>
-      <div>
-        <ResponsiveContainer width="100%" height={400} className={"mb-10"}>
-   
-    <PieChart width={400} height={400}>
-      <Pie
-        data={dataPieChart}
-        cx="50%"
-        cy="50%"
-        labelLine={false}
-        outerRadius={120}
-        fill="#8884d8"
-        dataKey="value"
-        label={renderCustomizedLabel}
-      >
-        {dataPieChart.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-      <Tooltip />
-      <Legend
-        verticalAlign="middle" 
-        align="left"
-        iconType="circle"
-        formatter={renderCustomizedLegend}
-        layout="vertical" 
-      />
 
-    </PieChart>
+      <div className="text-[20px] font-semibold">Thống kê số lượng bán</div>
 
-
-        </ResponsiveContainer>
+      <div className="flex">
+        <div className="flex w-[40%] items-center justify-center">
+          <CustomTable
+            dataProp={dataPieChart || []} //
+            columns={columns}
+          />
+        </div>
+        <div className="w-[60%]">
+          <ResponsiveContainer width="100%" height={320} className={"mb-10"}>
+            <PieChart width={300} height={300}>
+              <Pie
+                data={dataPieChart}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={120}
+                fill="#8884d8"
+                dataKey="value"
+                label={renderCustomizedLabel}
+              >
+                {dataPieChart.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                    stroke={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+              <Legend iconType="circle" />
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </main>
   );

@@ -1,5 +1,14 @@
-import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination, Paper } from '@mui/material';
+import React from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TablePagination,
+  Paper,
+} from "@mui/material";
 import Loading from "../Loading/LoadingComponent";
 
 const TableComponent = (props) => {
@@ -19,48 +28,68 @@ const TableComponent = (props) => {
   return (
     <div>
       <Loading isLoading={isLoading}>
-        <TableContainer component={Paper}
+        <TableContainer
+          component={Paper}
           sx={{
-            overflowY: 'auto',
-            '&::-webkit-scrollbar': {
-              height: '8px',
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              height: "8px",
             },
-            '&::-webkit-scrollbar-track': {
-              background: '#E5E7EB',
+            "&::-webkit-scrollbar-track": {
+              background: "#E5E7EB",
             },
-            '&::-webkit-scrollbar-thumb': {
-              background: '#C6C6C6',
-              borderRadius: '4px',
+            "&::-webkit-scrollbar-thumb": {
+              background: "#C6C6C6",
+              borderRadius: "4px",
             },
-            '&::-webkit-scrollbar-thumb:hover': {
-              background: '#888',
+            "&::-webkit-scrollbar-thumb:hover": {
+              background: "#888",
             },
-          }}>
-          <Table sx={{ minWidth: 650 }} aria-label="data table">
+          }}
+        >
+          <Table sx={{ minWidth: 450 }} aria-label="data table" stickyHeader>
             <TableHead>
               <TableRow>
                 {columns.map((column) => (
-                  <TableCell key={column.key} sx={{ backgroundColor: '#f4f4f4', fontWeight: 'bold', padding: 2 }}>
+                  <TableCell
+                    key={column.key}
+                    align={column.align || "left"}
+                    sx={{
+                      backgroundColor: "#f4f4f4",
+                      fontWeight: "bold",
+                      padding: 2,
+                    }}
+                  >
                     {column.title}
                   </TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {dataProp.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, rowIndex) => (
-                <TableRow
-                  key={rowIndex}
-                  sx={{ '&:hover': { backgroundColor: '#fafafa' }, cursor: 'pointer' }}
-                  onClick={() => props.onRow && props.onRow(row)}
-                >
-                  {columns.map((column) => (
-                    <TableCell key={column.key} sx={{ padding: 2 }}>
-                      {column.render ? column.render(row) : row[column.dataIndex]}
-                    </TableCell>
-                  ))}
-
-                </TableRow>
-              ))}
+              {dataProp
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, rowIndex) => (
+                  <TableRow
+                    key={rowIndex}
+                    sx={{
+                      "&:hover": { backgroundColor: "#fafafa" },
+                      cursor: "pointer",
+                    }}
+                    onClick={() => props.onRow && props.onRow(row)}
+                  >
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.key}
+                        align={column.align || "left"}
+                        sx={{ padding: 2 }}
+                      >
+                        {column.render
+                          ? column.render(row)
+                          : row[column.dataIndex]}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
           <TablePagination
@@ -71,7 +100,7 @@ const TableComponent = (props) => {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            sx={{ borderTop: '1px solid #e0e0e0' }}
+            sx={{ borderTop: "1px solid #e0e0e0" }}
           />
         </TableContainer>
       </Loading>
