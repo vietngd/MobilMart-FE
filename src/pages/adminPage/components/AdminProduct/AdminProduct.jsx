@@ -1,4 +1,4 @@
-import { Input, Button, Space } from "antd";
+import { Input, Space } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +9,7 @@ import Loading from "../../../../components/Loading/LoadingComponent.jsx";
 import * as message from "../../../../components/Message/MessageComponent.jsx";
 import ModalComponent from "../../../../components/Modal/ModalComponent.jsx";
 import CreateProductForm from "./CreateProductForm.jsx";
+import { Button } from "@mui/material";
 import ConfigProductForm from "./ConfigProductForm.jsx";
 import EditProductForm from "./EditProductForm.jsx";
 import { useSelector } from "react-redux";
@@ -164,6 +165,8 @@ const AdminProduct = () => {
     },
   });
   //Emd tính năng search của ant design
+  const [orderDetail, setOrderDetail] = useState({});
+  console.log("orderDetail", orderDetail);
 
   const columns = [
     {
@@ -204,9 +207,14 @@ const AdminProduct = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (item) => (
         <Space size="middle">
-          <button onClick={handleDetailProduct}>
+          <button
+            onClick={() => {
+              handleDetailProduct(item);
+              setIsOpenDrawer(true);
+            }}
+          >
             <IcEdit />
           </button>
 
@@ -219,8 +227,9 @@ const AdminProduct = () => {
   ];
 
   //Khi kick vào một row trên table
-  const handleDetailProduct = () => {
-    setIsOpenDrawer(true);
+  const handleDetailProduct = (item) => {
+    // setIsOpenDrawer(true);
+    setOrderDetail(item);
   };
 
   // Xóa sản phẩm
@@ -262,14 +271,16 @@ const AdminProduct = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold">Quản lý sản phẩm</h1>
-      <button
-        className="btn mt-4 bg-[#1677FF] px-5"
-        onClick={() => {
-          setIsModalCreateProduct(true);
-        }}
-      >
-        Thêm sản phẩm
-      </button>
+      <div className="flex items-end justify-end">
+        <Button
+          variant="contained"
+          onClick={() => {
+            setIsModalCreateProduct(true);
+          }}
+        >
+          Thêm sản phẩm
+        </Button>
+      </div>
       <div className="mt-4">
         <CustomTable
           dataProp={products?.data || []} //

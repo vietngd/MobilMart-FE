@@ -21,7 +21,7 @@ export function convertToMonney(price) {
   return price?.toLocaleString("vi", {
     style: "currency",
     currency: "VND",
-  });
+  }).replace("₫", "VNĐ");
 }
 
 export function validation(values) {

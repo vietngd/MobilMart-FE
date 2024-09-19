@@ -1,24 +1,43 @@
 import { useSelector } from "react-redux";
 import * as OrderServices from "../../../../services/orderServices";
 import { useEffect, useState } from "react";
-import Loading from "../../../../components/Loading/LoadingComponent";
 import { convertDateTime, convertToMonney } from "../../../../ultils.js";
-import AdminOrderDetail from "./AdminOrderDetail.jsx";
 import { Popover } from "antd";
 import useDebounce from "../../../../hooks/useDebounce.js";
 import CustomTable from "../../../../components/common/CustomTable.jsx";
 import { IcEdit, IcView } from "../../../../components/icons/common.jsx";
 import Badge from "../../../../components/common/Badge.jsx";
 import { TextField } from "@mui/material";
+import OrderDialog from "./OrderDetailDialog.jsx";
+
 const AdminOrder = () => {
   const user = useSelector((state) => state.user);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isOrderDetail, setIsOrderDetail] = useState(false);
   const [orderId, setOrderId] = useState("");
   const [visiblePopover, setVisiblePopover] = useState();
   const [order_id_search, setOrder_id_search] = useState("");
+  const [modal, setModal] = useState(false);
+  const [order, setOrder] = useState([]);
 
+  const fetchDetailOrder = async () => {
+    setLoading(true);
+    try {
+      const res = await OrderServices.getDetailOrder(
+        user?.access_token,
+        orderId,
+      );
+      setOrder(res.data[0]);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDetailOrder();
+  }, [orderId]);
   const fetchOrders = async () => {
     setLoading(true);
     try {
@@ -40,9 +59,9 @@ const AdminOrder = () => {
     fetchOrders();
   }, [id_search]);
 
-  const handleDetailOrder = (orderId) => {
+  const handleclick = (orderId) => {
     setOrderId(orderId);
-    setIsOrderDetail(true);
+    setModal(true);
   };
 
   const content = (
@@ -172,7 +191,9 @@ const AdminOrder = () => {
         <>
           <button
             className="mr-1 px-2 py-1 text-white"
-            onClick={() => handleDetailOrder(item.id)}
+            onClick={() => {
+              handleclick(item.id);
+            }}
           >
             <IcView />
           </button>
@@ -200,9 +221,7 @@ const AdminOrder = () => {
   ];
   return (
     <div>
-      <h1 className="mb-4 text-[24px] font-bold">
-        {isOrderDetail ? "Chi tiết đơn hàng" : "Quản lý đơn hàng"}
-      </h1>
+      <h1 className="mb-4 text-[24px] font-bold">{"Quản lý đơn hàng"}</h1>
       <div className="mb-3 grid grid-cols-3">
         <TextField
           type="text"
@@ -214,7 +233,7 @@ const AdminOrder = () => {
         />
       </div>
 
-      {!isOrderDetail ? (
+      {/* {!isOrderDetail && (
         <CustomTable
           dataProp={orders.data || []} //
           columns={columns}
@@ -226,9 +245,38 @@ const AdminOrder = () => {
             };
           }}
         />
-      ) : (
-        <AdminOrderDetail orderId={orderId} />
-      )}
+        ) : (
+          <AdminOrderDetail orderId={orderId} />
+      )}   */}
+      <CustomTable
+        dataProp={orders.data || []} //
+        columns={columns}
+        onRow={(item) => {
+          return {
+            onClick: () => {
+              setIdProductDelete(item?.id);
+            },
+          };
+        }}
+      />
+      {/* <BasicDialog
+        maxWidth="md"
+        showCloseIcon
+        open={modal}
+        title={"Chi tiết đơn hàng"}
+        onClose={() => setModal(false)}
+      >
+        <BasicDialogContent className="space-y-3">ABC</BasicDialogContent>
+        <BasicDialogActions sx={{ justifyContent: "end" }}>
+          <Button variant="outlined" onClick={() => setModal(false)}>
+            Hủy
+          </Button>
+          <Button type="submit" variant="contained">
+            OK
+          </Button>
+        </BasicDialogActions>
+      </BasicDialog> */}
+      <OrderDialog isModalOpen={modal} onClose={setModal} order={order} />
     </div>
   );
 };

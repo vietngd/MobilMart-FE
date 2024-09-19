@@ -181,7 +181,6 @@ const AdminCategory = () => {
             setIdCategory(null);
             setIsModalOpen(true);
           }}
-          O
           variant="contained"
         >
           Thêm danh mục
@@ -205,25 +204,6 @@ const AdminCategory = () => {
           <div>Bạn có chắc xóa danh mục này không?</div>
         </Loading>
       </ModalComponent>
-
-      {/* <ModalComponent
-        title="Thêm danh mục mới"
-        open={isModalOpenCreate}
-        onCancel={() => setIsModalOpenCreate(false)}
-        onOk={handleCreateCategory}
-        okButtonProps={{ style: { backgroundColor: "#1677FF" } }}
-      >
-        <Loading isLoading={loadingCreate}>
-          <div>
-            <input
-              type="text"
-              className="w-full rounded border p-2 outline-none"
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-            />
-          </div>
-        </Loading>
-      </ModalComponent> */}
 
       {isModalOpen && (
         <BasicDialog

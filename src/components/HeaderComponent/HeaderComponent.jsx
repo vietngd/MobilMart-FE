@@ -74,29 +74,41 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
 
   const content = (
     <>
-      <div className="cursor-pointer">
-        <p className="hover:text-primary" onClick={handleNavigateProfile}>
+      <div className="flex cursor-pointer flex-col gap-4">
+        <p
+          className="hover:bg-slate-200 hover:text-primary"
+          onClick={handleNavigateProfile}
+        >
           Thông tin cá nhân
         </p>
 
-        <p className="hover:text-primary" onClick={handleNavigateMyOrder}>
+        <p
+          className="hover:bg-slate-200 hover:text-primary"
+          onClick={handleNavigateMyOrder}
+        >
           Đơn hàng của tôi
         </p>
         {user?.isAdmin ? (
-          <p className="hover:text-primary" onClick={handleNavigateAdmin}>
+          <p
+            className="hover:bg-slate-200 hover:text-primary"
+            onClick={handleNavigateAdmin}
+          >
             Quản lý hệ thống
           </p>
         ) : (
           <></>
         )}
-        <p className="hover:text-primary" onClick={handleLogout}>
+        <p
+          className="hover:bg-slate-200 hover:text-primary"
+          onClick={handleLogout}
+        >
           Đăng xuất
         </p>
       </div>
     </>
   );
   return (
-    <div className="fixed left-0 right-0 z-50 max-w-full bg-primary">
+    <div className="fixed left-0 right-0 z-50 max-w-full bg-gradient-to-r from-[#a0a165] to-[#94a769]">
       <header className="m-auto h-header_Height max-w-[95%] gap-x-1  xl:max-w-screen-xl">
         <div
           className={
@@ -114,7 +126,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
               alt="logo"
               className="h-[65px] cursor-pointer brightness-0 invert"
             />
-            <span className="hidden md:inline">MOBILEMART</span>
+            <span className="hidden uppercase md:inline ">TohaMobile</span>
           </Link>
 
           {!isHidenSearch && (

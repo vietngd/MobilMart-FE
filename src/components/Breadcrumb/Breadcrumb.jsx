@@ -14,19 +14,19 @@ const Breadcrumb = ({ paths, categoryName = "" }) => {
       className="pb-2"
       style={{ boxShadow: "rgba(33, 35, 38, 0.1) 0px 10px 10px -12px" }}
     >
-      <ol className="breadcrumb flex">
+      <ol className="breadcrumb flex pt-2">
         {paths.map((path, index) => (
-          <li key={index} className="breadcrumb-item mr-4 text-sm">
+          <li key={index} className="breadcrumb-item mr-4 text-[16px] text-sm">
             {index === paths.length - 1 ? (
-              <span>{path.name}</span>
+              <span className="text-[16px]">{path.name}</span>
             ) : (
               <span
                 className="flex cursor-pointer items-center  hover:text-primary"
                 onClick={() => handleNaviagte(path.url)}
               >
                 {index === 0 && <IoMdHome style={{ marginRight: "8px" }} />}
-                {path.name}{" "}
-                <span className="ml-2">
+                <p className="text-[16px]">{path.name} </p>
+                <span className="ml-2 text-[16px]">
                   <FaAngleRight />
                 </span>
               </span>

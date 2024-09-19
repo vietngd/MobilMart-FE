@@ -7,7 +7,9 @@ import { getBase64 } from "../../../../ultils";
 import * as message from "../.././../../components/Message/MessageComponent";
 import ModalComponent from "../../../../components/Modal/ModalComponent";
 import { useSelector } from "react-redux";
-
+import { IcDelete } from "../../../../components/icons/common";
+import CustomTable from "../../../../components/common/CustomTable";
+import { Button } from "@mui/material";
 const AdminSlider = () => {
   const user = useSelector((state) => state.user);
   const [isOpenCreateSlider, setIsOpenCreateSlider] = useState(false);
@@ -100,14 +102,51 @@ const AdminSlider = () => {
     setIdSliderDelete("");
   };
 
+  const columns = [
+    {
+      title: "Mã Đơn",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Ảnh slide",
+      dataIndex: "link",
+      key: "link",
+      render: (item) => (
+        <div>
+          <img src={item.link} alt="img" width="20%" />
+        </div>
+      ),
+    },
+    {
+      title: "Hành động",
+      key: "actions",
+      render: (item) => (
+        <>
+          <button
+            className="mr-1 px-2 py-1 text-white"
+            onClick={() => {
+              setIdSliderDelete(item.id);
+              setIsModalOpenDelete(!isModalOpenDelete);
+            }}
+          >
+            <IcDelete />
+          </button>
+        </>
+      ),
+    },
+  ];
   return (
-    <div className=" mt-10">
-      <button
-        className="mb-2 rounded-md bg-blue px-5 py-2 text-white"
-        onClick={() => setIsOpenCreateSlider(!isOpenCreateSlider)}
-      >
-        Tạo mới slider
-      </button>
+    <div>
+      <div className="text-[24px] font-bold">Quản lý Slider</div>
+      <div className="flex items-end justify-end pb-5">
+        <Button
+          variant="contained"
+          onClick={() => setIsOpenCreateSlider(!isOpenCreateSlider)}
+        >
+          Tạo mới slider
+        </Button>
+      </div>
       {isOpenCreateSlider && (
         <Loading isLoading={loading}>
           <div>
@@ -133,47 +172,10 @@ const AdminSlider = () => {
       )}
       <div className="overflow-x-auto">
         <Loading isLoading={loading}>
-          <table className="min-w-full border-collapse rounded-lg border bg-white shadow-md">
-            <thead>
-              <tr>
-                <th className="border   px-4 py-2 text-left">#</th>
-                <th className="border px-4 py-2 text-left">Ảnh</th>
-                <th className="border px-4 py-2 text-left">Thao tác</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {sliders && sliders.length > 0 ? (
-                sliders?.map((slider, index) => {
-                  return (
-                    <tr className=" hover:bg-gray-100" key={index}>
-                      <td className="border px-4 py-2">{index + 1}</td>
-                      <td className="border px-4 py-2">
-                        <img src={slider.link} alt="img" width="20%" />
-                      </td>
-                      <td className="border px-4 py-2">
-                        <button
-                          className="rounded border bg-red-500 px-2 py-1 text-white"
-                          onClick={() => {
-                            setIdSliderDelete(slider.id);
-                            setIsModalOpenDelete(!isModalOpenDelete);
-                          }}
-                        >
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr>
-                  <td colSpan={8} className="py-3 text-center">
-                    Không có slider nào
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          <CustomTable
+            dataProp={sliders || []} //
+            columns={columns}
+          />
         </Loading>
         <Loading isLoading={loadingDelete}>
           <ModalComponent

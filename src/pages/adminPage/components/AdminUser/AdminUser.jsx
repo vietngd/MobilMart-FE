@@ -14,8 +14,12 @@ const AdminUser = () => {
   const user = useSelector((state) => state.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
+  const [idUser, setIdUser] = useState(Number);
   const [stateUser, setStateUser] = useState(false);
-
+  console.log("isUser", idUser);
+  const handleClick = (id) => {
+    setIdUser(id);
+  };
   const columns = [
     {
       title: "Name",
@@ -45,9 +49,14 @@ const AdminUser = () => {
     {
       title: "Action",
       key: "action",
-      render: () => (
+      render: (item) => (
         <Space size="middle">
-          <button onClick={() => setIsModalOpen(true)}>
+          <button
+            onClick={() => {
+              setIsModalOpen(true);
+              handleClick(item?.id);
+            }}
+          >
             <IcEdit />
           </button>
           <button onClick={() => setIsModalOpenDelete(true)}>
@@ -71,6 +80,7 @@ const AdminUser = () => {
   });
 
   const { data: Users, isLoading } = queryUser;
+  console.log("Users", Users);
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -97,6 +107,7 @@ const AdminUser = () => {
   });
 
   const { data, isSuccess, isError, isPending } = mutation;
+
   const {
     data: dataDelete,
     isSuccess: isSuccessDelete,
@@ -118,7 +129,7 @@ const AdminUser = () => {
   }, [isSuccessDelete, isErrorDelete]);
   const handleChangeRole = () => {
     const dataUser = {
-      user_id: stateUser.id || " ",
+      user_id: idUser || " ",
       isAdmin: stateUser?.isAdmin,
     };
 

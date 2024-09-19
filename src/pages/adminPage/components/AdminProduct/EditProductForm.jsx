@@ -114,7 +114,6 @@ const EditProductForm = ({
       };
       await mutationUpdate.mutateAsync(data);
     } else {
-      // Nếu không có onchange upload thì vẫn chuyển filelist thành base64 vì cloud chỉ nhận dữ liệu là base64
       const images = [];
       await Promise.all(
         fileList.map(async (item) => {

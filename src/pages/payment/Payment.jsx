@@ -191,19 +191,27 @@ const Payment = () => {
           </div>
         </div>
       </div>
-      <div className="shawdow_custom fixed bottom-0 w-[95%] rounded-md bg-white p-4 lg:w-[700px]">
+      <div className="shawdow_custom fixed bottom-0 flex w-[95%] flex-col gap-4 rounded-md bg-white p-4 lg:w-[700px]">
         <div className="flex justify-between">
           <span>Tổng tiền tạm tính:</span>{" "}
           <span className="text-red-600">
             {convertToMonney(orders?.totalMonney)}
           </span>
         </div>
-        <button
-          className="mt-1 w-full rounded-md bg-red-600 py-3 text-white"
-          onClick={handleAddOrder}
-        >
-          Đặt hàng
-        </button>
+        <div className="flex flex-col gap-2">
+          <button
+            className="mt-1 w-full rounded-md bg-red-600 py-3 text-white"
+            onClick={handleAddOrder}
+          >
+            Đặt hàng
+          </button>
+          <button
+            className="mt-1 w-full rounded-md bg-green-600 py-3 text-white"
+            onClick={handleAddOrder}
+          >
+            Thanh toán ngay
+          </button>
+        </div>
       </div>
     </div>
   );
