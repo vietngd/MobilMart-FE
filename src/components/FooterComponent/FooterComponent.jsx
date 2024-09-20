@@ -15,10 +15,10 @@ const FooterComponent = () => {
             HỆ THỐNG CỬA HÀNG
           </h1>
           <ul className="mt-4 max-w-[80%] list-disc text-sm">
-            <li>Thôn Trung Bạn, Thị Trấn Chờ, Yên Phong, Bắc Ninh</li>
+            <li>Thôn Phù Lưu, Xã Trung Nghĩa, Yên Phong, Bắc Ninh</li>
             <li>
-              Nghách 80/92 đường Xuân Phương, Phường Phương Canh, Quận Nam Từ
-              Liêm
+              23A - Ngõ 52, Phố Yên Lạc, Phường Vĩnh Tuy, Quận Hai Bà Trưng, Hà
+              Nội
             </li>
           </ul>
         </div>
@@ -45,7 +45,7 @@ const FooterComponent = () => {
             LIÊN HỆ
           </h1>
           <ul className="mt-4 grid max-w-[80%] list-disc gap-y-3 text-sm">
-            <li>Hotline CSKH: 0389389891</li>
+            <li>Hotline CSKH: 0868650928</li>
             <li className="flex">
               <button className="min-w-30 mr-2 flex  items-center rounded-md border border-red-600 px-3 py-2">
                 <span className="mr-2">

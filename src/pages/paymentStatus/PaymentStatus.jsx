@@ -20,6 +20,8 @@ const PaymentStatus = () => {
   const urlParams = new URLSearchParams(queryString);
 
   const vnp_TransactionStatus = urlParams.get("vnp_TransactionStatus");
+  console.log("vnp_trans", vnp_TransactionStatus);
+
   const [TransactionStatus, setTransactionStatus] = useState(
     vnp_TransactionStatus,
   );

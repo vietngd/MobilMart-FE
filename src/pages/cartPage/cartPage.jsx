@@ -16,7 +16,17 @@ import * as UserServices from "../../services/userServices.js";
 import Loading from "../../components/Loading/LoadingComponent.jsx";
 import { updateUser } from "../../redux/slides/userSlice.js";
 import { useNavigate } from "react-router-dom";
-
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Checkbox,
+  IconButton,
+} from "@mui/material";
 const CartPage = () => {
   const dispatch = useDispatch();
   const orders = useSelector((state) => state.order);
@@ -153,100 +163,112 @@ const CartPage = () => {
     <>
       {orders?.orderItems.find((item) => item.user_id === user?.id)?.products
         ?.length > 0 ? (
-        <div className="h-screen rounded-md bg-cart_bg px-2">
+        <div className="h-auto rounded-md bg-cart_bg px-2">
+          <div className="flex gap-2 py-5">
+            <div onClick={() => navigate("/")} className="cursor-pointer">
+              <KeyboardBackspaceIcon />
+            </div>
+            <div className=" text-[20px] font-bold">Thông tin giỏ hàng</div>
+          </div>
           <div className="m-auto grid grid-cols-4 gap-x-3 xl:max-w-screen-xl">
-            <div className="relative col-span-4 lg:col-span-3">
-              <table className="w-full border-separate border-spacing-y-1 ">
-                <thead className=" bg-white">
-                  <tr>
-                    <th className="flex items-center gap-x-2 rounded-md p-2 text-left font-normal">
-                      <input
-                        type="checkbox"
-                        onChange={(e) => handleCheckAll(e)}
-                        id="checkAll"
-                        checked={
-                          listChecked.length ===
-                          orders?.orderItems.find(
-                            (item) => item.user_id === user?.id,
-                          ).products.length
-                        }
-                      />
-                      <label htmlFor="checkAll" className="cursor-pointer">
-                        Tất cả (
-                        {
-                          orders?.orderItems.find(
-                            (item) => item.user_id === user?.id,
-                          )?.products.length
-                        }
-                        sản phẩm)
-                      </label>
-                    </th>
-                    <th className="hidden py-2 font-normal md:table-cell">
-                      Số lượng
-                    </th>
-
-                    <th className=" hidden py-2 font-normal md:table-cell">
-                      Tổng tiền
-                    </th>
-                    <th
-                      className="cursor-pointer rounded-md p-2 font-normal hover:text-red-600 hover:underline"
-                      onClick={handleRemoveALl}
-                    >
-                      Xóa
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders?.orderItems
-                    .find((item) => item.user_id === user?.id)
-                    .products.map((item) => {
-                      return (
-                        <tr
-                          key={item.product_id}
-                          className="border-b-[1px] bg-white"
-                        >
-                          <td className="flex items-center rounded-md p-2 md:gap-x-2">
-                            <input
-                              type="checkbox"
-                              onChange={onchangeItem}
-                              value={item.product_id}
-                              checked={listChecked.includes(item.product_id)}
-                            />
+            {/* table */}
+            <div className="relative col-span-4 mb-6 bg-white lg:col-span-3">
+              <TableContainer>
+                <Table
+                  size="small"
+                  sx={{
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    border: "1px solid #ddd",
+                  }}
+                >
+                  <TableHead>
+                    <TableRow>
+                      <TableCell padding="checkbox">
+                        <div>
+                          <Checkbox
+                            onChange={handleCheckAll}
+                            checked={
+                              listChecked.length ===
+                              orders?.orderItems.find(
+                                (item) => item.user_id === user?.id,
+                              )?.products.length
+                            }
+                            inputProps={{ "aria-label": "select all products" }}
+                          />
+                          Tất cả (
+                          {
+                            orders?.orderItems.find(
+                              (item) => item.user_id === user?.id,
+                            )?.products.length
+                          }
+                          sản phẩm)
+                        </div>
+                      </TableCell>
+                      <TableCell align="right">Số lượng</TableCell>
+                      <TableCell align="right">Tổng tiền</TableCell>
+                      <TableCell align="right">
+                        <IconButton onClick={handleRemoveALl}>
+                          <div className="text-[14px] text-black">Xóa</div>
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {orders?.orderItems
+                      .find((item) => item.user_id === user?.id)
+                      ?.products.map((item) => (
+                        <TableRow key={item.product_id}>
+                          <TableCell>
                             <div className="flex">
-                              <img
-                                src={item.image}
-                                alt="img"
-                                style={{ width: "80px" }}
+                              <Checkbox
+                                onChange={onchangeItem}
+                                value={item.product_id}
+                                checked={listChecked.includes(item.product_id)}
                               />
-                              <div className="flex flex-col justify-around">
-                                <p>{item.name}</p>
-                                <p className="text-xs md:text-base">
-                                  <span className="mr-2 text-red-600">
-                                    {convertToMonney(item?.sale)}
-                                  </span>
-                                  <span className="text-xs line-through md:text-sm">
-                                    {convertToMonney(item?.price)}
-                                  </span>
-                                </p>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                <img
+                                  src={item.image}
+                                  alt="img"
+                                  style={{ width: "80px", marginRight: "10px" }}
+                                />
+                                <div>
+                                  <p>{item.name}</p>
+                                  <p className="text-xs md:text-base">
+                                    <span className="mr-2 text-red-600">
+                                      {convertToMonney(item?.sale)}
+                                    </span>
+                                    <span className="text-xs line-through md:text-sm">
+                                      {convertToMonney(item?.price)}
+                                    </span>
+                                  </p>
+                                </div>
                               </div>
                             </div>
-                          </td>
-                          <td className="hidden min-w-40 text-center md:table-cell">
-                            <div className="flex items-center justify-center gap-x-1 md:gap-x-6">
+                          </TableCell>
+                          <TableCell align="right">
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "right",
+                                justifyContent: "right",
+                              }}
+                            >
                               <button
-                                className="h-8 w-8 rounded border border-primary hover:bg-primary hover:text-white"
-                                onClick={() => {
+                                onClick={() =>
                                   handleQuantityProduct(
                                     "decrease",
                                     item.product_id,
-                                  );
-                                }}
-                              >
-                                -
-                              </button>
+                                  )
+                                }
+                              ></button>
                               <span>{item.quantity}</span>
                               <button
-                                className={`h-8 w-8 rounded border  ${item.quantity === item.quantity_remaining ? "cursor-default opacity-50" : "border-primary hover:bg-primary hover:text-white"}`}
                                 onClick={() => {
                                   handleQuantityProduct(
                                     "increase",
@@ -258,18 +280,14 @@ const CartPage = () => {
                                     message.error("Quá số lượng tồn kho!");
                                   }
                                 }}
-                              >
-                                +
-                              </button>
+                              ></button>
                             </div>
-                          </td>
-                          <td className="hidden min-w-32 text-center text-red-600 md:table-cell">
+                          </TableCell>
+                          <TableCell align="right" className="text-red-600">
                             {convertToMonney(item?.sale * item.quantity)}
-                          </td>
-
-                          <td className="rounded-md p-2">
-                            <span
-                              className="mb-2 flex cursor-pointer justify-center hover:text-red-600"
+                          </TableCell>
+                          <TableCell align="right">
+                            <IconButton
                               onClick={() =>
                                 dispatch(
                                   removeOrder({
@@ -280,40 +298,16 @@ const CartPage = () => {
                               }
                             >
                               <FaTrashCan size={"1.3rem"} />
-                            </span>
-                            <div className="flex items-center justify-center gap-x-1 md:hidden md:gap-x-6">
-                              <button
-                                className="h-8 w-8 rounded border"
-                                onClick={() =>
-                                  handleQuantityProduct(
-                                    "decrease",
-                                    item.product_id,
-                                  )
-                                }
-                              >
-                                -
-                              </button>
-                              <span>{item.quantity}</span>
-                              <button
-                                className="h-8 w-8 rounded border"
-                                onClick={() =>
-                                  handleQuantityProduct(
-                                    "increase",
-                                    item.product_id,
-                                  )
-                                }
-                              >
-                                +
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
+                            </IconButton>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </div>
-            <div className="col-span-4 py-2 lg:col-span-1">
+            {/* tạm tính */}
+            <div className="col-span-4 lg:col-span-1">
               <div className=" rounded-md bg-white p-4">
                 <div className=" flex flex-col gap-y-5">
                   <p className="flex justify-between">
@@ -333,7 +327,6 @@ const CartPage = () => {
                 </div>
               </div>
             </div>
-
             <ModalComponent
               title="BỔ SUNG THÔNG TIN KHÁCH HÀNG"
               open={isOpenModal}

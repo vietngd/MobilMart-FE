@@ -14,6 +14,7 @@ import { FormProvider } from "antd/es/form/context.js";
 import BasicDialogContent from "../../../../components/Modal/BasicDialogContent.jsx";
 import BasicDialogActions from "../../../../components/Modal/BasicDialogAction.jsx";
 import { Controller, useForm, useFormContext } from "react-hook-form";
+import BasicButton from "../../../../components/common/BasicButton.jsx";
 const AdminCategory = () => {
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
@@ -176,15 +177,14 @@ const AdminCategory = () => {
     <div>
       <h1 className="mb-4 text-2xl font-bold">Quản lý danh mục</h1>
       <div className="flex items-end justify-end">
-        <Button
+        <BasicButton
           onClick={() => {
             setIdCategory(null);
             setIsModalOpen(true);
           }}
-          variant="contained"
         >
           Thêm danh mục
-        </Button>
+        </BasicButton>
       </div>
       <div className="pt-5">
         <CustomTable

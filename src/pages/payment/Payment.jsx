@@ -8,7 +8,12 @@ import { useNavigate } from "react-router-dom";
 import { removeOrderInfo } from "../../redux/slides/orderSlice";
 import * as message from "../../components/Message/MessageComponent";
 import axios from "axios";
-
+import {
+  Radio,
+  FormControlLabel,
+  RadioGroup,
+  FormControl,
+} from "@mui/material";
 const Payment = () => {
   const orders = useSelector((state) => state.order);
   const user = useSelector((state) => state.user);
@@ -70,6 +75,7 @@ const Payment = () => {
       paymentOnline();
     }
   };
+  console.log("orders", orders);
 
   const { data, isSuccess, isError } = mutation;
 
@@ -88,7 +94,10 @@ const Payment = () => {
       <div className=" w-[700px] rounded-md ">
         <div className="relative border-b-[1px] py-3">
           <p className="text-center text-xl font-medium">Thông tin</p>
-          <div className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer">
+          <div
+            className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+            onClick={() => navigate("/cart")}
+          >
             <FaArrowLeftLong size={"1.2rem"} />
           </div>
         </div>
@@ -129,34 +138,25 @@ const Payment = () => {
           <div className="mt-[24px]">
             <h1>THÔNG TIN THANH TOÁN</h1>
 
-            <div className="mt-[15px] flex  justify-between rounded-[10px] border-[0.8px] border-[#919eab3d] bg-white p-4">
-              <div>
-                <input
-                  id="Payment-offline"
-                  type="radio"
-                  className="mr-2"
-                  name="method"
-                  value="offline"
-                  defaultChecked
+            <div className="mt-[15px] flex justify-between rounded-[10px] border-[0.8px] border-[#919eab3d] bg-white p-4">
+              <FormControl>
+                <RadioGroup
+                  row
+                  defaultValue="offline"
                   onChange={handleSelectMethodPayment}
-                />
-                <label htmlFor="Payment-offline" className="cursor-pointer">
-                  Thanh toán khi nhận hàng
-                </label>
-              </div>
-              <div>
-                <input
-                  id="Payment-online"
-                  type="radio"
-                  className="mr-2"
-                  name="method"
-                  value="online"
-                  onChange={handleSelectMethodPayment}
-                />
-                <label htmlFor="Payment-online" className="cursor-pointer">
-                  Thanh toán bằng VnPay
-                </label>
-              </div>
+                >
+                  <FormControlLabel
+                    value="offline"
+                    control={<Radio />}
+                    label="Thanh toán khi nhận hàng"
+                  />
+                  <FormControlLabel
+                    value="online"
+                    control={<Radio />}
+                    label="Thanh toán qua ví điện tử VNPay"
+                  />
+                </RadioGroup>
+              </FormControl>
             </div>
           </div>
 
@@ -189,28 +189,31 @@ const Payment = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="shawdow_custom fixed bottom-0 flex w-[95%] flex-col gap-4 rounded-md bg-white p-4 lg:w-[700px]">
-        <div className="flex justify-between">
-          <span>Tổng tiền tạm tính:</span>{" "}
-          <span className="text-red-600">
-            {convertToMonney(orders?.totalMonney)}
-          </span>
-        </div>
-        <div className="flex flex-col gap-2">
-          <button
-            className="mt-1 w-full rounded-md bg-red-600 py-3 text-white"
-            onClick={handleAddOrder}
-          >
-            Đặt hàng
-          </button>
-          <button
-            className="mt-1 w-full rounded-md bg-green-600 py-3 text-white"
-            onClick={handleAddOrder}
-          >
-            Thanh toán ngay
-          </button>
+          <div className="mt-4 flex flex-col gap-4 rounded-lg bg-white p-4">
+            <div className="flex justify-between">
+              <span>Tổng tiền tạm tính:</span>{" "}
+              <span className="text-red-600">
+                {convertToMonney(orders?.totalMonney)}
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              {paymentMethod === "offline" ? (
+                <button
+                  className="mt-1 w-full rounded-md bg-red-600 py-3 text-white"
+                  onClick={handleAddOrder}
+                >
+                  Đặt hàng
+                </button>
+              ) : (
+                <button
+                  className="mt-1 w-full rounded-md bg-green-600 py-3 text-white"
+                  onClick={handleAddOrder}
+                >
+                  Thanh toán ngay
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

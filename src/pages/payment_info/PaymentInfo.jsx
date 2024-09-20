@@ -77,7 +77,10 @@ const PaymentInfo = () => {
       <div className=" w-[700px] rounded-md ">
         <div className="relative border-b-[1px] py-3">
           <p className="text-center text-xl font-medium">Thông tin</p>
-          <div className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer">
+          <div
+            className="absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
+            onClick={() => navigate("/cart")}
+          >
             <FaArrowLeftLong size={"1.2rem"} />
           </div>
         </div>
@@ -182,10 +185,24 @@ const PaymentInfo = () => {
                 />
               </div>
             </div>
+            <div className="mt-4 flex flex-col gap-4 rounded-lg bg-white p-4">
+              <div className="flex justify-between">
+                <span>Tổng tiền tạm tính:</span>
+                <span className="text-red-600">
+                  {convertToMonney(totalMonney)}
+                </span>
+              </div>
+              <button
+                className="mt-1 w-full rounded-md bg-red-600 py-3 text-white"
+                onClick={handlNextPayment}
+              >
+                Tiếp tục
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <div className="shawdow_custom fixed bottom-0 w-[95%] rounded-md bg-white p-4 lg:w-[700px]">
+      {/* <div className="shawdow_custom fixed bottom-0 w-[95%] rounded-md bg-white p-4 lg:w-[700px]">
         <div className="flex justify-between">
           <span>Tổng tiền tạm tính:</span>
           <span className="text-red-600">{convertToMonney(totalMonney)}</span>
@@ -196,7 +213,7 @@ const PaymentInfo = () => {
         >
           Tiếp tục
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

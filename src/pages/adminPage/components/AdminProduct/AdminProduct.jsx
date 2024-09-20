@@ -15,6 +15,7 @@ import EditProductForm from "./EditProductForm.jsx";
 import { useSelector } from "react-redux";
 import CustomTable from "../../../../components/common/CustomTable.jsx";
 import { IcDelete, IcEdit } from "../../../../components/icons/common.jsx";
+import BasicButton from "../../../../components/common/BasicButton.jsx";
 const AdminProduct = () => {
   const user = useSelector((state) => state.user);
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
@@ -166,7 +167,7 @@ const AdminProduct = () => {
   });
   //Emd tính năng search của ant design
   const [orderDetail, setOrderDetail] = useState({});
-  console.log("orderDetail", orderDetail);
+  // console.log("orderDetail", orderDetail);
 
   const columns = [
     {
@@ -272,14 +273,13 @@ const AdminProduct = () => {
     <div>
       <h1 className="text-2xl font-bold">Quản lý sản phẩm</h1>
       <div className="flex items-end justify-end">
-        <Button
-          variant="contained"
+        <BasicButton
           onClick={() => {
             setIsModalCreateProduct(true);
           }}
         >
           Thêm sản phẩm
-        </Button>
+        </BasicButton>
       </div>
       <div className="mt-4">
         <CustomTable
@@ -314,7 +314,7 @@ const AdminProduct = () => {
       {/* Chi tiết sản phẩm */}
       <EditProductForm
         isOpenDrawer={isOpenDrawer}
-        idProduct={idProductDelete}
+        idProduct={orderDetail?.id}
         onClose={onClose}
         queryProduct={queryProduct}
       />

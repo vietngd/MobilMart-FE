@@ -34,21 +34,29 @@ const Routes = [
     path: "/cart",
     page: CartPage,
     isShowHeader: true,
+    isShowFooter: true,
+
   },
   {
     path: "/cart/payment-info",
     page: PaymentInfo,
     isShowHeader: true,
+    isShowFooter: true,
+
   },
   {
     path: "/cart/payment",
     page: Payment,
     isShowHeader: true,
+    isShowFooter: true,
+
   },
   {
     path: "/payment-status",
     page: PaymentStatus,
     isShowHeader: true,
+    isShowFooter: true,
+
   },
   {
     path: "/my-order",

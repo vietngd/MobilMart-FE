@@ -32,10 +32,10 @@ const SliderComponent = () => {
           return (
             <SwiperSlide key={index}>
               <img
-                src={slider.link}
+                src={slider?.link}
                 alt="slider"
-                className="max-h-[624px] w-full rounded-xl object-cover"
-              ></img>
+                className="h-auto max-h-[200px] w-full rounded-xl object-cover"
+              />
             </SwiperSlide>
           );
         })}

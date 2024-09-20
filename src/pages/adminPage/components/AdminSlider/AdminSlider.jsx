@@ -10,6 +10,10 @@ import { useSelector } from "react-redux";
 import { IcDelete } from "../../../../components/icons/common";
 import CustomTable from "../../../../components/common/CustomTable";
 import { Button } from "@mui/material";
+import BasicDialog from "../../../../components/Modal/BasicDialog";
+import BasicDialogContent from "../../../../components/Modal/BasicDialogContent";
+import BasicDialogActions from "../../../../components/Modal/BasicDialogAction";
+import BasicButton from "../../../../components/common/BasicButton";
 const AdminSlider = () => {
   const user = useSelector((state) => state.user);
   const [isOpenCreateSlider, setIsOpenCreateSlider] = useState(false);
@@ -140,34 +144,48 @@ const AdminSlider = () => {
     <div>
       <div className="text-[24px] font-bold">Quản lý Slider</div>
       <div className="flex items-end justify-end pb-5">
-        <Button
-          variant="contained"
-          onClick={() => setIsOpenCreateSlider(!isOpenCreateSlider)}
-        >
-          Tạo mới slider
-        </Button>
+        <BasicButton onClick={() => setIsOpenCreateSlider(!isOpenCreateSlider)}>
+          Thêm mới slider
+        </BasicButton>
       </div>
       {isOpenCreateSlider && (
         <Loading isLoading={loading}>
-          <div>
-            <Upload
-              listType="picture-card"
-              multiple={true}
-              onChange={onchangeUpload}
-              fileList={fileList}
-            >
-              <button style={{ border: 0, background: "none" }} type="button">
-                <PlusOutlined />
-                <div style={{ marginTop: 8 }}>Chọn ảnh</div>
-              </button>
-            </Upload>
-            <button
-              className="mb-3 mt-3 rounded bg-red-500 px-3 py-1 text-white"
-              onClick={hanldeCreateSlider}
-            >
-              Tạo
-            </button>
-          </div>
+          <BasicDialog
+            maxWidth="md"
+            showCloseIcon
+            open={isOpenCreateSlider}
+            title={"Thêm mới slider"}
+            onClose={() => setIsOpenCreateSlider(false)}
+          >
+            <BasicDialogContent className="space-y-3">
+              <Upload
+                listType="picture-card"
+                multiple={true}
+                onChange={onchangeUpload}
+                fileList={fileList}
+              >
+                <button style={{ border: 0, background: "none" }} type="button">
+                  <PlusOutlined />
+                  <div style={{ marginTop: 8 }}>Chọn ảnh</div>
+                </button>
+              </Upload>
+            </BasicDialogContent>
+            <BasicDialogActions sx={{ justifyContent: "end" }}>
+              <Button
+                variant="outlined"
+                onClick={() => setIsOpenCreateSlider(false)}
+              >
+                Hủy
+              </Button>
+              <Button
+                type="button"
+                variant="contained"
+                onClick={hanldeCreateSlider}
+              >
+                Xác nhận
+              </Button>
+            </BasicDialogActions>
+          </BasicDialog>
         </Loading>
       )}
       <div className="overflow-x-auto">
