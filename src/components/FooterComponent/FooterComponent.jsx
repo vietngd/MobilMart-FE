@@ -2,6 +2,8 @@ import { FaMapMarkerAlt, FaPhone } from "react-icons/fa";
 import { HiQuestionMarkCircle } from "react-icons/hi2";
 import facebook_logo from "../../assets/images/facebook-icon.png";
 import google_logo from "../../assets/images/Google-icon.png";
+import instagram from "../../assets/images/instagram.png";
+import zalo from "../../assets/images/zalo.png";
 
 const FooterComponent = () => {
   return (
@@ -47,18 +49,57 @@ const FooterComponent = () => {
           <ul className="mt-4 grid max-w-[80%] list-disc gap-y-3 text-sm">
             <li>Hotline CSKH: 0868650928</li>
             <li className="flex">
-              <button className="min-w-30 mr-2 flex  items-center rounded-md border border-red-600 px-3 py-2">
-                <span className="mr-2">
-                  <img src={google_logo} alt="icon" className="w-5" />
-                </span>
-                <span>Email</span>
-              </button>
-              <button className=" min-w-30 border-blue-300 flex items-center rounded-md border border-blue px-3 py-2">
-                <span className="mr-2">
-                  <img src={facebook_logo} alt="icon" className="w-5" />
-                </span>
-                <span>Facebook</span>
-              </button>
+              <div className="mb-6 flex gap-2 lg:mb-0">
+                <a
+                  href="https://www.facebook.com/profile.php?id=100024756409898"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={google_logo}
+                    alt="Facebook"
+                    width={30}
+                    height={30}
+                    className="group flex cursor-pointer justify-center rounded-md font-semibold text-white drop-shadow-xl transition-all duration-500 hover:translate-y-3 hover:rounded-[20%]"
+                  />
+                </a>
+
+                <a
+                  href="https://chat.zalo.me/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={facebook_logo}
+                    alt="Zalo"
+                    width={30}
+                    height={30}
+                    className="group flex cursor-pointer justify-center rounded-md font-semibold text-white drop-shadow-xl transition-all duration-500 hover:translate-y-3 hover:rounded-[20%]"
+                  />
+                </a>
+
+                <a
+                  href="https://www.instagram.com/vyet_oct8/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                    src={instagram}
+                    alt="Instagram"
+                    width={30}
+                    height={30}
+                    className="group flex cursor-pointer justify-center rounded-md font-semibold text-white drop-shadow-xl transition-all duration-500 hover:translate-y-3 hover:rounded-[20%]"
+                  />
+                </a>
+
+                <img
+                  src={zalo}
+                  alt="Twitter"
+                  width={30}
+                  height={30}
+                  className="group flex cursor-pointer justify-center rounded-md font-semibold text-white drop-shadow-xl transition-all duration-500 hover:translate-y-3 hover:rounded-[20%]"
+                />
+              </div>
             </li>
           </ul>
         </div>

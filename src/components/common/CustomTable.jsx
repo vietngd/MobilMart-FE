@@ -20,7 +20,7 @@ const TableComponent = (props) => {
     showPagination = true,
   } = props;
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(9);
+  const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

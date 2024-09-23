@@ -23,7 +23,11 @@ export function convertToMonney(price) {
     currency: "VND",
   }).replace("₫", "VNĐ");
 }
-
+export const formatPrice = (price, hiddenCurrency) => {
+  const priceStr = String(price)
+  const regex = /(\d{1,3})(?=(\d{3})+(?!\d))/g
+  return priceStr.replace(regex, '$1.') + ` ${!hiddenCurrency ? 'VNĐ' : ''}`
+}
 export function validation(values) {
   const regexPhone = /(03|05|07|08|09|01[2|6|8|9])([0-9]{8})\b/;
   let message = "";

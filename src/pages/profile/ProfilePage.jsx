@@ -5,10 +5,14 @@ import { useMutationHook } from "../../hooks/userMutationHook";
 import { updateUser } from "../../redux/slides/userSlice.js";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Upload } from "antd";
-import { getBase64 } from "../../ultils.js";
+import { convertDateTime, formatPrice, getBase64 } from "../../ultils.js";
 import ModalComponent from "../../components/Modal/ModalComponent.jsx";
 import AddressSelection from "../../components/AddressSelection/AddressSelection.jsx";
 import * as Message from "../../components/Message/MessageComponent";
+import dayjs from "dayjs";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import { FormControlLabel, IconButton, Radio, RadioGroup } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.user);
@@ -17,7 +21,7 @@ const ProfilePage = () => {
   const [avatar, setAvatar] = useState(user.avatar);
   const [address, setAddress] = useState(user.address);
   const [phone, setPhone] = useState(user.phone);
-
+  const [data, setData] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [province, setProvince] = useState();
   const [district, setDistrict] = useState();
@@ -46,8 +50,15 @@ const ProfilePage = () => {
   }, [isSuccess, isError]);
 
   const handleGetDetailUser = async (id, token) => {
-    const res = await UserServices.getDetailUser(id, token);
-    dispatch(updateUser({ ...res?.data, access_token: token }));
+    try {
+      const res = await UserServices.getDetailUser(id, token);
+      setData(res.data);
+      if (res?.data) {
+        dispatch(updateUser({ ...res.data, access_token: token }));
+      }
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+    }
   };
 
   const handleUpdateUser = async () => {
@@ -106,12 +117,18 @@ const ProfilePage = () => {
   const getWard = (ward) => {
     setWard(ward);
   };
-
+  console.log("user", user?.date_of_birth);
+  const navigate = useNavigate();
   return (
     <div className="m-auto max-w-screen-xl">
-      <h1 className=" text-center text-2xl font-semibold">
-        Thông tin người dùng
-      </h1>
+      <div>
+        <h1 className=" flex py-5 pl-[320px] text-center text-2xl font-semibold">
+          <div className="cursor-pointer pr-4" onClick={() => navigate("/")}>
+            <KeyboardBackspaceIcon />
+          </div>
+          Thông tin người dùng
+        </h1>
+      </div>
       <div className="relative mx-auto my-0 mt-2 w-1/2 rounded-lg border p-5 shadow">
         <div className="relative mb-4 h-28 w-full">
           <img
@@ -131,6 +148,37 @@ const ProfilePage = () => {
                   autoComplete="off"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+            </div>
+          </li>
+          <li className="mb-8 flex  items-center">
+            <span className="mr-4 block min-w-24">Ngày sinh</span>
+            <div className="flexitems-center h-full flex-1 justify-center">
+              <div className=" h-full">
+                <input
+                  type="text"
+                  id="dateOfBirth"
+                  className="peer h-full w-full border-b py-1 transition-colors focus:border-b-2 focus:border-red-400 focus:outline-none"
+                  autoComplete="off"
+                  value={dayjs(user?.date_of_birth).format("DD/MM/YYYY")}
+                />
+              </div>
+            </div>
+          </li>
+          <li>
+            <div className="flex">
+              <span className="mr-4 block min-w-24 pt-2">Giới tính:</span>
+              <div className="flex pb-2">
+                <FormControlLabel
+                  value="female"
+                  control={<Radio checked={user?.gender === "female"} />}
+                  label="Nữ"
+                />
+                <FormControlLabel
+                  value="male"
+                  control={<Radio checked={user?.gender === "male"} />}
+                  label="Nam"
                 />
               </div>
             </div>
@@ -194,13 +242,14 @@ const ProfilePage = () => {
             </div>
           </li>
         </ul>
-
-        <button
-          className="btn h-10 w-24 text-center"
-          onClick={handleUpdateUser}
-        >
-          Cập nhật
-        </button>
+        <div className="item flex justify-end">
+          <button
+            className="btn h-10 w-24 text-center"
+            onClick={handleUpdateUser}
+          >
+            Cập nhật
+          </button>
+        </div>
       </div>
       <ModalComponent
         title="Chọn địa chỉ"

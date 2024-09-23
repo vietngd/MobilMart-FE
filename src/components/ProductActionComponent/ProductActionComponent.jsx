@@ -10,7 +10,6 @@ const ProductActionComponent = ({ product }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-console.log("user?.id", user?.id);
 
   const handleAddOrder = () => {
     if (!user?.id) {

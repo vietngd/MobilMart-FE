@@ -108,7 +108,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
     </>
   );
   return (
-    <div className="fixed left-0 right-0 z-50 max-w-full bg-gradient-to-r from-[#a0a165] to-[#94a769]">
+    <div className="fixed left-0 right-0 z-50 max-w-full bg-primary">
       <header className="m-auto h-header_Height max-w-[95%] gap-x-1  xl:max-w-screen-xl">
         <div
           className={

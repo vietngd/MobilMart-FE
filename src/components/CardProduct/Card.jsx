@@ -3,15 +3,22 @@ import { FaStarHalfAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import clsx from "clsx"; // Make sure to import clsx
 import { convertToMonney } from "../../ultils"; // Ensure this function is correctly implemented
-
+import WhatshotIcon from "@mui/icons-material/Whatshot";
 const Card = ({ card }) => {
   const imgs = card.images.split(",");
+  console.log("card", card);
 
   const discountPercentage = ((card.price - card.sale) / card.price) * 100;
   const ICTriaggle = ({ color }) => {
     return (
-      <svg width='8' height='4' viewBox='0 0 4 2' fill='none' xmlns='http://www.w3.org/2000/svg'>
-        <path d='M3.93548 2L0 0H3.93548V2Z' fill={color} />
+      <svg
+        width="8"
+        height="4"
+        viewBox="0 0 4 2"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M3.93548 2L0 0H3.93548V2Z" fill={color} />
       </svg>
     );
   };
@@ -20,21 +27,38 @@ const Card = ({ card }) => {
       <div className="relative">
         <div
           className={clsx(
-            "text-white text-[12px] md:text-lg w-[100px] h-[30px] shadow-sm hover:opacity-80 flex justify-center items-center font-bold relative bg-[#e94f4f]"
+            "relative flex h-[30px] w-[100px] items-center justify-center bg-[#e94f4f] text-[12px] font-bold text-white shadow-sm hover:opacity-80 md:text-lg",
           )}
         >
-          <p className="text-[12px]">Giảm tới {discount.toFixed(0)}%</p> 
-          <div className='absolute bottom-[-4px] left-0'>
+          <p className="text-[12px]">Giảm tới {discount.toFixed(0)}%</p>
+          <div className="absolute bottom-[-4px] left-0">
             <ICTriaggle color={"#971818"} />
           </div>
         </div>
       </div>
     );
   };
-
+  const renderTagHot = () => {
+    return (
+      <div className="relative">
+        <div>
+          {card?.hot === 1 && (
+            <div className="absolute right-0 top-0">
+              <WhatshotIcon
+                sx={{
+                  color: "red",
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
   return (
     <Link to={`/product/${card.id}`}>
-      <div className="ml-3 border-[1px] min-w-[200px] cursor-pointer p-2 bg-[#FFFFFF] border-gray-300 rounded-lg hover:transform hover:translate-x-[-1.5rem] hover:shadow-[0_10px_10px_gray] duration-300">
+      <div className="ml-3 min-w-[220px] cursor-pointer rounded-lg border-[1px] border-gray-300 bg-[#FFFFFF] p-2 duration-300 hover:translate-x-[-1.5rem] hover:transform hover:shadow-[0_10px_10px_gray]">
+        {renderTagHot()}
         <div className="relative flex justify-center">
           <img
             src={imgs[0]}
@@ -42,16 +66,16 @@ const Card = ({ card }) => {
             className="h-[150px] max-w-full"
             loading="lazy"
           />
-          <div className="absolute top-0 left-[-16px]">
+          <div className="absolute left-[-16px] top-0">
             {renderTag(discountPercentage)}
-          </div>
+          </div>{" "}
         </div>
-        <div className="grid gap-y-3 p-1 md:p-3">
+        <div className="grid gap-x-2 p-1 md:p-1">
           <div className="min-h-[72px] font-bold hover:text-primary">
             {card.name}
           </div>
           <div className="price">
-            <span className="new_price mr-3 text-sm font-semibold text-red-700">
+            <span className="new_price mr-1 text-sm font-semibold text-red-700">
               {convertToMonney(card.sale)}
             </span>
             <span className="old_price text-xs font-thin text-[#D3CED2] line-through">

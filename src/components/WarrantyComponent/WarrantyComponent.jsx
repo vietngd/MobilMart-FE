@@ -40,7 +40,7 @@ const WarrantyComponent = () => {
               <span className="text-green-400">Gia hạn bảo hành 24 tháng</span>{" "}
               <span className="text-red-600"> ( Miễn phí )</span>: Năm đầu bảo
               hành chính hãng, năm 2 bảo hành toàn bộ lỗi phần cứng, nguồn, màn
-              hình... tại MobileMart.
+              hình... tại Toha Mobile.
             </span>
           </li>
         </ul>

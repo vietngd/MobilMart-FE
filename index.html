@@ -1,31 +1,37 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      rel="icon"
-      href="./src/assets/images/logo-2.png"
-      type="image/icon type"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      charset="UTF-8"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"
-    />
-    <title>Mobile Mart</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="./src/index.css" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <link rel="icon" href="./src/assets/images/logo-2.png" type="image/icon type" />
+  <link rel="stylesheet" type="text/css" charset="UTF-8"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+  <title>Toha Mobile</title>
+
+  <link rel="stylesheet" href="./src/index.css" />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+  <div class="chatbox">
+    <df-messenger intent="WELCOME" chat-title="Toha Mobile" agent-id="9db731dc-368f-44e1-a75e-7eabe78bf1d3"
+      language-code="en"></df-messenger>
+  </div>
+  <style>
+    .chatbox {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+
+    }
+  </style>
+</body>
+
 </html>

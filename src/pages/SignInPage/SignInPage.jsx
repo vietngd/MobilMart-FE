@@ -10,7 +10,10 @@ import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/slides/userSlice.js";
 import * as messageComponent from "../../components/Message/MessageComponent.jsx";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { IconButton, InputAdornment, TextField, Tooltip } from "@mui/material";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 const SignInPage = () => {
   const location = useLocation();
   const [IsLogin, setIsLogin] = useState(true);
@@ -144,21 +147,22 @@ const SignInPage = () => {
     setMessage("");
     setCode("");
   };
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <>
       <Link to="/">
-        <button className="btn fixed ml-2 mt-4 hover:shadow">
-          VỀ TRANG CHỦ
+        <button className="btn fixed ml-2 mt-4 flex rounded-lg hover:shadow">
+          <KeyboardBackspaceIcon /> Về trang chủ
         </button>
       </Link>
       <div className="m-auto max-w-screen-xl">
         <div className="flex h-screen items-center justify-center">
           <div className="grid w-4/5 grid-cols-2 overflow-hidden rounded-3xl border shadow-md md:w-3/5">
-            <div className="col-span-2 px-9 py-5 lg:col-span-1">
+            <div className="col-span-2 w-[400px] px-9 py-5 lg:col-span-1">
               <div className="flex min-h-full flex-1 flex-col justify-center px-6  lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                  <img className="mx-auto h-10 w-auto" src={logo} />
+                  <img className="mx-auto h-[60px] w-auto" src={logo} />
                   <h2 className=" text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     {forgotPassword
                       ? "Quên mật khẩu"
@@ -181,13 +185,25 @@ const SignInPage = () => {
                         >
                           Email
                         </label>
-                        <div className="mt-1">
-                          <InputFormComponent
-                            id="email"
-                            name="email"
-                            type="email"
-                            valueInput={email}
-                            handleOnchange={handleChangeEmail}
+                        <div>
+                          <TextField
+                            id="outlined-basic"
+                            size="small"
+                            placeholder="Nhập email vào đây"
+                            variant="outlined"
+                            type="text"
+                            fullWidth
+                            value={email}
+                            onChange={handleChangeEmail}
+                            InputProps={{
+                              style: {
+                                fontSize: "14px",
+                              },
+                            }}
+                            sx={{
+                              backgroundColor: "#FFFFFF",
+                              marginTop: "4px",
+                            }}
                           />
                         </div>
                       </div>
@@ -201,13 +217,54 @@ const SignInPage = () => {
                             Mật khẩu
                           </label>
                         </div>
-                        <div className="mt-1">
-                          <InputFormComponent
-                            id="password"
-                            name="password"
-                            type="password"
-                            valueInput={password}
-                            handleOnchange={handleChangePassword}
+                        <div>
+                          <TextField
+                            id="outlined-basic"
+                            size="small"
+                            placeholder="Nhập mật khẩu vào đây"
+                            variant="outlined"
+                            type={showPassword ? "text" : "password"}
+                            fullWidth
+                            value={password}
+                            onChange={handleChangePassword}
+                            InputProps={{
+                              style: {
+                                fontSize: "14px",
+                              },
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={() =>
+                                      setShowPassword(!showPassword)
+                                    }
+                                    edge="end"
+                                  >
+                                    {showPassword ? (
+                                      <Tooltip title="Ẩn mật khẩu">
+                                        <VisibilityOffIcon
+                                          sx={{
+                                            fontSize: "16px",
+                                          }}
+                                        />
+                                      </Tooltip>
+                                    ) : (
+                                      <Tooltip title="Hiện mật khẩu">
+                                        <VisibilityIcon
+                                          sx={{
+                                            fontSize: "16px",
+                                          }}
+                                        />
+                                      </Tooltip>
+                                    )}
+                                  </IconButton>
+                                </InputAdornment>
+                              ),
+                            }}
+                            sx={{
+                              backgroundColor: "#FFFFFF",
+                              marginTop: "4px",
+                            }}
                           />
                         </div>
 
@@ -313,8 +370,9 @@ const SignInPage = () => {
                     </form>
                   )}
 
-                  <p className="mt-6 text-center text-sm text-gray-500">
+                  <div className="mt-6 text-center text-sm text-gray-500">
                     {IsLogin ? "Chưa có tài khoản? " : "Bạn đã có tài khoản? "}
+
                     <a
                       href="#"
                       className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
@@ -328,27 +386,41 @@ const SignInPage = () => {
                     >
                       {IsLogin ? "Đăng ký" : "Đăng nhập"}
                     </a>
-                  </p>
+                    <div className="flex flex-col items-center justify-center gap-2 pt-4">
+                      <button className="min-w-30 mr-2 flex  items-center rounded-md border border-red-300 px-3 py-2 hover:border-red-600">
+                        <span className="mr-2">
+                          <img src={google_logo} alt="icon" className="w-5" />
+                        </span>
+                        <span>Đăng nhập với Google</span>
+                      </button>
+                      <button className=" min-w-30 border-blue-300 hover:border-blue-600 flex items-center rounded-md border px-3 py-2">
+                        <span className="mr-2">
+                          <img src={facebook_logo} alt="icon" className="w-5" />
+                        </span>
+                        <span>Đăng nhập với Facebook</span>
+                      </button>
+                    </div>
+                  </div>
 
                   <div className="mt-3 flex items-center justify-center">
-                    <button className="min-w-30 mr-2 flex  items-center rounded-md border border-red-300 px-3 py-2 hover:border-red-600">
+                    {/* <button className="min-w-30 mr-2 flex  items-center rounded-md border border-red-300 px-3 py-2 hover:border-red-600">
                       <span className="mr-2">
                         <img src={google_logo} alt="icon" className="w-5" />
                       </span>
-                      <span>Google</span>
+                      <span>Đăng nhập với Google</span>
                     </button>
                     <button className=" min-w-30 border-blue-300 hover:border-blue-600 flex items-center rounded-md border px-3 py-2">
                       <span className="mr-2">
                         <img src={facebook_logo} alt="icon" className="w-5" />
                       </span>
                       <span>Facebook</span>
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
             </div>
             <div className="hidden flex-col items-center justify-center rounded-l-[100px] bg-primary p-5 text-white lg:flex">
-              <p className="mb-4 text-2xl font-bold">Xin chào!</p>
+              <p className="mb-4 text-2xl font-bold"> Welcome to Toha Mobile</p>
               <p className="mb-4 text-center">
                 Cùng MobileMart mua sắm thỏa sức đam mê ^.^
               </p>

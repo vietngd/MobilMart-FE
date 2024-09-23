@@ -66,7 +66,8 @@ const Routes = [
   {
     path: "/sign-in",
     page: SignInPage,
-    isShowHeader: false,
+    isShowHeader: true,
+    isShowFooter: true
   },
   {
     path: "/profile-user",
