@@ -17,6 +17,8 @@ import Loading from "../../components/Loading/LoadingComponent.jsx";
 import { updateUser } from "../../redux/slides/userSlice.js";
 import { useNavigate } from "react-router-dom";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import {
   Table,
   TableBody,
@@ -266,8 +268,17 @@ const CartPage = () => {
                                     item.product_id,
                                   )
                                 }
-                              ></button>
-                              <span>{item.quantity}</span>
+                              >
+                                <RemoveIcon
+                                  sx={{
+                                    width: "16px",
+                                    height: "16px",
+                                  }}
+                                />
+                              </button>
+                              <span className="px-2 pt-[2px]">
+                                {item.quantity}
+                              </span>
                               <button
                                 onClick={() => {
                                   handleQuantityProduct(
@@ -280,7 +291,14 @@ const CartPage = () => {
                                     message.error("Quá số lượng tồn kho!");
                                   }
                                 }}
-                              ></button>
+                              >
+                                <AddIcon
+                                  sx={{
+                                    width: "16px",
+                                    height: "16px",
+                                  }}
+                                />
+                              </button>
                             </div>
                           </TableCell>
                           <TableCell align="right" className="text-red-600">

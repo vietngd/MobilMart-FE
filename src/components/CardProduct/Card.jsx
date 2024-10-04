@@ -6,7 +6,6 @@ import { convertToMonney } from "../../ultils"; // Ensure this function is corre
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 const Card = ({ card }) => {
   const imgs = card.images.split(",");
-  console.log("card", card);
 
   const discountPercentage = ((card.price - card.sale) / card.price) * 100;
   const ICTriaggle = ({ color }) => {

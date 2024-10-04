@@ -51,11 +51,14 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
 
   const handleLogout = async () => {
     setLoading(true);
-    await UserServices.logoutUser();
-    disPatch(resetUser());
-    localStorage.removeItem("access_token");
-    setLoading(false);
-    navigate("/");
+    try {
+      await UserServices.logoutUser();
+      disPatch(resetUser());
+      navigate("/sign-in");
+      localStorage.removeItem("access_token");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onchangeSearch = (e) => {

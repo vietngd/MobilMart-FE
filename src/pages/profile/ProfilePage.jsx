@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.user);
-
   const [name, setName] = useState(user.name);
   const [avatar, setAvatar] = useState(user.avatar);
   const [address, setAddress] = useState(user.address);

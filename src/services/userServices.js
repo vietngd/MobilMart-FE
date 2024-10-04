@@ -65,8 +65,8 @@ const logoutUser = async () => {
       `${baseUrl}/user/logout`,
       {},
       {
-        withCredentials: true, // should be there
-        credentials: "include", // should be there
+        withCredentials: true, 
+        credentials: "include", 
       },
     );
     return response.data;
