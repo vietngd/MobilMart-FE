@@ -5,9 +5,10 @@ import clsx from "clsx"; // Make sure to import clsx
 import { convertToMonney } from "../../ultils"; // Ensure this function is correctly implemented
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 const Card = ({ card }) => {
-  const imgs = card.images.split(",");
+  const imgs = card?.images?.split(",");
+  console.log("card", card);
 
-  const discountPercentage = ((card.price - card.sale) / card.price) * 100;
+  const discountPercentage = ((card?.price - card.sale) / card.price) * 100;
   const ICTriaggle = ({ color }) => {
     return (
       <svg
@@ -60,7 +61,7 @@ const Card = ({ card }) => {
         {renderTagHot()}
         <div className="relative flex justify-center">
           <img
-            src={imgs[0]}
+            src={imgs && imgs[0]}
             alt="product"
             className="h-[150px] max-w-full"
             loading="lazy"

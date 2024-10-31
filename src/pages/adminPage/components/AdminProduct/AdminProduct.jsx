@@ -9,13 +9,15 @@ import Loading from "../../../../components/Loading/LoadingComponent.jsx";
 import * as message from "../../../../components/Message/MessageComponent.jsx";
 import ModalComponent from "../../../../components/Modal/ModalComponent.jsx";
 import CreateProductForm from "./CreateProductForm.jsx";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import ConfigProductForm from "./ConfigProductForm.jsx";
 import EditProductForm from "./EditProductForm.jsx";
 import { useSelector } from "react-redux";
 import CustomTable from "../../../../components/common/CustomTable.jsx";
 import { IcDelete, IcEdit } from "../../../../components/icons/common.jsx";
 import BasicButton from "../../../../components/common/BasicButton.jsx";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 const AdminProduct = () => {
   const user = useSelector((state) => state.user);
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
@@ -37,6 +39,7 @@ const AdminProduct = () => {
       message.success("Thêm sản phẩm thành công!");
       setIsModalCopnfig(false);
       setResultCreateProduct(true);
+      fetchProduct()
     } else {
       message.success("Thêm sản phẩm thất bại!");
     }
@@ -167,7 +170,7 @@ const AdminProduct = () => {
   });
   //Emd tính năng search của ant design
   const [orderDetail, setOrderDetail] = useState({});
-  // console.log("orderDetail", orderDetail);
+
 
   const columns = [
     {
@@ -180,6 +183,11 @@ const AdminProduct = () => {
       title: "Hot",
       dataIndex: "hot",
       key: "Hot",
+      render:(item) =>(
+        <div>
+{item?.hot === 1 ? <CheckCircleIcon color="success"/> : <DoNotDisturbOnIcon color="error"/>}
+        </div>
+      )
     },
     {
       title: "Giá cũ",
@@ -219,7 +227,9 @@ const AdminProduct = () => {
             <IcEdit />
           </button>
 
-          <button onClick={() => setIsModalOpenDelete(true)}>
+          <button onClick={() => {
+            setIsModalOpenDelete(true)
+            setIdProductDelete(item?.id);}}>
             <IcDelete />
           </button>
         </Space>
@@ -236,6 +246,7 @@ const AdminProduct = () => {
   // Xóa sản phẩm
   const handleCancelDelete = () => {
     setIsModalOpenDelete(false);
+    fetchProduct()
   };
 
   const mutationDelete = useMutationHook(async ({ id, access_token }) => {
@@ -282,6 +293,7 @@ const AdminProduct = () => {
         </BasicButton>
       </div>
       <div className="mt-4">
+     
         <CustomTable
           dataProp={products?.data || []} //
           columns={columns}

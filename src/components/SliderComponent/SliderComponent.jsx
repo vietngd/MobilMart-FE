@@ -7,17 +7,20 @@ import * as SliderServices from "../../services/SliderServices";
 
 const SliderComponent = () => {
   const [sliders, setSliders] = useState([]);
+
   const fetchSliders = async () => {
     const res = await SliderServices.GetAllSlider();
     if (res && res.status === "OK") {
       setSliders(res.data);
     }
   };
+
   useEffect(() => {
     fetchSliders();
   }, []);
+
   return (
-    <div className="col-span-4 overflow-hidden rounded-xl shadow-md">
+    <div className="col-span-4 rounded-xl shadow-md">
       <Swiper
         loop={true}
         navigation={false}
@@ -26,19 +29,18 @@ const SliderComponent = () => {
         }}
         autoplay={{ delay: 2000 }}
         modules={[Pagination, Autoplay]}
-        // style={{ width: "600px", height: "400px" }}
+        // style={{ height: "450px" }}
       >
-        {sliders.map((slider, index) => {
-          return (
-            <SwiperSlide key={index}>
-              <img
-                src={slider?.link}
-                alt="slider"
-                className="h-auto max-h-[200px] w-full rounded-xl object-cover"
-              />
-            </SwiperSlide>
-          );
-        })}
+        {sliders.map((slider, index) => (
+          <SwiperSlide key={index}>
+            <img
+              src={slider?.link}
+              alt="slider"
+              className="h-full w-full object-cover rounded-xl"
+              style={{ height: "450px" }}
+            />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );

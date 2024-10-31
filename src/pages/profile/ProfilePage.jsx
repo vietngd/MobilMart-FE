@@ -137,7 +137,7 @@ const ProfilePage = () => {
         </div>
         <ul className="mb-4">
           <li className="mb-8 flex  items-center">
-            <span className="mr-4 block min-w-24">Tên</span>
+            <span className="mr-4 block min-w-24">Họ và tên</span>
             <div className="flexitems-center h-full flex-1 justify-center">
               <div className=" h-full">
                 <input
@@ -147,37 +147,6 @@ const ProfilePage = () => {
                   autoComplete="off"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                />
-              </div>
-            </div>
-          </li>
-          <li className="mb-8 flex  items-center">
-            <span className="mr-4 block min-w-24">Ngày sinh</span>
-            <div className="flexitems-center h-full flex-1 justify-center">
-              <div className=" h-full">
-                <input
-                  type="text"
-                  id="dateOfBirth"
-                  className="peer h-full w-full border-b py-1 transition-colors focus:border-b-2 focus:border-red-400 focus:outline-none"
-                  autoComplete="off"
-                  value={dayjs(user?.date_of_birth).format("DD/MM/YYYY")}
-                />
-              </div>
-            </div>
-          </li>
-          <li>
-            <div className="flex">
-              <span className="mr-4 block min-w-24 pt-2">Giới tính:</span>
-              <div className="flex pb-2">
-                <FormControlLabel
-                  value="female"
-                  control={<Radio checked={user?.gender === "female"} />}
-                  label="Nữ"
-                />
-                <FormControlLabel
-                  value="male"
-                  control={<Radio checked={user?.gender === "male"} />}
-                  label="Nam"
                 />
               </div>
             </div>
