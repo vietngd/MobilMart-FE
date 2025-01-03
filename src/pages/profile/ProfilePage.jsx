@@ -5,13 +5,11 @@ import { useMutationHook } from "../../hooks/userMutationHook";
 import { updateUser } from "../../redux/slides/userSlice.js";
 import { UploadOutlined } from "@ant-design/icons";
 import { Button, Upload } from "antd";
-import { convertDateTime, formatPrice, getBase64 } from "../../ultils.js";
+import { getBase64 } from "../../ultils.js";
 import ModalComponent from "../../components/Modal/ModalComponent.jsx";
 import AddressSelection from "../../components/AddressSelection/AddressSelection.jsx";
 import * as Message from "../../components/Message/MessageComponent";
-import dayjs from "dayjs";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import { FormControlLabel, IconButton, Radio, RadioGroup } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
@@ -116,7 +114,7 @@ const ProfilePage = () => {
   const getWard = (ward) => {
     setWard(ward);
   };
-  console.log("user", user?.date_of_birth);
+
   const navigate = useNavigate();
   return (
     <div className="m-auto max-w-screen-xl">

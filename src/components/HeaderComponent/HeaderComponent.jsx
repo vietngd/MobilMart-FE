@@ -65,7 +65,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
     setIsSearchText(e.target.value);
   };
 
-  const searchText = useDebounce(isSearchText, 500); // Hạn chế số lần gọi request khi người dùng chưa nhập xong
+  const searchText = useDebounce(isSearchText, 500); 
   useEffect(() => {
     fetchProduct(searchText);
   }, [searchText]);
@@ -75,6 +75,7 @@ const HeaderComponent = ({ isHidenSearch, isHidenCart }) => {
     setProducts(res?.data);
   };
 
+  
   const content = (
     <>
       <div className="flex cursor-pointer flex-col gap-4">

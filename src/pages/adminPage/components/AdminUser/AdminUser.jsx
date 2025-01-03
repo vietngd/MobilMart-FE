@@ -16,7 +16,7 @@ const AdminUser = () => {
   const [isModalOpenDelete, setIsModalOpenDelete] = useState(false);
   const [idUser, setIdUser] = useState(Number);
   const [stateUser, setStateUser] = useState(false);
-  console.log("isUser", idUser);
+
   const handleClick = (id) => {
     setIdUser(id);
   };
@@ -59,7 +59,10 @@ const AdminUser = () => {
           >
             <IcEdit />
           </button>
-          <button onClick={() => setIsModalOpenDelete(true)}>
+          <button onClick={() => {
+              setIsModalOpenDelete(true);
+              handleClick(item?.id);
+            }}>
             <IcDelete />
           </button>
         </Space>
@@ -152,7 +155,7 @@ const AdminUser = () => {
 
   const handleDeleteUser = () => {
     const data = {
-      id: stateUser?.id,
+      id: idUser,
       access_token: user?.access_token,
     };
 
