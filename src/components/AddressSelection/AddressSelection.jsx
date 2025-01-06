@@ -9,7 +9,7 @@ const AddressSelection = ({ getProvice, getDistrict, getWard }) => {
   const fetchProvince = async () => {
     //Thành phố
     try {
-      const res = await axios.get(`https://vapi.vnappmob.com/api/province/`);
+      const res = await axios.get(`https://vapi.vnappmob.com/api/v2/province/`);
       setWard([]);
       return res.data?.results;
     } catch (error) {
@@ -22,7 +22,7 @@ const AddressSelection = ({ getProvice, getDistrict, getWard }) => {
       const province_id = e.target.value;
       //Tỉnh
       const res = await axios.get(
-        `https://vapi.vnappmob.com/api/province/district/${province_id}`,
+        `https://vapi.vnappmob.com/api/v2/province/district/${province_id}`,
       );
 
       setDistrict(res.data?.results);
@@ -40,7 +40,7 @@ const AddressSelection = ({ getProvice, getDistrict, getWard }) => {
     //Huyện
     try {
       const res = await axios.get(
-        `https://vapi.vnappmob.com/api/province/ward/${district_id}`,
+        `https://vapi.vnappmob.com/api/v2/province/ward/${district_id}`,
       );
 
       setWard(res.data?.results);
