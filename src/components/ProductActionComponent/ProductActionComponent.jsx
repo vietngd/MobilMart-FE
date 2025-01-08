@@ -58,13 +58,13 @@ const ProductActionComponent = ({ product }) => {
   return (
     <div className="col-span-1 flex w-[280px] p-2">
       <button
-        className="flex w-full transform items-center rounded-lg bg-gradient-to-r from-red-500 to-pink-500 p-3 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
+        className="flex w-full transform items-center justify-center rounded-lg bg-gradient-to-r from-red-500 to-pink-500 p-3 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
         onClick={handleAddOrder}
       >
-        <p className="mr-2 flex items-center justify-center">
+        <p className="mr-2 flex">
           <FaCartArrowDown size={"1.75rem"} />
         </p>
-        <span className="text-[16px]  font-semibold">Thêm vào giỏ hàng</span>
+        <span className="text-[16px] font-semibold">Thêm vào giỏ hàng</span>
       </button>
     </div>
   );
