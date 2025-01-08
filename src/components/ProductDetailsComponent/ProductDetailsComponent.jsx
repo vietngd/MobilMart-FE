@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import "animate.css";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
-
+import StarIcon from "@mui/icons-material/Star";
 import ImgShowComponent from "../ImgShowComponent/ImgShowComponent";
 import InfoProductComponent from "../InfoProductComponent/InfoProductComponent";
 import WarrantyComponent from "../WarrantyComponent/WarrantyComponent";
@@ -213,44 +213,45 @@ const ProductDetailsComponent = ({ idProduct }) => {
             {/* Đánh giá */}
             <div className=" mt-10 grid grid-cols-7 gap-x-1">
               <div className="col-span-9 md:col-span-5">
-                <div className="mb-3 grid grid-cols-4">
-                  <div className="col-span-4 grid gap-y-3 border py-2 text-center md:col-span-1 md:py-10">
-                    <p className="text-xl">{`${averageRating}/5`}</p>
-                    <p className="flex justify-center">
-                      <span className="mr-2 flex items-center text-primary">
-                        {[...Array(5)].map((star, index) => {
-                          const ratingValue = index + 1;
-                          const isHalfStar = averageRating - index >= 0.5;
-                          return (
-                            <span key={index}>
-                              {ratingValue <= averageRating ? (
-                                <IoIosStar
-                                  size={"1.5rem"}
-                                  style={{ color: "#978535" }}
-                                />
-                              ) : isHalfStar &&
-                                parseInt(averageRating) === ratingValue - 1 ? (
-                                <FaRegStarHalfStroke
-                                  size={"1.5rem"}
-                                  style={{ color: "#978535" }}
-                                />
-                              ) : (
-                                <IoIosStar
-                                  size={"1.5rem"}
-                                  style={{ color: "#a29e9e" }}
-                                />
-                              )}
-                            </span>
-                          );
-                        })}
-                      </span>
+                <div className="mb-5 grid grid-cols-4 gap-5 rounded-lg bg-white p-4 shadow-md">
+                  {/* Phần trung bình đánh giá */}
+                  <div className="from-blue-50 to-blue-100 col-span-4 grid gap-y-3 rounded-lg border bg-gradient-to-br via-white p-6 text-center md:col-span-1">
+                    <p className="text-blue-600 text-[28px] font-bold">{`${averageRating}/5`}</p>
+                    <p className="flex justify-center space-x-1">
+                      {[...Array(5)].map((_, index) => {
+                        const ratingValue = index + 1;
+                        const isHalfStar = averageRating - index >= 0.5;
+                        return (
+                          <span key={index}>
+                            {ratingValue <= averageRating ? (
+                              <IoIosStar
+                                size={"1.75rem"}
+                                className="text-yellow-400"
+                              />
+                            ) : isHalfStar &&
+                              parseInt(averageRating) === ratingValue - 1 ? (
+                              <FaRegStarHalfStroke
+                                size={"1.75rem"}
+                                className="text-yellow-300"
+                              />
+                            ) : (
+                              <IoIosStar
+                                size={"1.75rem"}
+                                className="text-gray-300"
+                              />
+                            )}
+                          </span>
+                        );
+                      })}
                     </p>
-                    <p>
+                    <p className="text-sm text-gray-600">
                       {commentsFetch?.pagination?.totalCount} đánh giá và hỏi
                       đáp
                     </p>
                   </div>
-                  <div className="col-span-4 flex flex-col justify-evenly border p-4 md:col-span-2">
+
+                  {/* Phần chi tiết số sao */}
+                  <div className="col-span-4 flex flex-col justify-center space-y-3 md:col-span-2">
                     {[...Array(5).keys()].reverse().map((index) => {
                       return (
                         <p className="flex items-center gap-x-2" key={index}>
@@ -277,11 +278,15 @@ const ProductDetailsComponent = ({ idProduct }) => {
                       );
                     })}
                   </div>
-                  <div className="col-span-4  flex  items-center justify-center border text-center md:col-span-1">
-                    <div>
-                      <p>Bạn có vấn đề cần tư vấn</p>
+
+                  {/* Phần nút gửi câu hỏi */}
+                  <div className="bg-blue-50 col-span-4 flex items-center justify-center rounded-lg border p-4 md:col-span-1">
+                    <div className="space-y-3 text-center">
+                      <p className="text-base font-medium">
+                        Bạn có vấn đề cần tư vấn?
+                      </p>
                       <button
-                        className=" mb-3 rounded bg-primary px-5 py-2 text-white"
+                        className="rounded-full bg-primary px-6 py-2 text-base text-white shadow-lg transition duration-300 hover:opacity-80"
                         onClick={() => {
                           if (isShowComment) {
                             setComment("");
@@ -299,6 +304,7 @@ const ProductDetailsComponent = ({ idProduct }) => {
                     </div>
                   </div>
                 </div>
+
                 {isShowComment && (
                   <Loading isLoading={isPending}>
                     <div className="animate__fadeIn animate__animated  relative grid gap-y-3 border bg-[#f5f5f5] p-3">
@@ -308,13 +314,13 @@ const ProductDetailsComponent = ({ idProduct }) => {
                           {[...Array(5)].map((star, index) => {
                             const ratingValue = index + 1;
                             return (
-                              <IoIosStar
+                              <StarIcon
                                 size={"1.5rem"}
                                 key={index}
                                 style={{
                                   color:
                                     ratingValue <= rating
-                                      ? "#978535"
+                                      ? "#FFC32B"
                                       : "#a29e9e",
                                 }}
                                 onClick={() => setRating(ratingValue)}
@@ -381,141 +387,124 @@ const ProductDetailsComponent = ({ idProduct }) => {
                 )}
 
                 {/* Các comment */}
-                <div className="mb-3">
-                  {commentsFetch &&
-                    commentsFetch?.data?.length > 0 &&
-                    commentsFetch?.data?.map((comment) => {
-                      return (
-                        <div key={comment.id}>
-                          <div>
-                            <div className=" mt-3 flex py-3">
-                              <div className="mr-3 flex h-10 w-10 items-center justify-center bg-[#ebe9eb] ">
-                                {comment.name.split("")[0].toUpperCase()}
-                              </div>
-                              <div className="grid flex-1 gap-y-4 pr-3">
-                                <div className="flex justify-between">
-                                  <div>
-                                    <span className="mr-3">{comment.name}</span>
-                                    <span>{comment.phone}</span>
-                                  </div>
-                                  <span className="mr-2 flex items-center">
-                                    {[...Array(5)].map((star, index) => {
-                                      const ratingValue = index + 1;
-                                      return (
-                                        <IoIosStar
-                                          size={"1rem"}
-                                          key={index}
-                                          style={{
-                                            color:
-                                              ratingValue <= comment.rating
-                                                ? "#978535"
-                                                : "#a29e9e",
-                                          }}
-                                        />
-                                      );
-                                    })}
-                                  </span>
-                                </div>
-                                <span>{comment.content}</span>
-                                <div>
-                                  <span className="mr-2">
-                                    <AiOutlineLike
-                                      style={{ display: "inline-block" }}
-                                    />{" "}
-                                    2 Thích
-                                  </span>
-                                  <span className="mr-2">
-                                    {convertDateTime(comment.created_at).time}
-                                  </span>
-                                  <span className="mr-2">
-                                    {convertDateTime(comment.created_at).day}
-                                  </span>
-                                  {comment.reply_content === null &&
-                                    user?.isAdmin === 1 && (
-                                      <span
-                                        className=" mr-3 cursor-pointer text-red-400"
-                                        onClick={() => handleReply(comment.id)}
-                                      >
-                                        Trả lời
-                                      </span>
-                                    )}
-                                  {user?.isAdmin === 1 && (
-                                    <span
-                                      className=" cursor-pointer text-red-400"
-                                      onClick={() =>
-                                        handleDeleteComment(comment.id)
-                                      }
-                                    >
-                                      Xóa
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
+                <div className="space-y-5">
+                  {commentsFetch?.data?.map((comment) => (
+                    <div
+                      key={comment.id}
+                      className="rounded-lg border p-4 shadow-sm"
+                    >
+                      <div className="flex items-start space-x-4">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-lg font-semibold">
+                          {comment.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <span className="mr-2 text-lg font-medium">
+                                {comment.name}
+                              </span>
+                              <span className="text-sm text-gray-500">
+                                {comment.phone}
+                              </span>
                             </div>
-                            {replyingToComment === comment.id && (
-                              <div className="mb-1 flex">
-                                <input
-                                  type="text"
-                                  placeholder="Câu trả lời"
-                                  className="flex-1 border border-primary px-2 py-1 outline-none"
-                                  value={replyText}
-                                  autoFocus={replyingToComment === comment.id}
-                                  onChange={(e) => setReplyText(e.target.value)}
-                                ></input>
+                            <div className="flex">
+                              {[...Array(5)].map((_, index) => {
+                                const ratingValue = index + 1;
+                                return (
+                                  <IoIosStar
+                                    key={index}
+                                    size={"1rem"}
+                                    className={`${
+                                      ratingValue <= comment.rating
+                                        ? "text-yellow-500"
+                                        : "text-gray-300"
+                                    }`}
+                                  />
+                                );
+                              })}
+                            </div>
+                          </div>
+                          <p className="text-gray-700">{comment.content}</p>
+                          <div className="flex items-center space-x-3 text-sm text-gray-600">
+                            <button className="flex items-center space-x-1 hover:text-primary">
+                              <AiOutlineLike />
+                              <span>1 Thích</span>
+                            </button>
+                            <span>
+                              {convertDateTime(comment.created_at).time}
+                            </span>
+                            <span>
+                              {convertDateTime(comment.created_at).day}
+                            </span>
+                            {comment.reply_content === null &&
+                              user?.isAdmin === 1 && (
                                 <button
-                                  className="ml-2 rounded bg-primary px-2 py-1 text-white"
-                                  onClick={() => handleReplyComment(comment.id)}
+                                  className="text-primary hover:underline"
+                                  onClick={() => handleReply(comment.id)}
                                 >
-                                  Gửi
+                                  Trả lời
                                 </button>
-                              </div>
+                              )}
+                            {user?.isAdmin === 1 && (
+                              <button
+                                className="text-red-500 hover:underline"
+                                onClick={() => handleDeleteComment(comment.id)}
+                              >
+                                Xóa
+                              </button>
                             )}
                           </div>
-                          {/* Phản hổi của admin */}
-                          {comment.admin_name != null && (
-                            <div className="relative flex border bg-[#f8f8f8] px-2 py-3">
-                              <div className="mr-3 flex h-10 w-10 items-center justify-center bg-[#ebe9eb] ">
-                                <img src={logo} alt="M" />
-                              </div>
-                              <div className="grid flex-1 gap-y-4 pr-3">
-                                <div className="flex justify-between">
-                                  <div>
-                                    <span className="mr-3">
-                                      {comment.admin_name}
-                                    </span>
-                                    <span className="rounded bg-primary px-1 text-white">
-                                      Quản trị viên
-                                    </span>
-                                  </div>
-                                </div>
-                                <span>{comment.reply_content}</span>
-                                <div>
-                                  <span className="mr-2">
-                                    <AiOutlineLike
-                                      style={{ display: "inline-block" }}
-                                    />{" "}
-                                    2 Thích
-                                  </span>
-                                  <span className="mr-2">
-                                    {
-                                      convertDateTime(comment.created_at_reply)
-                                        .time
-                                    }
-                                  </span>
-                                  <span className="mr-2">
-                                    {
-                                      convertDateTime(comment.created_at_reply)
-                                        .day
-                                    }
-                                  </span>
-                                </div>
-                              </div>
-                              <span className="absolute bottom-full left-4 border-[10px] border-[#f8f8f8] border-l-transparent border-r-transparent border-t-transparent "></span>
-                            </div>
-                          )}
                         </div>
-                      );
-                    })}
+                      </div>
+                      {replyingToComment === comment.id && (
+                        <div className="mt-3 flex space-x-2">
+                          <input
+                            type="text"
+                            placeholder="Câu trả lời"
+                            className="flex-1 rounded border border-gray-300 px-3 py-2"
+                            value={replyText}
+                            autoFocus
+                            onChange={(e) => setReplyText(e.target.value)}
+                          />
+                          <button
+                            className="hover:bg-primary-dark rounded bg-primary px-4 py-2 text-white"
+                            onClick={() => handleReplyComment(comment.id)}
+                          >
+                            Gửi
+                          </button>
+                        </div>
+                      )}
+                      {comment.admin_name && (
+                        <div className="relative mt-4 rounded bg-gray-100 p-4">
+                          <div className="flex items-center space-x-3">
+                            <div className="h-10 w-10 overflow-hidden rounded-full bg-gray-300">
+                              <img src={logo} alt="Admin" />
+                            </div>
+                            <div>
+                              <span className="font-medium">
+                                {comment.admin_name}
+                              </span>
+                              <span className="ml-2 rounded bg-primary px-2 py-1 text-xs text-white">
+                                Quản trị viên
+                              </span>
+                            </div>
+                          </div>
+                          <p className="mt-2">{comment.reply_content}</p>
+                          <div className="mt-1 flex items-center space-x-2 text-sm text-gray-500">
+                            <AiOutlineLike className="mr-1" />
+                            <span>2 Thích</span>
+                            <span>
+                              {convertDateTime(comment.created_at_reply).time}
+                            </span>
+                            <span>
+                              {convertDateTime(comment.created_at_reply).day}
+                            </span>
+                          </div>
+                          <span className="absolute bottom-full left-4 h-0 w-0 border-[10px] border-transparent border-b-gray-100"></span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </div>
 
                 {/* Phân trang*/}

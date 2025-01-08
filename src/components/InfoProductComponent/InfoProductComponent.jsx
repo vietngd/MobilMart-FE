@@ -5,6 +5,7 @@ import { calculateAverageRating, convertToMonney } from "../../ultils";
 import { IoIosStar } from "react-icons/io";
 import { FaRegStarHalfStroke } from "react-icons/fa6";
 import { useMemo } from "react";
+import { Checkbox } from "@mui/material";
 
 const InfoProductComponent = ({ product, total_comments, rating_counts }) => {
   const averageRating = useMemo(() => {
@@ -24,21 +25,27 @@ const InfoProductComponent = ({ product, total_comments, rating_counts }) => {
             {convertToMonney(product?.price)}
           </span>
         </div>
-        <div>
-          <input
-            type="checkbox"
+        <div className="flex items-center">
+          <Checkbox
             checked={product?.quantity > 0}
             onChange={() => {}}
-          />{" "}
-          {product?.quantity > 0 ? "Còn hàng" : "Hết hàng"}
+            size="small"
+            sx={{
+              padding: "4px",
+            }}
+            color="primary"
+          />
+          <div className="text-[14px]">
+            {product?.quantity > 0 ? "Còn hàng" : "Hết hàng"}
+          </div>
         </div>
       </div>
       <div className=" flex items-center justify-start rounded py-1 text-white">
         <span className="text-xl">
           <CiDeliveryTruck color="#143820" />
         </span>
-        <span className="ml-3 text-xs text-[#143820]">
-          MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC
+        <span className="ml-1 text-[14px] text-[#143820]">
+          Miễn phí vận chuyển
         </span>
       </div>
 

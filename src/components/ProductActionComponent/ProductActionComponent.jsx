@@ -15,7 +15,6 @@ const ProductActionComponent = ({ product }) => {
     if (!user?.id) {
       navigate("/sign-in", { state: location?.pathname });
     } else {
-      // Số lượng sản phẩm trong giỏ hàng
       const quantity_product_order = orders?.orderItems
         .find((item) => item?.user_id === user?.id)
         ?.products.find((item) => item?.product_id === product?.id)?.quantity;
@@ -57,15 +56,15 @@ const ProductActionComponent = ({ product }) => {
   };
 
   return (
-    <div className="col-span-1 cursor-pointer p-2">
+    <div className="col-span-1 flex w-[280px] p-2">
       <button
-        className="flex w-full items-center rounded-md border bg-red-600 p-2 text-white hover:shadow"
-        onClick={handleAddOrder} // Đặt onClick vào button
+        className="flex w-full transform items-center rounded-lg bg-gradient-to-r from-red-500 to-pink-500 p-3 text-white shadow-md transition-transform hover:scale-105 hover:shadow-lg"
+        onClick={handleAddOrder}
       >
-        <p className="mr-2">
-          <FaCartArrowDown size={"1.5rem"} />
+        <p className="mr-2 flex items-center justify-center">
+          <FaCartArrowDown size={"1.75rem"} />
         </p>
-        <span className="text-lg text-white">Thêm giỏ hàng</span>
+        <span className="text-[16px]  font-semibold">Thêm vào giỏ hàng</span>
       </button>
     </div>
   );
